@@ -1,0 +1,46 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Update code on server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SECRET_HOST }}
+        username: ${{ secrets.SECRET_USER }}
+        password: ${{ secrets.SECRET_PASSWORD }}
+        script: |
+          cd /home/splink/
+          git fetch origin
+          git pull
+    - name: Build and run Docker containers
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SECRET_HOST }}
+        username: ${{ secrets.SECRET_USER }}
+        password: ${{ secrets.SECRET_PASSWORD }}
+        script: |
+          cd /home/splink/
+          docker-compose down
+          docker-compose up -d --build
+    - name: Clean up old Docker images
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SECRET_HOST }}
+        username: ${{ secrets.SECRET_USER }}
+        password: ${{ secrets.SECRET_PASSWORD }}
+        script: |
+          cd /home/splink/
+          docker image prune -f
+          docker container prune -f
+          echo "Cleaned up old Docker images and containers!"
