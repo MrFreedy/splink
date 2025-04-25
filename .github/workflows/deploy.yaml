@@ -18,8 +18,7 @@ jobs:
       with:
         host: ${{ secrets.SECRET_HOST }}
         username: ${{ secrets.SECRET_USER }}
-        key: ${{ secrets.SECRET_SSH_KEY }}
-        passphrase: ""
+        password: ${{ secrets.SECRET_PASSWORD }}
         script: |
           cd /home/splink/
           git fetch origin
@@ -29,8 +28,7 @@ jobs:
       with:
         host: ${{ secrets.SECRET_HOST }}
         username: ${{ secrets.SECRET_USER }}
-        key: ${{ secrets.SECRET_SSH_KEY }}
-        passphrase: ""
+        password: ${{ secrets.SECRET_PASSWORD }}
         script: |
           cd /home/splink/
           docker-compose down
@@ -40,8 +38,7 @@ jobs:
       with:
         host: ${{ secrets.SECRET_HOST }}
         username: ${{ secrets.SECRET_USER }}
-        key: ${{ secrets.SECRET_SSH_KEY }}
-        passphrase: ""
+        password: ${{ secrets.SECRET_PASSWORD }}
         script: |
           cd /home/splink/
           docker image prune -f
