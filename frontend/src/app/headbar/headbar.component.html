@@ -1,0 +1,52 @@
+<nav class="flex items-center justify-between bg-[var(--color-green-dark)] text-white px-6 py-4">
+    <!-- Logo -->
+    <div class="flex items-center space-x-2">
+      <img src="logo.svg" alt="Logo" class="h-20 w-20">
+    </div>
+  
+    <!-- Menu -->
+    <div class="flex items-center space-x-10">
+        <a routerLink="/dashboard" class="flex items-center space-x-2 group">
+            <img [src]="(router.url === '/dashboard') ? 'icons/home/home-hover.png' : 'icons/home/home-white.png'" 
+                class="h-10 w-10 group-hover:hidden" 
+                alt="Dépenses Icon">
+            <img src="icons/home/home-hover.png" 
+                class="h-10 w-10 hidden group-hover:block" 
+                alt="Dépenses Icon">
+            <span class="text-2xl group-hover:border-b-2 border-[var(--color-green-highlight)] {{router.url === '/dashboard' ? 'border-b-2 border-[var(--color-green-highlight)]' : ''}}">Accueil</span>
+        </a>
+        <a routerLink="/depenses" class="flex items-center space-x-2 group">
+            <img [src]="(router.url === '/depenses') ? 'icons/tirelire/tirelire-hover.png' : 'icons/tirelire/tirelire-white.png'" 
+                    class="h-10 w-10 group-hover:hidden" 
+                    alt="Dépenses Icon">
+            <img src="icons/tirelire/tirelire-hover.png" 
+                    class="h-10 w-10 hidden group-hover:block" 
+                    alt="Dépenses Icon">
+            <span class="text-2xl group-hover:border-b-2 border-[var(--color-green-highlight)] {{router.url === '/depenses' ? 'border-b-2' : ''}}">Dépenses</span>
+        </a>
+        <a routerLink="/evenements" class="flex items-center space-x-2 group">
+            <img [src]="(router.url === '/evenements') ? 'icons/calendar/calendar-hover.png' : 'icons/calendar/calendar-white.png'" 
+                    class="h-10 w-10 group-hover:hidden" 
+                    alt="Évènements Icon">
+            <img src="icons/calendar/calendar-hover.png" 
+                    class="h-10 w-10 hidden group-hover:block" 
+                    alt="Évènements Icon">
+            <span class="text-2xl group-hover:border-b-2 border-[var(--color-green-highlight)] {{router.url === '/evenements' ? 'border-b-2 border-[var(--color-green-highlight)]' : ''}}">Évènements</span>
+        </a>
+        <a routerLink="/parametres" class="flex items-center space-x-2 group">
+            <img [src]="(router.url === '/parametres') ? 'icons/settings/settings-hover.png' : 'icons/settings/settings-white.png'" 
+                    class="h-10 w-10 group-hover:hidden" 
+                    alt="Paramètres Icon">
+            <img src="icons/settings/settings-hover.png" 
+                    class="h-10 w-10 hidden group-hover:block" 
+                    alt="Paramètres Icon">
+            <span class="text-2xl group-hover:border-b-2 border-[var(--color-green-highlight)] {{router.url === '/parametres' ? 'border-b-2 border-[var(--color-green-highlight)]' : ''}}">Paramètres</span>
+        </a>
+    </div>
+  
+    <!-- Notifications -->
+    <button class="p-2 !border-[var(--color-green-secondary)] group">
+        <img src="icons/notifications/notifications-white-disabled.png" class="h-8 w-8 group-hover:hidden group-focus-visible:hidden" alt="Notifications Icon">
+        <img src="icons/notifications/notifications-hover-disabled.png" class="h-8 w-8 hidden group-hover:block group-focus-visible:block" alt="Notifications Icon Active">
+    </button>
+</nav>

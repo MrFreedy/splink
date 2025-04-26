@@ -1,1 +1,52 @@
+/* Imports */
 @import "tailwindcss";
+@font-face {
+    font-family: 'Montserrat', sans-serif;
+    src: url('/fonts/Montserrat.ttf') format('truetype');
+}
+
+/* General styles */
+:root {
+    --color-green-dark: #18230F;
+    --color-green-primary: #1F7D53;
+    --color-green-secondary: #2a391f;
+    --color-green-highlight: #6ceb75;
+}
+
+*{
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Input styles */
+
+input{
+    @apply font-bold p-2 rounded-xl bg-white text-black mb-2;
+}
+
+input:focus{
+    @apply focus:outline-none focus:ring-3 focus:ring-[var(--color-green-highlight)];
+}
+
+/* Button styles */
+
+button{
+    @apply bg-[var(--color-green-primary)] text-white text-xl font-bold py-2 rounded-xl border border-4 border-[var(--color-green-dark)] ;
+}
+
+button:hover {
+    @apply bg-[var(--color-green-highlight)] text-[var(--color-green-secondary)] focus:outline-none transition;
+}
+
+button:focus {
+    @apply border-[var(--color-green-dark)] bg-[var(--color-green-highlight)] text-[var(--color-green-secondary)] focus:outline-none transition;
+}
+
+/* Link styles */
+
+a:hover{
+    @apply text-[var(--color-green-highlight)];
+}
+
+a:focus-visible {
+    @apply outline-none ring-2 ring-[var(--color-green-highlight)];
+}
