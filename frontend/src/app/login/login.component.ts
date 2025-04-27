@@ -18,7 +18,7 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) { }
 
   login() {
-    this.http.post<{ message: string, user: { _id: string, email: string, username: string, password: string } }>('http://localhost:3000/users/login', {
+    this.http.post<{ message: string, user: { _id: string, email: string, username: string, password: string } }>('http://217.65.146.195:3000/users/login', {
       email: this.email,
       password: this.password
     })
