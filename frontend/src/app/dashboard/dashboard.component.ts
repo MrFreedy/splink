@@ -10,5 +10,12 @@ import { IncomingTaskItemComponent } from '../incoming-task-item/incoming-task-i
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  username = null;
 
+  constructor() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.username = JSON.parse(user).username;
+    }
+  }
 }

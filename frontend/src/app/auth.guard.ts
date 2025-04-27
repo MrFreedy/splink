@@ -3,12 +3,15 @@ import { inject } from '@angular/core';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const isLoggedIn = !!localStorage.getItem('userId'); // Vérifie si le token existe
+  const userData = localStorage.getItem('user');
+  const user = userData ? JSON.parse(userData) : null;
+
+  const isLoggedIn = !!user && !!user._id;
 
   if (isLoggedIn) {
-    return true; // Autorise l'accès
+    return true;
   } else {
-    router.navigate(['/login']); // Redirige vers /login
-    return false; // Bloque l'accès
+    router.navigate(['/login']);
+    return false;
   }
 };

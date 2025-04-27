@@ -24,8 +24,9 @@ export class LoginComponent {
     })
     .pipe(
       tap(response => {
-        console.log('Login successful', response);
-        localStorage.setItem('userId', response.user._id);
+        const { password, ...user } = response.user;
+        localStorage.setItem('user', JSON.stringify(user));
+        console.log('User data saved to localStorage', user);
         this.router.navigate(['/dashboard']);
       }),
       catchError(error => {
