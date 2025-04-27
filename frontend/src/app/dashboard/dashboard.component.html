@@ -1,1 +1,63 @@
-<p>dashboard works!</p>
+<div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 w-7xl mx-auto items-stretch">
+        <!-- Dernières dépenses -->
+    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit">
+        <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Dernières dépenses</h2>
+  
+        <div class="space-y-3">
+            <app-depense-item icon="icons/grocery/grocery-normal.png" label="Courses Carrefour" amount="45,89€"></app-depense-item>
+            <app-depense-item icon="icons/loan/loan-normal.png" label="Loyer" amount="980,00€"></app-depense-item>
+            <app-depense-item icon="icons/electricity/electricity-normal.png" label="Facture d'électricité" amount="93,34€"></app-depense-item>
+            <app-depense-item icon="icons/covoiturage/covoiturage-normal.png" label="Covoiturage" amount="55,00€"></app-depense-item>
+        </div>
+  
+        <div class="flex justify-center mt-4 gap-20">
+            <button class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Ajouter</span>
+            </button>
+            <button class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/view/view-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/view/view-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Consulter</span>
+            </button>
+        </div>
+    </div>
+  
+    <!-- Mes tâches du jour -->
+    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit">
+        <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Mes tâches du jour</h2>
+        <app-task-item icon="icons/cleaning/cleaning-normal.png" label="Passer l'aspirateur"></app-task-item>
+        <app-task-item icon="icons/trash/trash-normal.png" label="Sortir les poubelles"></app-task-item>
+        <div class="flex justify-center mt-4 gap-20">
+            <button class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Ajouter</span>
+            </button>
+            <button class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/view/view-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/view/view-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Consulter</span>
+            </button>
+        </div>
+    </div>
+  
+    <!-- Tâches à venir -->
+    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full lg:col-span-2 h-fit">
+        <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Tâches à venir</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+            <app-incoming-task-item icon="icons/cleaning/cleaning-normal.png" label="Passer l'aspirateur" date="Lundi 05 février"></app-incoming-task-item>
+            <app-incoming-task-item icon="icons/cleaning/cleaning-normal.png" label="Passer l'aspirateur" date="Lundi 05 février"></app-incoming-task-item>
+            <app-incoming-task-item icon="icons/cleaning/cleaning-normal.png" label="Passer l'aspirateur" date="Lundi 05 février"></app-incoming-task-item>
+        </div>
+
+        <div class="flex justify-center mt-4">
+            <button class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/more/more-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/more/more-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Voir plus</span>
+            </button>
+        </div>
+    </div>
+</div>

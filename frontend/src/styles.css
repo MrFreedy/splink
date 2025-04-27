@@ -11,6 +11,7 @@
     --color-green-primary: #1F7D53;
     --color-green-secondary: #2a391f;
     --color-green-highlight: #6ceb75;
+    --color-card:#FFEBC5;
 }
 
 *{
@@ -30,7 +31,7 @@ input:focus{
 /* Button styles */
 
 button{
-    @apply bg-[var(--color-green-primary)] text-white text-xl font-bold py-2 rounded-xl border border-4 border-[var(--color-green-dark)] ;
+    @apply bg-[var(--color-green-primary)] text-white text-xl font-bold py-2 rounded-xl border border-4 border-[var(--color-green-dark)] cursor-pointer;
 }
 
 button:hover {

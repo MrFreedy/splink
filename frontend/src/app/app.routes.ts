@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DepensesComponent } from './depenses/depenses.component';
 import { EvenementsComponent } from './evenements/evenements.component';
 import { ParametresComponent } from './parametres/parametres.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,7 @@ export const routes: Routes = [
     {
       path: '',
       component: MainLayoutComponent,
+      canActivate: [authGuard],
       children: [
         { path: 'dashboard', component: DashboardComponent },
         { path: 'depenses', component: DepensesComponent },
