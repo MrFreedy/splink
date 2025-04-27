@@ -15,3 +15,18 @@ export const authGuard: CanActivateFn = (route, state) => {
     return false;
   }
 };
+
+export const loginGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const userData = localStorage.getItem('user');
+  const user = userData ? JSON.parse(userData) : null;
+
+  const isLoggedIn = !!user && !!user._id;
+
+  if (isLoggedIn) {
+    router.navigate(['/dashboard']);
+    return false;
+  } else {
+    return true;
+  }
+};

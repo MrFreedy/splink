@@ -9,7 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DepensesComponent } from './depenses/depenses.component';
 import { EvenementsComponent } from './evenements/evenements.component';
 import { ParametresComponent } from './parametres/parametres.component';
-import { authGuard } from './auth.guard';
+import { authGuard, loginGuard } from './auth.guard';
 
 export const routes: Routes = [
     {
@@ -21,8 +21,8 @@ export const routes: Routes = [
       path: '',
       component: AuthLayoutComponent,
       children: [
-        { path: 'login', component: LoginComponent },
-        { path: 'signup', component: SignupComponent }
+        { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
+        { path: 'signup', component: SignupComponent, canActivate: [loginGuard] }
       ]
     },
     {
