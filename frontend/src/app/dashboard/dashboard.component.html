@@ -5,13 +5,19 @@
         <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Dernières dépenses</h2>
   
         <div class="space-y-3">
-            <ng-container *ngFor="let depense of depenses">
-              <app-depense-item
-                [icon]="getIcon(depense.category)"
-                [label]="depense.title"
-                [amount]="formatAmount(depense.amount)">
-              </app-depense-item>
+            <ng-container *ngIf="depenses.length > 0; else noDepenses">
+                <ng-container *ngFor="let depense of depenses">
+                <app-depense-item
+                    [icon]="getIcon(depense.category)"
+                    [label]="depense.title"
+                    [amount]="formatAmount(depense.amount)">
+                </app-depense-item>
+                </ng-container>
             </ng-container>
+            
+            <ng-template #noDepenses>
+                <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune dépense pour l'instant.</p>
+            </ng-template>
         </div>
   
         <div class="flex justify-center mt-4 gap-20">
