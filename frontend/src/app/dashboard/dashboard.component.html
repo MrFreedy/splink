@@ -5,10 +5,13 @@
         <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Dernières dépenses</h2>
   
         <div class="space-y-3">
-            <app-depense-item icon="icons/grocery/grocery-normal.png" label="Courses Carrefour" amount="45,89€"></app-depense-item>
-            <app-depense-item icon="icons/loan/loan-normal.png" label="Loyer" amount="980,00€"></app-depense-item>
-            <app-depense-item icon="icons/electricity/electricity-normal.png" label="Facture d'électricité" amount="93,34€"></app-depense-item>
-            <app-depense-item icon="icons/covoiturage/covoiturage-normal.png" label="Covoiturage" amount="55,00€"></app-depense-item>
+            <ng-container *ngFor="let depense of depenses">
+              <app-depense-item
+                [icon]="getIcon(depense.category)"
+                [label]="depense.title"
+                [amount]="formatAmount(depense.amount)">
+              </app-depense-item>
+            </ng-container>
         </div>
   
         <div class="flex justify-center mt-4 gap-20">
