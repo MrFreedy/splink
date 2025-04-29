@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('../db.js');
 
-const colocationSchema = new Schema({
+const colocationSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
