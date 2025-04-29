@@ -3,8 +3,42 @@ const router = express.Router();
 const mongoose = require('../db.js');
 
 const userSchema = new mongoose.Schema({
-    name: String,
-    email: String
+    username: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    settings: {
+        theme: { type: String, default: 'light' },
+        notifications: { type: Boolean, default: true },
+        language: { type: String, default: 'fr' },
+        date_format: { type: String, default: 'DD/MM/YYYY' }
+    },
+    colocation_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Colocation'
+    },
+    status: {
+        type: String,
+        enum: ['actif', 'inactif'],
+        default: 'actif'
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 const User = mongoose.model('User', userSchema);

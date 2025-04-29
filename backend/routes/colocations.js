@@ -68,6 +68,20 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/:id/members', async (req, res) => {
+    try {
+        const colocation = await Colocation.findById(req.params.id)
+            .populate('members.user_id', 'username email');
+        if (!colocation) return res.status(404).send('Colocation non trouvée');
+
+        res.status(200).json(colocation.members);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur serveur');
+    }
+});
+
+
 router.post('/', async (req, res) => {
     try {
         const newColocation = new Colocation(req.body);

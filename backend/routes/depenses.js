@@ -73,6 +73,28 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/colocation/:colocationId', async (req, res) => {
+    try {
+        const depenses = await Depense.find({ colocation_id: req.params.colocationId });
+        res.json(depenses);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur serveur');
+    }
+});
+
+router.get('/colocation/:colocationId/last', async (req, res) => {
+    try {
+        const depenses = await Depense.find({ colocation_id: req.params.colocationId })
+            .sort({ created_at: -1 })
+            .limit(3);
+        res.json(depenses);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur serveur');
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const newDepense = new Depense(req.body);
