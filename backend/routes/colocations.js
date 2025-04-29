@@ -15,7 +15,7 @@ const colocationSchema = new mongoose.Schema({
     },
     members: [{
         user_id: {
-        type: Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'User',
         required: true
         },
