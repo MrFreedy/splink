@@ -16,7 +16,7 @@ const depenseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    due_date: {
+    paymentDate: {
         type: Date,
         required: true
     },
@@ -48,6 +48,11 @@ const depenseSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+});
+  
+depenseSchema.pre('save', function(next) {
+    this.updated_at = Date.now();
+    next();
 });
 
 const Depense = mongoose.model('Depense', depenseSchema);
