@@ -28,6 +28,14 @@ input:focus{
     @apply focus:outline-none focus:ring-3 focus:ring-[var(--color-green-highlight)];
 }
 
+select{
+    @apply font-bold p-2 rounded-xl bg-white text-black mb-2;
+}
+
+select:focus{
+    @apply focus:outline-none focus:ring-3 focus:ring-[var(--color-green-highlight)];
+}
+
 /* Button styles */
 
 button{
