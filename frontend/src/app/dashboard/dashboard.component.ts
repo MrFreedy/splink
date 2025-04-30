@@ -5,6 +5,7 @@ import { DepenseItemComponent } from '../depense-item/depense-item.component';
 import { TaskItemComponent } from '../task-item/task-item.component';
 import { IncomingTaskItemComponent } from '../incoming-task-item/incoming-task-item.component';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +37,7 @@ export class DashboardComponent {
   paymentDate: string = '';
   isModalOpen = false;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private router: Router) {
     const user = localStorage.getItem('user');
     if (user) {
       this.username = JSON.parse(user).username;
@@ -167,7 +168,13 @@ export class DashboardComponent {
       });
     });
   } 
+
   capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
-  } 
+  }
+
+  goToEvenements() {
+    this.router.navigate(['/evenements']);
+  }
+
 }
