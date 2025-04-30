@@ -105,15 +105,16 @@ router.get('/assigned/today/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;
 
-        const startOfDay = new Date();
-        startOfDay.setHours(0, 0, 0, 0);
-
-        const endOfDay = new Date();
-        endOfDay.setHours(23, 59, 59, 999);
+        const today = new Date();
+        const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
         const tasks = await Task.find({
             assigned_to: userId,
-            due_date: { $gte: startOfDay, $lte: endOfDay }
+            due_date: {
+                $gte: startOfDay,
+                $lte: endOfDay
+            }
         });
 
         res.status(200).json(tasks);
@@ -142,7 +143,8 @@ router.get('/colocation/:colocationId/upcoming', async (req, res) => {
       console.error(err);
       res.status(500).send("Erreur serveur");
     }
-  });
+});
+
 router.post('/', async (req, res) => {
     try {
         const newTask = new Task(req.body);
