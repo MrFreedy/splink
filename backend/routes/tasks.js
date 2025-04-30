@@ -105,18 +105,26 @@ router.get('/assigned/today/:userId', async (req, res) => {
     try {
         const userId = new mongoose.Types.ObjectId(req.params.userId);
 
-        const now = new Date();
-        const tzOffset = now.getTimezoneOffset() * 60000;
-        const localNow = new Date(now.getTime() - tzOffset);
+        const localNow = new Date();
+        const localYear = localNow.getFullYear();
+        const localMonth = localNow.getMonth();
+        const localDate = localNow.getDate();
 
-        const startOfDay = new Date(localNow.getFullYear(), localNow.getMonth(), localNow.getDate());
-        const endOfDay = new Date(localNow.getFullYear(), localNow.getMonth(), localNow.getDate(), 23, 59, 59, 999);
+        const startLocal = new Date(localYear, localMonth, localDate, 0, 0, 0);
+        const endLocal = new Date(localYear, localMonth, localDate, 23, 59, 59, 999);
+
+        const tzOffset = localNow.getTimezoneOffset() * 60000;
+        const startUtc = new Date(startLocal.getTime() - tzOffset);
+        const endUtc = new Date(endLocal.getTime() - tzOffset);
+
+        console.log("Start UTC:", startUtc.toISOString());
+        console.log("End UTC:", endUtc.toISOString());
 
         const tasks = await Task.find({
             assigned_to: userId,
             due_date: {
-                $gte: startOfDay,
-                $lte: endOfDay
+                $gte: startUtc,
+                $lte: endUtc
             }
         });
 
