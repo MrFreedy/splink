@@ -105,9 +105,15 @@ router.get('/assigned/today/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;
 
-        const today = new Date();
-        const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-        const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+        const now = new Date();
+        const tzOffset = now.getTimezoneOffset() * 60000;
+        const localNow = new Date(now.getTime() - tzOffset);
+
+        const startOfDay = new Date(localNow.getFullYear(), localNow.getMonth(), localNow.getDate());
+        const endOfDay = new Date(localNow.getFullYear(), localNow.getMonth(), localNow.getDate(), 23, 59, 59, 999);
+
+        console.log('Start:', startOfDay.toISOString());
+        console.log('End:', endOfDay.toISOString());
 
         const tasks = await Task.find({
             assigned_to: userId,
