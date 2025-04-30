@@ -96,18 +96,20 @@
                       </div>
                     </div>
                 </div> 
-                <div class="flex justify-center mt-6 gap-4">
-                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Ajouter</span>
-                    </button>
+                <div class="flex mt-6 gap-4 justify-start">
                     <button type="button" (click)="closeModal()" class="btn flex items-center space-x-2 p-5 group">
                         <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
                         <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
                         <span>Annuler</span>
                     </button>
-                </div>                 
+                </div>      
+                <div class="flex mt-6 gap-4 justify-end">
+                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                        <span>Ajouter</span>
+                    </button>
+                </div>        
             </form>
         </div>
     </div>
@@ -116,8 +118,17 @@
     <!-- Mes tâches du jour -->
     <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit">
         <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Mes tâches du jour</h2>
-        <app-task-item icon="icons/cleaning/cleaning-normal.png" label="Passer l'aspirateur"></app-task-item>
-        <app-task-item icon="icons/trash/trash-normal.png" label="Sortir les poubelles"></app-task-item>
+        <ng-container *ngIf="userTasks.length > 0; else noUserTasks">
+            <ng-container *ngFor="let userTask of userTasks">
+            <app-task-item
+                [icon]="getIcon(userTask.category)"
+                [label]="userTask.title">
+            </app-task-item>
+            </ng-container>
+        </ng-container>
+        <ng-template #noUserTasks>
+            <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche aujourd'hui 🍹</p>
+        </ng-template>
         <div class="flex justify-center mt-4 gap-20">
             <button class="btn flex items-center space-x-2 p-5 group">
                 <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
@@ -136,9 +147,18 @@
     <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full lg:col-span-2 h-fit">
         <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Tâches à venir</h2>
         <div class="flex flex-wrap justify-center gap-4">
-            <app-incoming-task-item icon="icons/cleaning/cleaning-normal.png" label="Passer l'aspirateur" date="Lundi 05 février"></app-incoming-task-item>
-            <app-incoming-task-item icon="icons/cleaning/cleaning-normal.png" label="Passer l'aspirateur" date="Lundi 05 février"></app-incoming-task-item>
-            <app-incoming-task-item icon="icons/cleaning/cleaning-normal.png" label="Passer l'aspirateur" date="Lundi 05 février"></app-incoming-task-item>
+            <ng-container *ngIf="upcomingTasks.length > 0; else noUpcomingTasks">
+                <ng-container *ngFor="let upcomingTask of upcomingTasks">
+                <app-incoming-task-item
+                    [icon]="getIcon(upcomingTask.category)"
+                    [label]="upcomingTask.title"
+                    [date]="upcomingTask.dueDate">
+                </app-incoming-task-item>
+                </ng-container>
+            </ng-container>
+            <ng-template #noUpcomingTasks>
+                <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche à venir 🍹</p>
+            </ng-template>
         </div>
 
         <div class="flex justify-center mt-4">

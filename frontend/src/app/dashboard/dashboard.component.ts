@@ -25,6 +25,10 @@ export class DashboardComponent {
     paymentDate: '',
     payer: ''
   };
+
+  userTasks: any[] = [];
+  colocationTasks: any[] = [];
+  upcomingTasks: any[] = [];
   
   participants: { [key: string]: boolean } = {};
   participantNames: string[] = [];
@@ -58,6 +62,39 @@ export class DashboardComponent {
       }, {});
       this.participantNames = Object.keys(this.participants);
     });
+
+    this.apiService.get(`/tasks/colocation/${this.colocationId}`).subscribe((data: any) => {
+      this.colocationTasks = data;
+      this.colocationTasks.forEach(task => {
+        task.dueDate = new Date(task.dueDate).toLocaleDateString('fr-FR', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+      });
+    });
+
+    this.apiService.get(`/tasks/colocation/${this.colocationId}/upcoming`).subscribe((data: any) => {
+      this.upcomingTasks = data;
+      this.upcomingTasks.forEach(task => {
+        task.dueDate = this.capitalizeFirstLetter(new Date(task.due_date).toLocaleDateString('fr-FR', {
+          weekday: 'long',
+          month: 'long',
+          day: '2-digit'
+        }));
+      });
+    });
+
+    this.apiService.get(`/tasks/assigned/today/${this.user._id}`).subscribe((data: any) => {
+      this.userTasks = data;
+      this.userTasks.forEach(task => {
+        task.dueDate = new Date(task.dueDate).toLocaleDateString('fr-FR', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+      });
+    });
   }
 
   getIcon(category: string): string {
@@ -70,8 +107,8 @@ export class DashboardComponent {
         return 'icons/electricity/electricity-normal.png';
       case 'covoiturage':
         return 'icons/covoiturage/covoiturage-normal.png';
-      case 'convoiturage':
-        return 'icons/covoiturage/covoiturage-normal.png';
+      case 'poubelles':
+        return 'icons/trash/trash-normal.png';
       default:
         return 'icons/default.png';
     }
@@ -119,7 +156,6 @@ export class DashboardComponent {
   
       this.apiService.post('/depenses', newDepense).subscribe({
         next: (response) => {
-          console.log('Dépense ajoutée', response);
           alert('Dépense ajoutée avec succès !');
           this.closeModal();
           this.ngOnInit();
@@ -130,5 +166,8 @@ export class DashboardComponent {
         }
       });
     });
-  }  
+  } 
+  capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  } 
 }
