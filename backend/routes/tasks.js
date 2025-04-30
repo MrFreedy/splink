@@ -91,10 +91,10 @@ router.get('/colocation/:colocationId', async (req, res) => {
 router.get('/:id/assigned', async (req, res) => {
     try {
         const task = await Task.findById(req.params.id)
-            .populate('members.user_id', 'username email');
-        if (!colocation) return res.status(404).send('Tâche non trouvée');
+            .populate('assigned_to', 'username email');
+        if (!task) return res.status(404).send('Tâche non trouvée');
 
-        res.status(200).json(task.members);
+        res.status(200).json(task.assigned_to);
     } catch (err) {
         console.error(err);
         res.status(500).send('Erreur serveur');
@@ -103,7 +103,7 @@ router.get('/:id/assigned', async (req, res) => {
 
 router.get('/assigned/today/:userId', async (req, res) => {
     try {
-        const userId = req.params.userId;
+        const userId = new mongoose.Types.ObjectId(req.params.userId);
 
         const now = new Date();
         const tzOffset = now.getTimezoneOffset() * 60000;
@@ -111,9 +111,6 @@ router.get('/assigned/today/:userId', async (req, res) => {
 
         const startOfDay = new Date(localNow.getFullYear(), localNow.getMonth(), localNow.getDate());
         const endOfDay = new Date(localNow.getFullYear(), localNow.getMonth(), localNow.getDate(), 23, 59, 59, 999);
-
-        console.log('Start:', startOfDay.toISOString());
-        console.log('End:', endOfDay.toISOString());
 
         const tasks = await Task.find({
             assigned_to: userId,
@@ -166,7 +163,7 @@ router.put('/:id', async (req, res) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updatedTask) return res.status(404).send('Tâche non trouvée');
-        res.json(updatedColocation);
+        res.json(updatedTask);
     } catch (err) {
         console.error(err);
         res.status(500).send('Erreur serveur');
