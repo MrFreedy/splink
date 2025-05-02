@@ -12,8 +12,30 @@
       <div class="bg-[var(--color-card)] rounded-xl p-4 shadow flex flex-col h-fit max-h-[228px] overflow-hidden">
           <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Qui doit quoi ?</h2>
           <div class="space-y-2 overflow-y-auto flex-1">
-              <app-depense-due-item></app-depense-due-item>
-              <app-depense-due-item></app-depense-due-item>
+            <ng-container *ngIf="dettes.length > 0 || avoirs.length > 0; else noActivity">
+                <ng-container *ngIf="dettes.length > 0">
+                  <ng-container *ngFor="let dette of dettes">
+                    <app-dettes-item
+                      [amount]="dette.dueAmount"
+                      [user]="dette.paidBy.username">
+                    </app-dettes-item>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="avoirs.length > 0">
+                  <ng-container *ngFor="let avoir of avoirs">
+                    <app-avoirs-item
+                      [amount]="avoir.amountDue"
+                      [user]="avoir.owedBy.username">
+                    </app-avoirs-item>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+              
+              <ng-template #noActivity>
+                <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">
+                  Vous ne devez rien et on ne vous doit rien 🙌
+                </p>
+              </ng-template>
           </div>
       </div>
 

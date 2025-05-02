@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DepenseDueItemComponent } from '../depense-due-item/depense-due-item.component';
+
 import {
   ApexNonAxisChartSeries,
   ApexChart,
