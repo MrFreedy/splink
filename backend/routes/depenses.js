@@ -246,6 +246,79 @@ router.get('/colocation/:colocationId/repartition-par-categorie', async (req, re
     }
 });
 
+router.get('/colocation/:colocationId/repartition-mensuelle', async (req, res) => {
+    try {
+        const { colocationId } = req.params;
+
+        const dateLimite = new Date();
+        dateLimite.setDate(dateLimite.getDate() - 30);
+
+        const depenses = await Depense.find({ 
+            colocation_id: colocationId, 
+            paymentDate: { $gte: dateLimite } 
+        }).populate('paid_by');
+
+        const repartitionMap = new Map();
+        let totalAmount = 0;
+
+        depenses.forEach(depense => {
+            const userId = depense.paid_by._id.toString();
+            const username = depense.paid_by.username;
+            const current = repartitionMap.get(userId) || { username, amount: 0 };
+            current.amount += depense.amount;
+            repartitionMap.set(userId, current);
+            totalAmount += depense.amount;
+        });
+
+        const repartition = Array.from(repartitionMap.entries()).map(([userId, data]) => ({
+            userId,
+            username: data.username,
+            pourcentage: parseFloat(((data.amount / totalAmount) * 100).toFixed(2))
+        }));
+
+        res.json(repartition);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Erreur serveur");
+    }
+});
+
+router.get('/colocation/:colocationId/repartition-par-categorie-mensuelle', async (req, res) => {
+    try {
+        const { colocationId } = req.params;
+
+        const dateLimite = new Date();
+        dateLimite.setDate(dateLimite.getDate() - 30);
+        const depenses = await Depense.find({ colocation_id: colocationId, paymentDate: { $gte: dateLimite } });
+
+        const categoryMap = new Map();
+        const totalMap = new Map();
+
+        depenses.forEach(depense => {
+            const month = new Date(depense.paymentDate).toISOString().slice(0, 7);
+            const key = `${depense.category}-${month}`;
+            const currentAmount = categoryMap.get(key) || 0;
+            categoryMap.set(key, currentAmount + depense.amount);
+
+            totalMap.set(month, (totalMap.get(month) || 0) + depense.amount);
+        });
+
+        const repartition = Array.from(categoryMap.entries()).map(([key, amount]) => {
+            const [category, month] = key.split('-');
+            return {
+                category,
+                month,
+                pourcentage: parseFloat(((amount / totalMap.get(month)) * 100).toFixed(2))
+            };
+        });
+
+        res.json(repartition);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Erreur serveur");
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const { title, amount, category, paymentDate, paid_by, shared_between, colocation_id } = req.body;
