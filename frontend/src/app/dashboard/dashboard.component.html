@@ -43,20 +43,20 @@
                 <!-- Titre -->
                 <div>
                     <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
-                    <input name="title" [(ngModel)]="depensesToSubmit.title" class="w-full p-2 rounded-xl" required />
+                    <input name="title" [(ngModel)]="depensesToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
                 </div>
                   
             
                 <!-- Montant -->
                 <div>
                     <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Montant en €</label>
-                    <input type="number" name="amount" [(ngModel)]="depensesToSubmit.amount" class="w-full p-2 rounded-xl" required />
+                    <input type="number" name="amount" [(ngModel)]="depensesToSubmit.amount" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
                 </div>
             
                 <!-- Catégorie -->
                 <div>
                     <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
-                    <select name="category" [(ngModel)]="depensesToSubmit.category" class="w-full p-2 rounded-xl bg-white" required>
+                    <select name="category" [(ngModel)]="depensesToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
                         <option value="food">Alimentation</option>
                         <option value="transport">Transport</option>
                         <option value="entertainment">Loisirs</option>
@@ -67,13 +67,13 @@
                 <!-- Date de paiement-->
                 <div>
                     <label for="paymentDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date de paiement</label>
-                    <input type="date" id="paymentDate" name="paymentDate" [(ngModel)]="depensesToSubmit.paymentDate" class="w-full p-2 rounded-xl bg-white text-black" required />
+                    <input type="date" id="paymentDate" name="paymentDate" [(ngModel)]="depensesToSubmit.paymentDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
                 </div>
                 
                 <!-- Payer par -->
                 <div>
                     <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Payer par</label>
-                    <select name="payer" [(ngModel)]="depensesToSubmit.payer" class="w-full p-2 rounded-xl bg-white text-black" required>
+                    <select name="payer" [(ngModel)]="depensesToSubmit.payer" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required>
                         <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
                     </select>
                 </div>                  
