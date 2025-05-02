@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-
+import { ApiService } from '../services/api.service';
+import { FormsModule } from '@angular/forms';
 import {
   ApexNonAxisChartSeries,
   ApexChart,
   ApexDataLabels,
   ApexLegend,
-  ApexTitleSubtitle,
   NgApexchartsModule
 } from 'ng-apexcharts';
 
@@ -19,22 +19,31 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-chart-item',
-  imports: [NgApexchartsModule],
+  imports: [NgApexchartsModule, FormsModule],
   templateUrl: './chart-item.component.html',
   styleUrl: './chart-item.component.css'
 })
 export class ChartItemComponent {
   public chartOptions: ChartOptions;
-  
-  constructor() {
+  selectedOption = 'option1';
+  user = JSON.parse(localStorage.getItem('user') || '{}');
+  colocationId = this.user.colocation_id;
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.getGlobalRepartition();
+    }, 200);
+  }
+
+  constructor(private apiService: ApiService) {
     this.chartOptions = {
-      series: [10, 20, 30, 40],
+      series: [],
       chart: {
       type: 'pie',
       height: 450,
       width: 450,
       },
-      labels: ['Arthur', 'Hugo', 'Léa', 'Laura'],
+      labels: [],
       dataLabels: {
       enabled: false
       },
@@ -48,4 +57,29 @@ export class ChartItemComponent {
       }
     };
   }
+
+  getGlobalRepartition() {
+    this.apiService.get(`/depenses/colocation/${this.colocationId}/repartition`).subscribe((data => {
+      const repartitionData = data as any[];
+      this.chartOptions.series = repartitionData.map(item => item.pourcentage);
+      this.chartOptions.labels = repartitionData.map(item => item.username);
+    }));
+  }
+
+  getCategoryRepartition() {
+    this.apiService.get(`/depenses/colocation/${this.colocationId}/repartition-par-categorie`).subscribe((data => {
+      const repartitionData = data as any[];
+      this.chartOptions.series = repartitionData.map(item => item.pourcentage);
+      this.chartOptions.labels = repartitionData.map(item => item.category);
+    }));
+  }
+
+  onOptionChange() {
+    if (this.selectedOption === 'option1') {
+      this.getGlobalRepartition();
+    } else {
+      this.getCategoryRepartition();
+    }
+  }
+  
 }

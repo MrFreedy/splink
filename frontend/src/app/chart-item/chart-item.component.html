@@ -10,11 +10,11 @@
     </div>
     <div class="mt-4 flex space-x-1">
         <label class="relative inline-flex items-center cursor-pointer">
-            <input type="radio" name="chartOption" value="option1" class="sr-only peer" checked/>
+            <input type="radio" name="chartOption" [(ngModel)]="selectedOption" value="option1" class="sr-only peer" (change)="onOptionChange()"/>
             <div class="w-5 h-5 rounded-full border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
         </label>
         <label class="relative inline-flex items-center cursor-pointer">
-            <input type="radio" name="chartOption" value="option2" class="sr-only peer"/>
+            <input type="radio" name="chartOption" [(ngModel)]="selectedOption" value="option2" class="sr-only peer" (change)="onOptionChange()"/>
             <div class="w-5 h-5 rounded-full border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
         </label>
     </div>
