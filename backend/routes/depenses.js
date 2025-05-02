@@ -30,6 +30,22 @@ const depenseSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     }],
+    repayments: [
+        {
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            isPaid: {
+                type: Boolean,
+                default: false
+            },
+            paidAt: {
+                type: Date
+            }
+        }
+    ],
     status: {
         type: String,
         enum: ["à payer", "payée"],
@@ -100,9 +116,99 @@ router.get('/colocation/:colocationId/last', async (req, res) => {
     }
 });
 
+router.get('/user/:userId/dettes', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        const dettes = await Depense.find({
+        shared_between: userId,
+        paid_by: { $ne: userId },
+        status: "à payer"
+        }).populate('paid_by');
+
+        const result = dettes.map(depense => {
+        const montantParPersonne = depense.amount / depense.shared_between.length;
+
+        return {
+            title: depense.title,
+            category: depense.category,
+            date: depense.paymentDate,
+            total: depense.amount,
+            paidBy: {
+            id: depense.paid_by._id,
+            username: depense.paid_by.username
+            },
+            dueAmount: parseFloat(montantParPersonne.toFixed(2))
+        };
+        });
+
+        res.json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur serveur');
+    }
+});
+
+router.get('/user/:userId/avoirs', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        const depenses = await Depense.find({
+        paid_by: userId,
+        status: "à payer"
+        }).populate('shared_between');
+
+        const result = [];
+
+        for (const depense of depenses) {
+        const montantParPersonne = depense.amount / depense.shared_between.length;
+
+        for (const personne of depense.shared_between) {
+            if (personne._id.toString() !== userId) {
+            result.push({
+                title: depense.title,
+                category: depense.category,
+                date: depense.paymentDate,
+                total: depense.amount,
+                owedBy: {
+                id: personne._id,
+                username: personne.username
+                },
+                amountDue: parseFloat(montantParPersonne.toFixed(2))
+            });
+            }
+        }
+        }
+
+        res.json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Erreur serveur");
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
-        const newDepense = new Depense(req.body);
+        const { title, amount, category, paymentDate, paid_by, shared_between, colocation_id } = req.body;
+
+        const repayments = shared_between
+          .filter(userId => userId !== paid_by)
+          .map(userId => ({
+            user: userId,
+            isPaid: false
+          }));
+
+        const newDepense = new Depense({
+          title,
+          amount,
+          category,
+          paymentDate,
+          paid_by,
+          shared_between,
+          colocation_id,
+          repayments
+        });
+
         const savedDepense = await newDepense.save();
         res.status(201).json(savedDepense);
     } catch (err) {
@@ -110,6 +216,33 @@ router.post('/', async (req, res) => {
         res.status(500).send('Erreur serveur');
     }
 });
+
+router.post('/:id/repay', async (req, res) => {
+    const { userId } = req.body;
+    const depenseId = req.params.id;
+
+    try {
+      const depense = await Depense.findById(depenseId);
+      if (!depense) return res.status(404).send('Dépense non trouvée');
+
+      const repayment = depense.repayments.find(r => r.user.toString() === userId);
+      if (!repayment) return res.status(400).send('Utilisateur non concerné');
+
+      repayment.isPaid = true;
+      repayment.paidAt = new Date();
+
+      const isFullyPaid = depense.repayments.every(r => r.isPaid);
+      if (isFullyPaid) {
+        depense.status = "payée";
+      }
+
+      await depense.save();
+      res.send({ message: 'Remboursement enregistré' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erreur serveur');
+    }
+  });
 
 router.put('/:id', async (req, res) => {
     try {
