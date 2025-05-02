@@ -17,6 +17,7 @@ export class ParametresComponent {
       return; // User clicked "Cancel", do nothing
     }
     localStorage.removeItem('user');
+    localStorage.removeItem('colocation')
     this.router.navigate(['/login']);
   }
 }

@@ -20,10 +20,18 @@ export class LoginComponent {
   login() {
     this.apiService.login(this.email, this.password)
       .pipe(
-        tap((response: { message: string, user: { _id: string, email: string, username: string, password: string } }) => {
+        tap((response: { message: string, user: { _id: string, email: string, username: string, password: string, colocation_id?: string } }) => {
           const { password, ...user } = response.user;
           localStorage.setItem('user', JSON.stringify(user));
-          this.router.navigate(['/dashboard']);
+
+          if (user.colocation_id) {
+            this.apiService.get(`/colocations/${user.colocation_id}`).subscribe((data: any) => {
+              localStorage.setItem('colocation', JSON.stringify(data));
+              this.router.navigate(['/dashboard']);
+            });
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         }),
         catchError(error => {
           alert('Login failed. Please check your credentials.');
