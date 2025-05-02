@@ -1,7 +1,6 @@
 <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 w-7xl mx-auto items-stretch">
     <!-- Répartition mensuelle -->
     <div class="bg-[var(--color-card)] rounded-xl p-4 shadow flex flex-col h-full">
-        <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Répartition mensuelle</h2>
         <div class="flex-grow flex items-bottom justify-center">
           <app-chart-item></app-chart-item>
         </div>
@@ -100,7 +99,7 @@
                                 <td class="p-2">{{depense.title}}</td>
                                 <td class="p-2">{{depense.amount | number:'1.2-2'}}</td>
                                 <td class="p-2">{{depense.paid_by}}</td>
-                                <td class="p-2">{{depense.paymentDate | date:'dd/MM/YYYY'}}</td>
+                                <td class="p-2">{{depense.paymentDate}}</td>
                             </tr>
                         </ng-container>
                     </ng-container>

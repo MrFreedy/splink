@@ -29,6 +29,13 @@ export class ChartItemComponent {
   user = JSON.parse(localStorage.getItem('user') || '{}');
   colocationId = this.user.colocation_id;
 
+  titleMap: any = {
+    option1: 'Répartition globale par utilisateur',
+    option2: 'Répartition globale par catégorie',
+    option3: 'Répartition mensuelle par utilisateur',
+    option4: 'Répartition mensuelle par catégorie'
+  };
+
   ngOnInit() {
     setTimeout(() => {
       this.getGlobalRepartition();
@@ -66,9 +73,26 @@ export class ChartItemComponent {
     }));
   }
 
-  getCategoryRepartition() {
+  getGlobalCategoryRepartition() {
     this.apiService.get(`/depenses/colocation/${this.colocationId}/repartition-par-categorie`).subscribe((data => {
       const repartitionData = data as any[];
+      this.chartOptions.series = repartitionData.map(item => item.pourcentage);
+      this.chartOptions.labels = repartitionData.map(item => item.category);
+    }));
+  }
+
+  getMonthlyRepartition() {
+    this.apiService.get(`/depenses/colocation/${this.colocationId}/repartition-mensuelle`).subscribe((data => {
+      const repartitionData = data as any[];
+      this.chartOptions.series = repartitionData.map(item => item.pourcentage);
+      this.chartOptions.labels = repartitionData.map(item => item.username);
+    }));
+  }
+
+  getMonthlyCategoryRepartition() {
+    this.apiService.get(`/depenses/colocation/${this.colocationId}/repartition-par-categorie-mensuelle`).subscribe((data => {
+      const repartitionData = data as any[];
+      console.log(repartitionData);
       this.chartOptions.series = repartitionData.map(item => item.pourcentage);
       this.chartOptions.labels = repartitionData.map(item => item.category);
     }));
@@ -77,9 +101,17 @@ export class ChartItemComponent {
   onOptionChange() {
     if (this.selectedOption === 'option1') {
       this.getGlobalRepartition();
-    } else {
-      this.getCategoryRepartition();
+    } else if (this.selectedOption === 'option2') {
+      this.getGlobalCategoryRepartition();
+    } else if (this.selectedOption === 'option3') {
+      this.getMonthlyRepartition();
+    } else if (this.selectedOption === 'option4') {
+      this.getMonthlyCategoryRepartition();
     }
+  }
+
+  get title(): string {
+    return this.titleMap[this.selectedOption] || 'Répartition';
   }
   
 }
