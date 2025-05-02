@@ -18,4 +18,8 @@ export class Helper {
   formatAmount(amount: number): string {
     return amount.toFixed(2).replace('.', ',') + '€';
   }
+
+  capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 }

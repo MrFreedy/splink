@@ -176,39 +176,38 @@ export class DashboardComponent {
       return;
     }
   
-    this.apiService.get(`/colocations/${this.colocationId}/members`).subscribe((members: any) => {
-      const memberMap = members.reduce((acc: any, member: any) => {
-        acc[member.user_id.username] = member.user_id._id;
-        return acc;
-      }, {});
-  
-      const paid_by_id = memberMap[this.depensesToSubmit.payer];
-      const shared_between_ids = Object.keys(this.participants)
-        .filter(name => this.participants[name])
-        .map(name => memberMap[name]);
-  
-      const newDepense = {
-        title: this.depensesToSubmit.title,
-        amount: parseFloat(this.depensesToSubmit.amount),
-        category: this.depensesToSubmit.category,
-        paymentDate: new Date(this.depensesToSubmit.paymentDate),
-        paid_by: paid_by_id,
-        shared_between: shared_between_ids,
-        colocation_id: this.colocationId,
-        status: "à payer"
-      };
-  
-      this.apiService.post('/depenses', newDepense).subscribe({
-        next: (response) => {
-          alert('Dépense ajoutée avec succès !');
-          this.closeDepenseModal();
-          this.ngOnInit();
-        },
-        error: (err) => {
-          console.error('Erreur ajout dépense', err);
-          alert('Erreur lors de l\'ajout de la dépense.');
-        }
-      });
+    const colocation = JSON.parse(localStorage.getItem('colocation') || '{}');
+    const memberMap = colocation.members.reduce((acc: any, member: any) => {
+      acc[member.username] = member.user_id;
+      return acc;
+    }, {});
+
+    const paid_by_id = memberMap[this.depensesToSubmit.payer];
+    const shared_between_ids = Object.keys(this.participants)
+      .filter(name => this.participants[name])
+      .map(name => memberMap[name]);
+
+    const newDepense = {
+      title: this.depensesToSubmit.title,
+      amount: parseFloat(this.depensesToSubmit.amount),
+      category: this.depensesToSubmit.category,
+      paymentDate: new Date(this.depensesToSubmit.paymentDate),
+      paid_by: paid_by_id,
+      shared_between: shared_between_ids,
+      colocation_id: this.colocationId,
+      status: "à payer"
+    };
+
+    this.apiService.post('/depenses', newDepense).subscribe({
+      next: (response) => {
+        alert('Dépense ajoutée avec succès !');
+        this.closeDepenseModal();
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.error('Erreur ajout dépense', err);
+        alert('Erreur lors de l\'ajout de la dépense.');
+      }
     });
   }
 
@@ -218,36 +217,26 @@ export class DashboardComponent {
       return;
     }
 
-    this.apiService.get(`/colocations/${this.colocationId}/members`).subscribe((members: any) => {
-      const memberMap = members.reduce((acc: any, member: any) => {
-        acc[member.user_id.username] = member.user_id._id;
-        return acc;
-      }, {});
-  
-      const assigned_to_id = this.user._id;
-      const created_by_id = this.user._id;
-  
-      const newTodayTask = {
-        title: this.todayTasksToSubmit.title,
-        description: this.todayTasksToSubmit.description,
-        category: this.todayTasksToSubmit.category,
-        assigned_to: assigned_to_id,
-        created_by: created_by_id,
-        colocation_id: this.colocationId,
-        due_date: new Date(Date.now()),
-      };
-  
-      this.apiService.post('/tasks', newTodayTask).subscribe({
-        next: (response) => {
-          alert('Tâche ajoutée avec succès !');
-          this.closeTodayTasks();
-          this.ngOnInit();
-        },
-        error: (err) => {
-          console.error('Erreur ajout dépense', err);
-          alert('Erreur lors de l\'ajout de la dépense.');
-        }
-      });
+    const newTodayTask = {
+      title: this.todayTasksToSubmit.title,
+      description: this.todayTasksToSubmit.description,
+      category: this.todayTasksToSubmit.category,
+      assigned_to: this.user._id,
+      created_by: this.user._id,
+      colocation_id: this.colocationId,
+      due_date: new Date(Date.now()),
+    };
+
+    this.apiService.post('/tasks', newTodayTask).subscribe({
+      next: (response) => {
+        alert('Tâche ajoutée avec succès !');
+        this.closeTodayTasks();
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.error('Erreur ajout dépense', err);
+        alert('Erreur lors de l\'ajout de la dépense.');
+      }
     });
   }
 
@@ -257,41 +246,37 @@ export class DashboardComponent {
       return;
     }
   
-    this.apiService.get(`/colocations/${this.colocationId}/members`).subscribe((members: any) => {
-      const memberMap = members.reduce((acc: any, member: any) => {
-        acc[member.user_id.username] = member.user_id._id;
-        return acc;
-      }, {});
-  
-      const assigned_to_id = memberMap[this.upcomingTasksToSubmit.assignedTo];
-      const created_by_id = this.user._id;      
-  
-      const newUpcomingTask = {
-        title: this.upcomingTasksToSubmit.title,
-        description: this.upcomingTasksToSubmit.description,
-        category: this.upcomingTasksToSubmit.category,
-        assigned_to: assigned_to_id,
-        created_by: created_by_id,
-        colocation_id: this.colocationId,
-        due_date: new Date(this.upcomingTasksToSubmit.dueDate),
-      };
-      
-      this.apiService.post('/tasks', newUpcomingTask).subscribe({
-        next: (response) => {
-          alert('Tâche ajoutée avec succès !');
-          this.closeUpcomingTasks();
-          this.ngOnInit();
-        },
-        error: (err) => {
-          console.error('Erreur ajout dépense', err);
-          alert('Erreur lors de l\'ajout de la dépense.');
-        }
-      });
+    const colocation = JSON.parse(localStorage.getItem('colocation') || '{}');
+    const memberMap = colocation.members.reduce((acc: any, member: any) => {
+      acc[member.username] = member.user_id;
+      return acc;
+    }, {});  
+
+    const newUpcomingTask = {
+      title: this.upcomingTasksToSubmit.title,
+      description: this.upcomingTasksToSubmit.description,
+      category: this.upcomingTasksToSubmit.category,
+      assigned_to: memberMap[this.upcomingTasksToSubmit.assignedTo],
+      created_by: this.user._id,
+      colocation_id: this.colocationId,
+      due_date: new Date(this.upcomingTasksToSubmit.dueDate),
+    };
+    
+    this.apiService.post('/tasks', newUpcomingTask).subscribe({
+      next: (response) => {
+        alert('Tâche ajoutée avec succès !');
+        this.closeUpcomingTasks();
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.error('Erreur ajout dépense', err);
+        alert('Erreur lors de l\'ajout de la dépense.');
+      }
     });
   }
 
   capitalizeFirstLetter(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    return this.helper.capitalizeFirstLetter(str);
   }
 
   goToPage(name: string) {
