@@ -187,6 +187,65 @@ router.get('/user/:userId/avoirs', async (req, res) => {
     }
 });
 
+router.get('/colocation/:colocationId/repartition', async (req, res) => {
+    try {
+        const { colocationId } = req.params;
+
+        const depenses = await Depense.find({ colocation_id: colocationId }).populate('paid_by');
+
+        const repartitionMap = new Map();
+        let totalAmount = 0;
+
+        depenses.forEach(depense => {
+            const userId = depense.paid_by._id.toString();
+            const username = depense.paid_by.username;
+            const current = repartitionMap.get(userId) || { username, amount: 0 };
+            current.amount += depense.amount;
+            repartitionMap.set(userId, current);
+            totalAmount += depense.amount;
+        });
+
+        const repartition = Array.from(repartitionMap.entries()).map(([userId, data]) => ({
+            userId,
+            username: data.username,
+            pourcentage: parseFloat(((data.amount / totalAmount) * 100).toFixed(2))
+        }));
+
+        res.json(repartition);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Erreur serveur");
+    }
+});
+
+router.get('/colocation/:colocationId/repartition-par-categorie', async (req, res) => {
+    try {
+        const { colocationId } = req.params;
+
+        const depenses = await Depense.find({ colocation_id: colocationId });
+
+        const categoryMap = new Map();
+        let totalAmount = 0;
+
+        depenses.forEach(depense => {
+            const category = depense.category;
+            const current = categoryMap.get(category) || 0;
+            categoryMap.set(category, current + depense.amount);
+            totalAmount += depense.amount;
+        });
+
+        const repartition = Array.from(categoryMap.entries()).map(([category, amount]) => ({
+            category,
+            pourcentage: parseFloat(((amount / totalAmount) * 100).toFixed(2))
+        }));
+
+        res.json(repartition);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Erreur serveur");
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const { title, amount, category, paymentDate, paid_by, shared_between, colocation_id } = req.body;
