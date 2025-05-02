@@ -27,6 +27,24 @@ export class DashboardComponent {
     payer: ''
   };
 
+  todayTasksToSubmit: any = {
+    title:'',
+    description: '',
+    category: '',
+    dueDate: '',
+    assignedTo: '',
+    createdBy: '',
+  };
+
+  upcomingTasksToSubmit: any = {
+    title:'',
+    description: '',
+    category: '',
+    dueDate: '',
+    assignedTo: '',
+    createdBy: '',
+  };
+
   userTasks: any[] = [];
   colocationTasks: any[] = [];
   upcomingTasks: any[] = [];
@@ -35,7 +53,9 @@ export class DashboardComponent {
   participantNames: string[] = [];
 
   paymentDate: string = '';
-  isModalOpen = false;
+  isDepenseModalOpen = false;
+  isTodayTasksOpen = false;
+  isUpcomingTasksOpen = false;
 
   constructor(private apiService: ApiService, private router: Router) {
     const user = localStorage.getItem('user');
@@ -119,12 +139,51 @@ export class DashboardComponent {
     return amount.toFixed(2).replace('.', ',') + '€';
   }
 
-  openModal(){
-    this.isModalOpen = true;
+  openDepenseModal(){
+    this.isDepenseModalOpen = true;
   }
 
-  closeModal(){
-    this.isModalOpen = false;
+  openTodayTasks() {
+    this.isTodayTasksOpen = !this.isTodayTasksOpen;
+  }
+
+  openUpcomingTasks() {
+    this.isUpcomingTasksOpen = !this.isUpcomingTasksOpen;
+  }
+
+  closeDepenseModal(){
+    this.isDepenseModalOpen = false;
+    this.depensesToSubmit = {
+      title: '',
+      amount: null,
+      category: '',
+      paymentDate: '',
+      payer: ''
+    };
+  }
+
+  closeTodayTasks() {
+    this.isTodayTasksOpen = false;
+    this.todayTasksToSubmit = {
+      title: '',
+      description: '',
+      category: '',
+      dueDate: '',
+      assignedTo: '',
+      createdBy: '',
+    };
+  }
+
+  closeUpcomingTasks() {
+    this.isUpcomingTasksOpen = false;
+    this.upcomingTasksToSubmit = {
+      title: '',
+      description: '',
+      category: '',
+      dueDate: '',
+      assignedTo: '',
+      createdBy: '',
+    };
   }
 
   submitDepense() {
@@ -158,7 +217,7 @@ export class DashboardComponent {
       this.apiService.post('/depenses', newDepense).subscribe({
         next: (response) => {
           alert('Dépense ajoutée avec succès !');
-          this.closeModal();
+          this.closeDepenseModal();
           this.ngOnInit();
         },
         error: (err) => {
@@ -167,7 +226,46 @@ export class DashboardComponent {
         }
       });
     });
-  } 
+  }
+
+  submitTodayTask(){
+    if (!this.todayTasksToSubmit.title || !this.todayTasksToSubmit.category) {
+      alert('Merci de remplir tous les champs.');
+      return;
+    }
+
+    this.apiService.get(`/colocations/${this.colocationId}/members`).subscribe((members: any) => {
+      const memberMap = members.reduce((acc: any, member: any) => {
+        acc[member.user_id.username] = member.user_id._id;
+        return acc;
+      }, {});
+  
+      const assigned_to_id = this.user._id;
+      const created_by_id = this.user._id;
+  
+      const newTodayTask = {
+        title: this.todayTasksToSubmit.title,
+        description: this.todayTasksToSubmit.description,
+        category: this.todayTasksToSubmit.category,
+        assigned_to: assigned_to_id,
+        created_by: created_by_id,
+        colocation_id: this.colocationId,
+        due_date: new Date(Date.now()),
+      };
+  
+      this.apiService.post('/tasks', newTodayTask).subscribe({
+        next: (response) => {
+          alert('Tâche ajoutée avec succès !');
+          this.closeTodayTasks();
+          this.ngOnInit();
+        },
+        error: (err) => {
+          console.error('Erreur ajout dépense', err);
+          alert('Erreur lors de l\'ajout de la dépense.');
+        }
+      });
+    });
+  }
 
   capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);

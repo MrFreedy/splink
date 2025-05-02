@@ -21,7 +21,7 @@
         </div>
   
         <div class="flex justify-center mt-4 gap-20">
-            <button (click)="openModal()" class="btn flex items-center space-x-2 p-5 group">
+            <button (click)="openDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
                 <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
                 <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
                 <span>Ajouter</span>
@@ -34,8 +34,8 @@
         </div>
     </div>
 
-    <!-- La modale -->
-    <div *ngIf="isModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeModal()">
+    <!-- Dépense modale -->
+    <div *ngIf="isDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeDepenseModal()">
         <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
             <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Ajouter une dépense</h2>
         
@@ -97,7 +97,7 @@
                     </div>
                 </div> 
                 <div class="flex mt-6 gap-4 justify-start">
-                    <button type="button" (click)="closeModal()" class="btn flex items-center space-x-2 p-5 group">
+                    <button type="button" (click)="closeDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
                         <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
                         <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
                         <span>Annuler</span>
@@ -130,7 +130,7 @@
             <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche aujourd'hui 🍹</p>
         </ng-template>
         <div class="flex justify-center mt-4 gap-20">
-            <button class="btn flex items-center space-x-2 p-5 group">
+            <button (click)="openTodayTasks()" class="btn flex items-center space-x-2 p-5 group">
                 <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
                 <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
                 <span>Ajouter</span>
@@ -140,6 +140,53 @@
                 <img src="icons/view/view-hover.png" class="h-10 w-10 hidden group-hover:block">
                 <span>Consulter</span>
             </button>
+        </div>
+    </div>
+
+    <!-- Today Task modale -->
+    <div *ngIf="isTodayTasksOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeTodayTasks()">
+        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
+            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Ajouter une tâche pour aujourd'hui</h2>
+        
+            <form (ngSubmit)="submitTodayTask()" #todayTaskForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Titre -->
+                <div class="row-1">
+                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+                    <input name="title" [(ngModel)]="todayTasksToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+                </div>
+                
+                <!-- Description -->
+                <div class="row-1 row-span-2">
+                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
+                    <textarea name="description" [(ngModel)]="todayTasksToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
+                </div>
+            
+                <!-- Catégorie -->
+                <div class="row-2 self-start">
+                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+                    <select name="category" [(ngModel)]="todayTasksToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                        <option value="courses">Alimentation</option>
+                        <option value="transport">Transport</option>
+                        <option value="entertainment">Loisirs</option>
+                        <option value="bills">Factures</option>
+                    </select>
+                </div>                  
+                
+                <div class="flex mt-6 gap-4 justify-start row-3">
+                    <button type="button" (click)="closeTodayTasks()" class="btn flex items-center space-x-2 p-5 group">
+                        <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                        <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                        <span>Annuler</span>
+                    </button>
+                </div>      
+                <div class="flex mt-6 gap-4 justify-end row-3">
+                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                        <span>Ajouter</span>
+                    </button>
+                </div>        
+            </form>
         </div>
     </div>
   
@@ -161,7 +208,12 @@
             </ng-template>
         </div>
 
-        <div class="flex justify-center mt-4">
+        <div class="flex justify-center mt-4 gap-8">
+            <button (click)="openTodayTasks()" class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Ajouter</span>
+            </button>
             <button (click)="goToPage('evenements')" class="btn flex items-center space-x-2 p-5 group">
                 <img src="icons/more/more-normal.png" class="h-10 w-10 group-hover:hidden">
                 <img src="icons/more/more-hover.png" class="h-10 w-10 hidden group-hover:block">
