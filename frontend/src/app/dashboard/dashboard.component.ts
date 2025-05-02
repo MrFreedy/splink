@@ -6,6 +6,7 @@ import { TaskItemComponent } from '../task-item/task-item.component';
 import { IncomingTaskItemComponent } from '../incoming-task-item/incoming-task-item.component';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Helper } from '../utils/helper';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent {
   user = JSON.parse(localStorage.getItem('user') || '{}');
-  colocationId = this.user.colocation_id;
+  colocationId = localStorage.getItem('colocation') ? JSON.parse(localStorage.getItem('colocation') || '{}')._id : '';
 
   username = null;
   depenses: any[] = [];
@@ -56,7 +57,7 @@ export class DashboardComponent {
   isTodayTasksOpen = false;
   isUpcomingTasksOpen = false;
 
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(private apiService: ApiService, private router: Router, private helper: Helper) {
     const user = localStorage.getItem('user');
     if (user) {
       this.username = JSON.parse(user).username;
@@ -115,24 +116,11 @@ export class DashboardComponent {
   }
 
   getIcon(category: string): string {
-    switch (category.toLowerCase()) {
-      case 'courses':
-        return 'icons/grocery/grocery-normal.png';
-      case 'loyer':
-        return 'icons/loan/loan-normal.png';
-      case 'électricité':
-        return 'icons/electricity/electricity-normal.png';
-      case 'covoiturage':
-        return 'icons/covoiturage/covoiturage-normal.png';
-      case 'poubelles':
-        return 'icons/trash/trash-normal.png';
-      default:
-        return 'icons/default.png';
-    }
+    return this.helper.getIcon(category);
   }
   
   formatAmount(amount: number): string {
-    return amount.toFixed(2).replace('.', ',') + '€';
+    return this.helper.formatAmount(amount);
   }
 
   openDepenseModal(){
