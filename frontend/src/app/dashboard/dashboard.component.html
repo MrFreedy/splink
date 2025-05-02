@@ -211,7 +211,7 @@
         </div>
 
         <div class="flex justify-center mt-4 gap-8">
-            <button (click)="openTodayTasks()" class="btn flex items-center space-x-2 p-5 group">
+            <button (click)="openUpcomingTasks()" class="btn flex items-center space-x-2 p-5 group">
                 <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
                 <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
                 <span>Ajouter</span>
@@ -221,6 +221,67 @@
                 <img src="icons/more/more-hover.png" class="h-10 w-10 hidden group-hover:block">
                 <span>Voir plus</span>
             </button>
+        </div>
+    </div>
+
+    <!-- Upcoming Task modale -->
+    <div *ngIf="isUpcomingTasksOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeUpcomingTasks()">
+        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
+            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Ajouter une tâche</h2>
+        
+            <form (ngSubmit)="submitUpcomingTask()" #upcomingTaskForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Titre -->
+                <div class="row-1">
+                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+                    <input name="title" [(ngModel)]="upcomingTasksToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+                </div>
+
+                <!-- Catégorie -->
+                <div class="row-1">
+                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+                    <select name="category" [(ngModel)]="upcomingTasksToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                        <option value="courses">Alimentation</option>
+                        <option value="transport">Transport</option>
+                        <option value="entertainment">Loisirs</option>
+                        <option value="bills">Factures</option>
+                    </select>
+                </div>    
+                
+                <!-- Description -->
+                <div class="row-2 col-span-2">
+                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
+                    <textarea name="description" [(ngModel)]="upcomingTasksToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
+                </div>
+
+                <!-- Assigner à -->
+                <div class="row-3">
+                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Assigner à</label>
+                    <select name="category" [(ngModel)]="upcomingTasksToSubmit.assignedTo" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                        <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
+                    </select>
+                </div>
+                
+                <!-- Date -->
+                <div class="row-3">
+                    <label for="dueDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date</label>
+                    <input type="date" id="dueDate" name="dueDate" [(ngModel)]="upcomingTasksToSubmit.dueDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+                </div>
+                
+                <div class="flex mt-6 gap-4 justify-start row-4">
+                    <button type="button" (click)="closeUpcomingTasks()" class="btn flex items-center space-x-2 p-5 group">
+                        <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                        <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                        <span>Annuler</span>
+                    </button>
+                </div>      
+                <div class="flex mt-6 gap-4 justify-end row-4">
+                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                        <span>Ajouter</span>
+                    </button>
+                </div>        
+            </form>
         </div>
     </div>
 </div>

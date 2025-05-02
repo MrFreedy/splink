@@ -267,6 +267,45 @@ export class DashboardComponent {
     });
   }
 
+  submitUpcomingTask() {
+    if (!this.upcomingTasksToSubmit.title || !this.upcomingTasksToSubmit.category || !this.upcomingTasksToSubmit.assignedTo || !this.upcomingTasksToSubmit.dueDate) {
+      alert('Merci de remplir tous les champs.');
+      return;
+    }
+  
+    this.apiService.get(`/colocations/${this.colocationId}/members`).subscribe((members: any) => {
+      const memberMap = members.reduce((acc: any, member: any) => {
+        acc[member.user_id.username] = member.user_id._id;
+        return acc;
+      }, {});
+  
+      const assigned_to_id = memberMap[this.upcomingTasksToSubmit.assignedTo];
+      const created_by_id = this.user._id;      
+  
+      const newUpcomingTask = {
+        title: this.upcomingTasksToSubmit.title,
+        description: this.upcomingTasksToSubmit.description,
+        category: this.upcomingTasksToSubmit.category,
+        assigned_to: assigned_to_id,
+        created_by: created_by_id,
+        colocation_id: this.colocationId,
+        due_date: new Date(this.upcomingTasksToSubmit.dueDate),
+      };
+      
+      this.apiService.post('/tasks', newUpcomingTask).subscribe({
+        next: (response) => {
+          alert('Tâche ajoutée avec succès !');
+          this.closeUpcomingTasks();
+          this.ngOnInit();
+        },
+        error: (err) => {
+          console.error('Erreur ajout dépense', err);
+          alert('Erreur lors de l\'ajout de la dépense.');
+        }
+      });
+    });
+  }
+
   capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
