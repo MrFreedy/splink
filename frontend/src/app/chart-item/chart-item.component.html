@@ -1,0 +1,21 @@
+<div class="flex flex-col items-center justify-center h-full">
+    <div class="flex items-center h-full">
+        <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [labels]="chartOptions.labels"
+        [dataLabels]="chartOptions.dataLabels"
+        [legend]="chartOptions.legend">
+        </apx-chart>
+    </div>
+    <div class="mt-4 flex space-x-1">
+        <label class="relative inline-flex items-center cursor-pointer">
+            <input type="radio" name="chartOption" value="option1" class="sr-only peer" checked/>
+            <div class="w-5 h-5 rounded-full border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
+        </label>
+        <label class="relative inline-flex items-center cursor-pointer">
+            <input type="radio" name="chartOption" value="option2" class="sr-only peer"/>
+            <div class="w-5 h-5 rounded-full border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
+        </label>
+    </div>
+</div>

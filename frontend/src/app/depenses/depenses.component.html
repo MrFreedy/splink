@@ -1,1 +1,145 @@
-<p>depenses works!</p>
+<div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 w-7xl mx-auto items-stretch">
+    <!-- Répartition mensuelle -->
+    <div class="bg-[var(--color-card)] rounded-xl p-4 shadow flex flex-col h-full">
+        <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Répartition mensuelle</h2>
+        <div class="flex-grow flex items-bottom justify-center">
+          <app-chart-item></app-chart-item>
+        </div>
+    </div>
+
+    <div class="grid grid-rows-2 h-full gap-8">
+      <!-- Qui doit quoi -->
+      <div class="bg-[var(--color-card)] rounded-xl p-4 shadow flex flex-col h-fit max-h-[228px] overflow-hidden">
+          <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Qui doit quoi ?</h2>
+          <div class="space-y-2 overflow-y-auto flex-1">
+              <app-depense-due-item></app-depense-due-item>
+              <app-depense-due-item></app-depense-due-item>
+          </div>
+      </div>
+
+        <!-- Gérer les dépenses -->
+        <div class="bg-[var(--color-card)] rounded-xl p-4 shadow flex flex-col justify-center h-full">
+            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Gérer les dépenses</h2>
+            <div class="grid grid-cols-3 gap-4 place-items-center">
+                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full">
+                    <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Ajouter</span>
+                </button>
+                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full">
+                    <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Supprimer</span>
+                </button>
+                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full">
+                    <img src="icons/edit/edit-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/edit/edit-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Modifier</span>
+                </button>
+                <button class="btn flex items-center justify-center space-x-2 p-8 col-1 col-span-2 group w-full">
+                    <img src="icons/pay/pay-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/pay/pay-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Payer</span>
+                </button>
+                <button class="btn flex items-center justify-center space-x-2 p-8 col-3 group w-full">
+                    <img src="icons/restart/restart-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/restart/restart-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Relancer</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Historique des dépenses -->
+    <div class="bg-[var(--color-card)] rounded-xl p-6 shadow flex flex-col col-span-2">
+        <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-6 text-center">Historique des dépenses</h2>
+
+        <!-- Filtres -->
+        <div class="flex flex-wrap gap-4 mb-4 justify-end">
+            <input type="text" placeholder="Filtrer par personne" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" />
+            <input type="date" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" />
+            <input type="text" placeholder="Filtrer par titre" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" />
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
+            <table class="min-w-full text-left table-auto">
+                <thead class="sticky top-0 text-white bg-[var(--color-green-secondary)] z-10">
+                    <tr>
+                        <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Personne</th>
+                        <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Date</th>
+                        <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Titre</th>
+                        <th class="p-2 font-bold">Prix (€)</th>
+                    </tr>
+                </thead>
+                <tbody class="font-bold text-[var(--color-green-secondary)]">
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Arthur</td>
+                        <td class="p-2">2024-05-01</td>
+                        <td class="p-2">Courses</td>
+                        <td class="p-2">45,89</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Léa</td>
+                        <td class="p-2">2024-05-02</td>
+                        <td class="p-2">Electricité</td>
+                        <td class="p-2">78,45</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Léa</td>
+                        <td class="p-2">2024-05-02</td>
+                        <td class="p-2">Electricité</td>
+                        <td class="p-2">78,45</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Léa</td>
+                        <td class="p-2">2024-05-02</td>
+                        <td class="p-2">Electricité</td>
+                        <td class="p-2">78,45</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Hugo</td>
+                        <td class="p-2">2024-05-03</td>
+                        <td class="p-2">Internet</td>
+                        <td class="p-2">30,00</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Hugo</td>
+                        <td class="p-2">2024-05-03</td>
+                        <td class="p-2">Internet</td>
+                        <td class="p-2">30,00</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Hugo</td>
+                        <td class="p-2">2024-05-03</td>
+                        <td class="p-2">Internet</td>
+                        <td class="p-2">30,00</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Hugo</td>
+                        <td class="p-2">2024-05-03</td>
+                        <td class="p-2">Internet</td>
+                        <td class="p-2">30,00</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Hugo</td>
+                        <td class="p-2">2024-05-03</td>
+                        <td class="p-2">Internet</td>
+                        <td class="p-2">30,00</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Hugo</td>
+                        <td class="p-2">2024-05-03</td>
+                        <td class="p-2">Internet</td>
+                        <td class="p-2">30,00</td>
+                    </tr>
+                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                        <td class="p-2">Hugo</td>
+                        <td class="p-2">2024-05-03</td>
+                        <td class="p-2">Internet</td>
+                        <td class="p-2">30,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
