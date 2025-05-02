@@ -16,6 +16,8 @@ export class DepensesComponent {
   colocationId = this.user.colocation_id;
   userId = this.user._id;
 
+  members: any[] = localStorage.getItem('colocation') ? JSON.parse(localStorage.getItem('colocation') || '{}').members : [];
+  depenses: any[] = [];
   dettes: any[] = [];
   avoirs: any[] = [];
 
@@ -23,8 +25,23 @@ export class DepensesComponent {
   }
 
   ngOnInit() {
+    this.getDepenses();
     this.getDettes();
     this.getAvoirs();
+  }
+
+  getDepenses() {
+    this.apiService.get(`/depenses`).subscribe((data: any) => {
+      this.depenses = data;
+      this.depenses.forEach(depense => {
+        depense.paymentDate = new Date(depense.paymentDate).toLocaleDateString('fr-FR', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+        depense.paid_by = this.members.find((member: any) => member.user_id === depense.paid_by)?.username;
+      });
+    });
   }
 
   getDettes() {

@@ -87,79 +87,26 @@
             <table class="min-w-full text-left table-auto">
                 <thead class="sticky top-0 text-white bg-[var(--color-green-secondary)] z-10">
                     <tr>
-                        <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Personne</th>
-                        <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Date</th>
                         <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Titre</th>
-                        <th class="p-2 font-bold">Prix (€)</th>
+                        <th class="p-2 font-bold border-r-2">Prix (€)</th>
+                        <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Personne</th>
+                        <th class="p-2 font-bold border-[var(--color-card)]">Date</th>
                     </tr>
                 </thead>
                 <tbody class="font-bold text-[var(--color-green-secondary)]">
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Arthur</td>
-                        <td class="p-2">2024-05-01</td>
-                        <td class="p-2">Courses</td>
-                        <td class="p-2">45,89</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Léa</td>
-                        <td class="p-2">2024-05-02</td>
-                        <td class="p-2">Electricité</td>
-                        <td class="p-2">78,45</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Léa</td>
-                        <td class="p-2">2024-05-02</td>
-                        <td class="p-2">Electricité</td>
-                        <td class="p-2">78,45</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Léa</td>
-                        <td class="p-2">2024-05-02</td>
-                        <td class="p-2">Electricité</td>
-                        <td class="p-2">78,45</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Hugo</td>
-                        <td class="p-2">2024-05-03</td>
-                        <td class="p-2">Internet</td>
-                        <td class="p-2">30,00</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Hugo</td>
-                        <td class="p-2">2024-05-03</td>
-                        <td class="p-2">Internet</td>
-                        <td class="p-2">30,00</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Hugo</td>
-                        <td class="p-2">2024-05-03</td>
-                        <td class="p-2">Internet</td>
-                        <td class="p-2">30,00</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Hugo</td>
-                        <td class="p-2">2024-05-03</td>
-                        <td class="p-2">Internet</td>
-                        <td class="p-2">30,00</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Hugo</td>
-                        <td class="p-2">2024-05-03</td>
-                        <td class="p-2">Internet</td>
-                        <td class="p-2">30,00</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Hugo</td>
-                        <td class="p-2">2024-05-03</td>
-                        <td class="p-2">Internet</td>
-                        <td class="p-2">30,00</td>
-                    </tr>
-                    <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                        <td class="p-2">Hugo</td>
-                        <td class="p-2">2024-05-03</td>
-                        <td class="p-2">Internet</td>
-                        <td class="p-2">30,00</td>
-                    </tr>
+                    <ng-container *ngIf="depenses.length > 0; else noDepenses">
+                        <ng-container *ngFor="let depense of depenses">
+                            <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+                                <td class="p-2">{{depense.title}}</td>
+                                <td class="p-2">{{depense.amount | number:'1.2-2'}}</td>
+                                <td class="p-2">{{depense.paid_by}}</td>
+                                <td class="p-2">{{depense.paymentDate | date:'dd/MM/YYYY'}}</td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                    <ng-template #noDepenses>
+                        <td colspan="4" class="text-center p-4">Aucune dépense enregistrée</td>
+                    </ng-template>
                 </tbody>
             </table>
         </div>

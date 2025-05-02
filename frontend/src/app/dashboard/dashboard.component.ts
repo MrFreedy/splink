@@ -50,8 +50,7 @@ export class DashboardComponent {
   upcomingTasks: any[] = [];
   
   participants: { [key: string]: boolean } = {};
-  participantNames: string[] = [];
-
+  participantNames: string[] = localStorage.getItem('colocation') ? JSON.parse(localStorage.getItem('colocation') || '{}').members.map((m: any) => m.username) : [];
   paymentDate: string = '';
   isDepenseModalOpen = false;
   isTodayTasksOpen = false;
@@ -76,13 +75,10 @@ export class DashboardComponent {
       });
     });
 
-    this.apiService.get(`/colocations/${this.colocationId}/members`).subscribe((data: any) => {
-      this.participants = data.reduce((acc: any, participant: any) => {
-        acc[participant.user_id.username] = participant.isSelected || false;
-        return acc;
-      }, {});
-      this.participantNames = Object.keys(this.participants);
-    });
+    this.participants = this.participantNames.reduce((acc: { [key: string]: boolean }, name: string) => {
+      acc[name] = false;
+      return acc;
+    }, {});
 
     this.apiService.get(`/tasks/colocation/${this.colocationId}`).subscribe((data: any) => {
       this.colocationTasks = data;
