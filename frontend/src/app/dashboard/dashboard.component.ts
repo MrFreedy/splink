@@ -173,8 +173,18 @@ export class DashboardComponent {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  goToEvenements() {
-    this.router.navigate(['/evenements']);
+  goToPage(name: string) {
+    switch (name) {
+      case 'evenements':
+        this.router.navigate(['/evenements']);
+        break;
+      case 'depenses':
+        this.router.navigate(['/depenses']);
+        break;
+      default:
+        this.router.navigate(['/']);
+        break;
+    }
   }
 
 }
