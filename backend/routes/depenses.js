@@ -130,6 +130,7 @@ router.get('/user/:userId/dettes', async (req, res) => {
         const montantParPersonne = depense.amount / depense.shared_between.length;
 
         return {
+            depenseId: depense._id,
             title: depense.title,
             category: depense.category,
             date: depense.paymentDate,
@@ -166,6 +167,7 @@ router.get('/user/:userId/avoirs', async (req, res) => {
         for (const personne of depense.shared_between) {
             if (personne._id.toString() !== userId) {
             result.push({
+                depenseId: depense._id,
                 title: depense.title,
                 category: depense.category,
                 date: depense.paymentDate,
