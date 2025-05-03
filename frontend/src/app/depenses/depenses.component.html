@@ -47,7 +47,7 @@
                     <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
                     <span>Ajouter</span>
                 </button>
-                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full">
+                <button (click)="openSelectDeleteDepenseModal()" class="btn flex items-center justify-center space-x-2 p-8 group w-full">
                     <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
                     <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
                     <span>Supprimer</span>
@@ -152,7 +152,7 @@
     </div>
 
     <!-- Select edit dépense modale -->
-    <div *ngIf="isSelectEditDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeSelectEditDepenseModal()">
+    <div *ngIf="isSelectDeleteDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeSelectDeleteDepenseModal()">
         <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
             <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Sélectionner une dépense à éditer</h2>
         
@@ -160,7 +160,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
                     <ng-container *ngFor="let depense of depenses">
                         <ng-container *ngIf="depense.status === 'à payer'">
-                            <div (click)="selectEditDepense(depense)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
+                            <div (click)="submitDeleteDepense(depense)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
                                 <h3 class="text-2xl font-bold">{{ depense.title }}</h3>
                                 <p>Montant: {{ depense.amount | number:'1.2-2' }} €</p>
                                 <p>Payer par: {{ depense.paid_by }}</p>
@@ -252,6 +252,30 @@
                     </button>
                 </div>        
             </form>
+        </div>
+    </div>
+
+    <!-- Select edit dépense modale -->
+    <div *ngIf="isDeleteDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeSelectEditDepenseModal()">
+        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
+            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Sélectionner une dépense à éditer</h2>
+        
+            <ng-container *ngIf="depenses.length > 0; else noDepenses">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
+                    <ng-container *ngFor="let depense of depenses">
+                        <ng-container *ngIf="depense.status === 'à payer'">
+                            <div (click)="selectEditDepense(depense)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
+                                <h3 class="text-2xl font-bold">{{ depense.title }}</h3>
+                                <p>Montant: {{ depense.amount | number:'1.2-2' }} €</p>
+                                <p>Payer par: {{ depense.paid_by }}</p>
+                                <p>Date: {{ depense.paymentDate }}</p>
+                                <p>Catégorie: {{ depense.category }}</p>
+                                <p>Répartition: {{ getSharedUsernames(depense) }}</p>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
         </div>
     </div>
 

@@ -28,6 +28,8 @@ export class DepensesComponent {
   isDepenseModalOpen = false;
   isSelectEditDepenseModalOpen = false;
   isEditDepenseModalOpen = false;
+  isSelectDeleteDepenseModalOpen = false;
+  isDeleteDepenseModalOpen = false;
 
   depensesToSubmit: any = {
     title: '',
@@ -88,6 +90,14 @@ export class DepensesComponent {
   openEditDepenseModal(depense: any) {
     this.isEditDepenseModalOpen = true;
     this.isSelectEditDepenseModalOpen = false;
+  }
+
+  openSelectDeleteDepenseModal() {
+    this.isSelectDeleteDepenseModalOpen = true;
+  }
+
+  closeSelectDeleteDepenseModal() {
+    this.isSelectDeleteDepenseModalOpen = false;
   }
 
   closeDepenseModal() {
@@ -212,6 +222,22 @@ export class DepensesComponent {
         alert('Erreur lors de la modification de la dépense.');
       }
     });
+  }
+
+  submitDeleteDepense(depense: any) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette dépense ?')) {
+      this.apiService.delete(`/depenses/${depense._id}`).subscribe({
+        next: (response) => {
+          alert('Dépense supprimée avec succès !');
+          this.closeSelectDeleteDepenseModal();
+          this.ngOnInit();
+        },
+        error: (err) => {
+          console.error('Erreur suppression dépense', err);
+          alert('Erreur lors de la suppression de la dépense.');
+        }
+      });
+    }
   }
   
   getSharedUsernames(depense: any): string {
