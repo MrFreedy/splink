@@ -158,13 +158,13 @@
                 </div>
                 
                 <!-- Description -->
-                <div class="row-1 row-span-2">
+                <div class="row-2 col-span-2">
                     <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
                     <textarea name="description" [(ngModel)]="todayTasksToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
                 </div>
             
                 <!-- Catégorie -->
-                <div class="row-2 self-start">
+                <div class="row-1">
                     <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
                     <select name="category" [(ngModel)]="todayTasksToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
                         <option value="courses">Alimentation</option>
