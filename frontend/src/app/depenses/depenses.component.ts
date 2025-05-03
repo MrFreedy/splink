@@ -5,6 +5,7 @@ import { ApiService } from '../services/api.service';
 import { DettesItemComponent } from '../dettes-item/dettes-item.component';
 import { AvoirsItemComponent } from '../avoirs-item/avoirs-item.component';
 import { FormsModule } from '@angular/forms';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-depenses',
@@ -13,6 +14,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './depenses.component.css'
 })
 export class DepensesComponent {
+  @ViewChild('chartItem') chartItem!: ChartItemComponent;  
   user = JSON.parse(localStorage.getItem('user') || '{}');
   colocationId = this.user.colocation_id;
   userId = this.user._id;
@@ -152,6 +154,7 @@ export class DepensesComponent {
         alert('Dépense ajoutée avec succès !');
         this.closeDepenseModal();
         this.ngOnInit();
+        this.chartItem.onOptionChange();
       },
       error: (err) => {
         console.error('Erreur ajout dépense', err);
@@ -216,6 +219,7 @@ export class DepensesComponent {
         alert('Dépense modifiée avec succès !');
         this.closeEditDepenseModal();
         this.ngOnInit();
+        this.chartItem.onOptionChange();
       },
       error: (err) => {
         console.error('Erreur modification dépense', err);
@@ -231,6 +235,7 @@ export class DepensesComponent {
           alert('Dépense supprimée avec succès !');
           this.closeSelectDeleteDepenseModal();
           this.ngOnInit();
+          this.chartItem.onOptionChange();
         },
         error: (err) => {
           console.error('Erreur suppression dépense', err);
