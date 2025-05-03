@@ -38,9 +38,7 @@ export class ChartItemComponent {
   };
 
   ngOnInit() {
-    setTimeout(() => {
-      this.getGlobalRepartition();
-    }, 200);
+    this.onOptionChange();
   }
 
   constructor(private apiService: ApiService) {
