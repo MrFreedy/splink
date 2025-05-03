@@ -34,6 +34,10 @@ export class DepensesComponent {
   isDeleteDepenseModalOpen = false;
   isSelectPayerModalOpen = false;
 
+  filterTitle: string = '';
+  filterPerson: string = '';
+  filterDate: string = '';
+
   depensesToSubmit: any = {
     title: '',
     amount: null,
@@ -59,6 +63,7 @@ export class DepensesComponent {
   getDepenses() {
     this.apiService.get(`/depenses`).subscribe((data: any) => {
       this.depenses = data;
+      this.depenses.sort((a, b) => new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime());
       this.depenses.forEach(depense => {
         depense.paymentDate = new Date(depense.paymentDate).toLocaleDateString('fr-FR', {
           year: 'numeric',
@@ -282,5 +287,35 @@ export class DepensesComponent {
 
   relancer(){
     alert('Relance envoyée ! (Simulé)');
+  }
+
+  get filteredDepenses() {
+    return this.depenses
+      .filter(depense => {
+        const matchTitle = this.filterTitle
+          ? depense.title.toLowerCase().includes(this.filterTitle.toLowerCase())
+          : true;
+        const matchPerson = this.filterPerson
+          ? depense.paid_by?.toLowerCase().includes(this.filterPerson.toLowerCase())
+          : true;
+        const matchDate = this.filterDate
+          ? depense.paymentDate?.slice(0, 10) === this.filterDate
+          : true;
+
+        return matchTitle && matchPerson && matchDate;
+      })
+      .sort((a, b) => {
+        const dateA = new Date(a.paymentDate).getTime();
+        const dateB = new Date(b.paymentDate).getTime();
+        return dateB - dateA;
+      });
+  }
+
+  get uniquePaidByNames(): string[] {
+    const names = this.depenses
+      .map(depense => depense.paid_by)
+      .filter((name, index, self) => name && self.indexOf(name) === index);
+
+    return names;
   }
 }

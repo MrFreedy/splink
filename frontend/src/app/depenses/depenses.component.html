@@ -320,9 +320,12 @@
 
         <!-- Filtres -->
         <div class="flex flex-wrap gap-4 mb-4 justify-end">
-            <input type="text" placeholder="Filtrer par personne" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" />
-            <input type="date" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" />
-            <input type="text" placeholder="Filtrer par titre" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" />
+            <select [(ngModel)]="filterPerson" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-52">
+              <option value="">Toutes les personnes</option>
+              <option *ngFor="let person of uniquePaidByNames" [value]="person">{{ person }}</option>
+            </select>
+            <input type="date" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" [(ngModel)]="filterDate" />
+            <input type="text" placeholder="Filtrer par titre" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" [(ngModel)]="filterTitle" />
         </div>
 
         <!-- Table -->
@@ -338,7 +341,7 @@
                 </thead>
                 <tbody class="font-bold text-[var(--color-green-secondary)]">
                     <ng-container *ngIf="depenses.length > 0; else noDepenses">
-                        <ng-container *ngFor="let depense of depenses">
+                        <ng-container *ngFor="let depense of filteredDepenses">
                             <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
                                 <td class="p-2">{{depense.title}}</td>
                                 <td class="p-2">{{depense.amount | number:'1.2-2'}}</td>
