@@ -1,0 +1,7 @@
+::ng-deep .fc {
+    background-color: white;
+}
+
+::ng-deep .fc-day-today {
+    background-color: #d1fae5 !important;
+}

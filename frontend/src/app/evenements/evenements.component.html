@@ -1,1 +1,67 @@
-<p>evenements works!</p>
+<div class="grid grid-cols-1 md:grid-cols-3 grid-rows-3 gap-8 p-6 w-7xl">
+    <!-- Calendrier -->
+    <div class="col-1 col-span-2 row-span-2">
+        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg h-full">
+            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Calendrier</h2>
+            <app-calendar-item></app-calendar-item>
+        </div>
+    </div>
+
+    <!-- Mes tâches aujourd'hui -->
+    <div class="col-3 row-1">
+        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-full">
+            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Mes tâches</h2>
+            <div class="grid grid-cols-1 gap-4 place-items-center overflow-y-auto max-h-[220px]">
+                <app-task-item></app-task-item>
+                <app-task-item></app-task-item>
+                <app-task-item></app-task-item>
+                <app-task-item></app-task-item>
+                <app-task-item></app-task-item>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gérer tâches -->
+    <div class="col-3 row-2">
+        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-full">
+            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Gérer les événements</h2>
+            <div class="grid grid-cols-1 gap-4 place-items-center">
+                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full row-1">
+                    <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Ajouter</span>
+                </button>
+                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full row-2">
+                    <img src="icons/edit/edit-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/edit/edit-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Modifier</span>
+                </button>
+                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full row-3">
+                    <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Supprimer</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des événements -->
+    <div class="col-span-3 row-3">
+        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-full">
+            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Liste des événements</h2>
+            <button class="btn p-4 w-full bg-[var(--color-green-primary)] text-white font-bold rounded-lg shadow">Ajouter un événement</button>
+            <button class="btn p-4 w-full bg-white text-[var(--color-green-secondary)] font-bold border-2 border-[var(--color-green-secondary)] rounded-lg shadow">Filtrer</button>
+            <button class="btn p-4 w-full bg-white text-[var(--color-green-secondary)] font-bold border-2 border-[var(--color-green-secondary)] rounded-lg shadow">Exporter</button>
+        </div>
+    </div>
+
+    <!-- Historique -->
+    <div class="col-span-3 row-4">
+        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-full">
+            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Historique</h2>
+            <button class="btn p-4 w-full bg-[var(--color-green-primary)] text-white font-bold rounded-lg shadow">Ajouter un événement</button>
+            <button class="btn p-4 w-full bg-white text-[var(--color-green-secondary)] font-bold border-2 border-[var(--color-green-secondary)] rounded-lg shadow">Filtrer</button>
+            <button class="btn p-4 w-full bg-white text-[var(--color-green-secondary)] font-bold border-2 border-[var(--color-green-secondary)] rounded-lg shadow">Exporter</button>
+        </div>
+    </div>
+</div>
