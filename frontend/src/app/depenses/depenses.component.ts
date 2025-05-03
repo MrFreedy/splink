@@ -279,4 +279,8 @@ export class DepensesComponent {
       .filter((name: string | undefined) => !!name)
       .join(', ');
   }
+
+  relancer(){
+    alert('Relance envoyée ! (Simulé)');
+  }
 }
