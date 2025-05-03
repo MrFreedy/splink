@@ -1,13 +1,20 @@
 <div class="flex flex-col items-center justify-center h-full">
     <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">{{ title }}</h2>
     <div class="flex items-center h-full">
-        <apx-chart
-        [series]="chartOptions.series"
-        [chart]="chartOptions.chart"
-        [labels]="chartOptions.labels"
-        [dataLabels]="chartOptions.dataLabels"
-        [legend]="chartOptions.legend">
-        </apx-chart>
+        <ng-container *ngIf="chartOptions.series.length > 0; else noData">
+            <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [labels]="chartOptions.labels"
+                [dataLabels]="chartOptions.dataLabels"
+                [legend]="chartOptions.legend">
+            </apx-chart>
+        </ng-container>
+        <ng-template #noData>
+            <p class="text-center text-xl text-[var(--color-green-secondary)]">
+              Aucune donnée disponible pour le moment.<br><br>Enregistrez une dépense pour visualiser le graphique.
+            </p>
+        </ng-template>
     </div>
     <div class="mt-4 flex space-x-1">
         <label class="relative inline-flex items-center cursor-pointer">

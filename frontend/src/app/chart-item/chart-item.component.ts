@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import {
   ApexNonAxisChartSeries,
   ApexChart,
@@ -19,7 +20,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-chart-item',
-  imports: [NgApexchartsModule, FormsModule],
+  imports: [NgApexchartsModule, FormsModule, CommonModule],
   templateUrl: './chart-item.component.html',
   styleUrl: './chart-item.component.css'
 })
