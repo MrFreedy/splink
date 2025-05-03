@@ -32,6 +32,7 @@ export class DepensesComponent {
   isEditDepenseModalOpen = false;
   isSelectDeleteDepenseModalOpen = false;
   isDeleteDepenseModalOpen = false;
+  isSelectPayerModalOpen = false;
 
   depensesToSubmit: any = {
     title: '',
@@ -98,6 +99,10 @@ export class DepensesComponent {
     this.isSelectDeleteDepenseModalOpen = true;
   }
 
+  openSelectPayerModal() {
+    this.isSelectPayerModalOpen = true;
+  }
+
   closeSelectDeleteDepenseModal() {
     this.isSelectDeleteDepenseModalOpen = false;
   }
@@ -108,6 +113,10 @@ export class DepensesComponent {
 
   closeSelectEditDepenseModal() {
     this.isSelectEditDepenseModalOpen = false;
+  }
+
+  closeSelectPayerModal() {
+    this.isSelectPayerModalOpen = false;
   }
 
   closeEditDepenseModal() {
@@ -240,6 +249,23 @@ export class DepensesComponent {
         error: (err) => {
           console.error('Erreur suppression dépense', err);
           alert('Erreur lors de la suppression de la dépense.');
+        }
+      });
+    }
+  }
+
+  submitPayer(dette: any) {
+    if (confirm('Êtes-vous sûr de vouloir marquer cette dépense comme payée ?')) {
+      this.apiService.post(`/depenses/${dette.depenseId}/repay`, { userId: this.userId }).subscribe({
+        next: () => {
+          alert('Remboursement enregistré avec succès !');
+          this.closeSelectPayerModal();
+          this.ngOnInit();
+          this.chartItem.onOptionChange();
+        },
+        error: (err) => {
+          console.error('Erreur remboursement', err);
+          alert('Erreur lors de l\'enregistrement du remboursement.');
         }
       });
     }
