@@ -26,6 +26,8 @@ export class DepensesComponent {
   avoirs: any[] = [];
 
   isDepenseModalOpen = false;
+  isSelectEditDepenseModalOpen = false;
+  isEditDepenseModalOpen = false;
 
   depensesToSubmit: any = {
     title: '',
@@ -79,8 +81,32 @@ export class DepensesComponent {
     this.isDepenseModalOpen = true;
   }
 
+  openSelectEditDepenseModal() {
+    this.isSelectEditDepenseModalOpen = true;
+  }
+
+  openEditDepenseModal(depense: any) {
+    this.isEditDepenseModalOpen = true;
+    this.isSelectEditDepenseModalOpen = false;
+  }
+
   closeDepenseModal() {
     this.isDepenseModalOpen = false;
+  }
+
+  closeSelectEditDepenseModal() {
+    this.isSelectEditDepenseModalOpen = false;
+  }
+
+  closeEditDepenseModal() {
+    this.isEditDepenseModalOpen = false;
+    this.depensesToSubmit = {
+      title: '',
+      amount: null,
+      category: '',
+      paymentDate: '',
+      payer: ''
+    };
   }
 
   submitDepense() {
@@ -123,5 +149,77 @@ export class DepensesComponent {
       }
     });
   }
+
+  selectEditDepense(depense: any) {  
+    const [day, month, year] = depense.paymentDate.split('/');
+    const formattedDate = `${year}-${month}-${day}`;
   
+    this.depensesToSubmit = {
+      _id: depense._id,
+      title: depense.title,
+      amount: depense.amount,
+      category: depense.category,
+      paymentDate: formattedDate,
+      payer: depense.paid_by
+    };
+  
+    this.participants = this.participantNames.reduce((acc: { [key: string]: boolean }, name: string) => {
+      acc[name] = depense.shared_between.includes(
+        this.members.find((m: any) => m.username === name)?.user_id
+      );
+      return acc;
+    }, {});
+  
+    this.openEditDepenseModal(depense);
+  }
+
+  submitEditDepense() {
+    if (!this.depensesToSubmit.title || !this.depensesToSubmit.amount || !this.depensesToSubmit.category || !this.depensesToSubmit.paymentDate || !this.depensesToSubmit.payer) {
+      alert('Merci de remplir tous les champs.');
+      return;
+    }
+
+    const colocation = JSON.parse(localStorage.getItem('colocation') || '{}');
+    const memberMap = colocation.members.reduce((acc: any, member: any) => {
+      acc[member.username] = member.user_id;
+      return acc;
+    }, {});
+
+    const paid_by_id = memberMap[this.depensesToSubmit.payer];
+    const shared_between_ids = Object.keys(this.participants)
+      .filter(name => this.participants[name])
+      .map(name => memberMap[name]);
+    
+    const updatedDepense = {
+      title: this.depensesToSubmit.title,
+      amount: parseFloat(this.depensesToSubmit.amount),
+      category: this.depensesToSubmit.category,
+      paymentDate: new Date(this.depensesToSubmit.paymentDate),
+      paid_by: paid_by_id,
+      shared_between: shared_between_ids,
+      colocation_id: this.colocationId,
+      status: "à payer"
+    };
+    
+    this.apiService.put(`/depenses/${this.depensesToSubmit._id}`, updatedDepense).subscribe({
+      next: (response) => {
+        alert('Dépense modifiée avec succès !');
+        this.closeEditDepenseModal();
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.error('Erreur modification dépense', err);
+        alert('Erreur lors de la modification de la dépense.');
+      }
+    });
+  }
+  
+  getSharedUsernames(depense: any): string {
+    if (!depense.shared_between || !this.members?.length) return '—';
+  
+    return depense.shared_between
+      .map((id: string) => this.members.find((m: any) => m.user_id === id)?.username)
+      .filter((name: string | undefined) => !!name)
+      .join(', ');
+  }
 }
