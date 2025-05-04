@@ -30,9 +30,11 @@ const colocationSchema = new mongoose.Schema({
         required: true
         }
     }],
-    rules: [{
-        type: String
-    }],
+    join_code: {
+        type: Number,
+        required: true,
+        unique: true
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -40,12 +42,6 @@ const colocationSchema = new mongoose.Schema({
     updated_at: {
         type: Date,
         default: Date.now
-    },
-    status: {
-        type: String,
-        enum: ['active', 'inactive'],
-        default: 'active',
-        required: true
     }
 });
 
@@ -87,7 +83,14 @@ router.get('/:id/members', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const newColocation = new Colocation(req.body);
+        let joinCode;
+        let existing;
+        do {
+            joinCode = Math.floor(100000 + Math.random() * 900000);
+            existing = await Colocation.findOne({ join_code: joinCode });
+        } while (existing);
+
+        const newColocation = new Colocation({ ...req.body, join_code: joinCode });
         const savedColocation = await newColocation.save();
         res.status(201).json(savedColocation);
     } catch (err) {
