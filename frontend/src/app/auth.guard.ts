@@ -24,6 +24,9 @@ export const loginGuard: CanActivateFn = (route, state) => {
   const isLoggedIn = !!user && !!user._id;
 
   if (isLoggedIn) {
+    if (!user.colocation_id) {
+      return true;
+    }
     router.navigate(['/dashboard']);
     return false;
   } else {
