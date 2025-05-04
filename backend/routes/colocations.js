@@ -139,3 +139,4 @@ router.delete('/:id/members/:userId', async (req, res) => {
 });
 
 module.exports = router;
+module.exports = mongoose.model('Colocation', colocationSchema);

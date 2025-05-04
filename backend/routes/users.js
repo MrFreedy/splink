@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('../db.js');
+const Colocation = require('./colocations.js');
 
 const userSchema = new mongoose.Schema({
     username: {
