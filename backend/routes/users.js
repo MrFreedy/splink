@@ -102,7 +102,19 @@ router.post('/login', async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email, password });
         if (!user) return res.status(401).send('Identifiants invalides');
-        return res.status(200).json({ message: 'Connexion réussie', user });
+        return res.status(200).json({
+            message: 'Connexion réussie',
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                status: user.status,
+                created_at: user.created_at,
+                updated_at: user.updated_at,
+                settings: user.settings,
+                colocation_id: user.colocation_id || null
+            }
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Erreur serveur');
@@ -111,11 +123,25 @@ router.post('/login', async (req, res) => {
 
 router.put('/:id/join', async (req, res) => {
     try {
-        const { join_code } = req.body;
-        const colocation = await Colocation.findOne({ join_code });
+        const { join_code, colocation_id } = req.body;
+
+        let colocation = null;
+        if (join_code) {
+            colocation = await Colocation.findOne({ join_code });
+        } else if (colocation_id) {
+            colocation = await Colocation.findById(colocation_id);
+        }
+
         if (!colocation) return res.status(404).send('Colocation non trouvée');
-        const user = await User.findByIdAndUpdate(req.params.id, { colocation_id: colocation._id }, { new: true });
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { colocation_id: colocation._id },
+            { new: true }
+        );
+
         if (!user) return res.status(404).send('Utilisateur non trouvé');
+
         res.json(user);
     } catch (err) {
         console.error(err);
