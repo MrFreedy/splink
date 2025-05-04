@@ -9,7 +9,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DepensesComponent } from './depenses/depenses.component';
 import { EvenementsComponent } from './evenements/evenements.component';
 import { ParametresComponent } from './parametres/parametres.component';
-import { authGuard, loginGuard } from './auth.guard';
+import { authGuard, loginGuard, colocationGuard } from './auth.guard';
+import { ColocationComponent } from './colocation/colocation.component';
+import { ColocationLayoutComponent } from './layouts/colocation-layout/colocation-layout.component';
 
 export const routes: Routes = [
     {
@@ -22,7 +24,14 @@ export const routes: Routes = [
       component: AuthLayoutComponent,
       children: [
         { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
-        { path: 'signup', component: SignupComponent, canActivate: [loginGuard] }
+        { path: 'signup', component: SignupComponent, canActivate: [loginGuard] },
+      ]
+    },
+    {
+      path: '',
+      component: ColocationLayoutComponent,
+      children: [
+        { path: 'colocation', component: ColocationComponent, canActivate: [colocationGuard] }
       ]
     },
     {

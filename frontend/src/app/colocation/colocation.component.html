@@ -1,0 +1,53 @@
+<div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 w-7xl mx-auto items-stretch">
+    <div class="bg-[var(--color-card)] rounded-xl p-4 flex flex-col h-full">
+        <div class="bg-[var(--color-card)] rounded-xl p-4 flex flex-col justify-center h-full">
+            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Créer une colocation</h2>
+            <form class="grid grid-cols-3 gap-4 place-items-center">
+                <div class="col-span-3 w-full">
+                    <label for="name" class="block text-2xl text-[var(--color-green-secondary)] font-bold ">Nom de la colocation</label>
+                    <input [(ngModel)]="name" type="text" id="name" name="name" class="mt-1 block w-full border-gray-300 rounded-md focus:border-[var(--color-green-primary)] focus:ring focus:ring-[var(--color-green-primary)] focus:ring-opacity-50" placeholder="Nom de la colocation">
+                </div>
+                <div class="mb-4 col-span-3">
+                    <label class="block text-2xl font-bold text-[var(--color-green-secondary)] mb-2">Adresse</label>
+                    <input [(ngModel)]="address.street" type="text" name="street" class="w-full p-2 rounded-xl focus:outline-none" placeholder="Rue" required />
+                    <input [(ngModel)]="address.postal_code" type="text" name="postalCode" class="w-full p-2 rounded-xl focus:outline-none mt-2" placeholder="Code postal" required />                    
+                    <input [(ngModel)]="address.city" type="text" name="city" class="w-full p-2 rounded-xl focus:outline-none mt-2" placeholder="Ville" required />
+                    <input [(ngModel)]="address.country" type="text" name="country" class="w-full p-2 rounded-xl focus:outline-none mt-2" placeholder="Pays" required />
+                </div>
+                <div class="col-span-3 w-full">
+                    <button (click)="createColocation()" class="btn flex items-center justify-center space-x-2 p-8 col-3 group w-full">
+                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                        <span>Créer</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="bg-[var(--color-card)] rounded-xl p-4 flex flex-col h-fit">
+        <div class="bg-[var(--color-card)] rounded-xl p-4 flex flex-col justify-center h-full">
+            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Rejoindre une colocation</h2>
+            <form class="grid grid-cols-3 gap-4 place-items-center">
+            <div class="col-span-3 w-full">
+                <label class="block text-2xl text-[var(--color-green-secondary)] font-bold mb-2">Code d'accès</label>
+                <div class="flex justify-center gap-2">
+                    <input [(ngModel)]="codeParts[0]" maxlength="1" name="code1" class="w-14 h-14 text-2xl text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-green-primary)]" />
+                    <input [(ngModel)]="codeParts[1]" maxlength="1" name="code2" class="w-14 h-14 text-2xl text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-green-primary)]" />
+                    <input [(ngModel)]="codeParts[2]" maxlength="1" name="code3" class="w-14 h-14 text-2xl text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-green-primary)]" />
+                    <span class="text-5xl font-bold text-center">-</span>
+                    <input [(ngModel)]="codeParts[3]" maxlength="1" name="code4" class="w-14 h-14 text-2xl text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-green-primary)]" />
+                    <input [(ngModel)]="codeParts[4]" maxlength="1" name="code5" class="w-14 h-14 text-2xl text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-green-primary)]" />
+                    <input [(ngModel)]="codeParts[5]" maxlength="1" name="code6" class="w-14 h-14 text-2xl text-center rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-green-primary)]" />
+                </div>
+            </div>
+            <div class="col-span-3">
+                <button (click)="joinColocation()" class="btn flex items-center justify-center space-x-2 p-8 col-3 group w-full">
+                    <img src="icons/join/join-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/join/join-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Rejoindre</span>
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

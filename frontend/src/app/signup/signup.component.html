@@ -2,21 +2,21 @@
     <div class="flex justify-center mb-4">
       <img src="logo.svg" alt="Logo" class="h-20 w-20">
     </div>
-    <form>
+    <form (ngSubmit)="signup()">
         <div class="mb-4">
-            <label class="block text-white font-bold mb-2">Nom d'utilisateur</label>
-            <input class="w-full" required>
+            <label class="block text-2xl text-white font-bold mb-2">Nom d'utilisateur</label>
+            <input [(ngModel)]="username" name="username" class="w-full" required>
             <p class="text-sm text-red-500" style="display: none;">Nom d'utilisateur invalide</p>
         </div>
         <div class="mb-4">
-            <label class="block text-white font-bold mb-2">Email</label>
-            <input type="email" class="w-full" required>
+            <label class="block text-2xl text-white font-bold mb-2">Email</label>
+            <input [(ngModel)]="email" name="email" type="email" class="w-full" required>
             <p class="text-sm text-white">Format attendu: email&#64;domaine.com.</p>
         </div>
   
         <div class="mb-4">
-            <label class="block text-white font-bold mb-2">Mot de passe</label>
-            <input type="password" class="w-full" required>
+            <label class="block text-2xl text-white font-bold mb-2">Mot de passe</label>
+            <input [(ngModel)]="password" name="password" type="password" class="w-full" required>
             <p class="text-sm text-red-500" style="display: none;">Mot de passe invalide</p>
             <div class="block items-center mb-2">
                 <span class="text-sm text-white inline-flex items-center"><img src="icons/info.svg" class="h-4 inline mr-1">8 caractères minimum</span>
