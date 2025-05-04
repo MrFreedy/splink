@@ -111,15 +111,16 @@ router.post('/login', async (req, res) => {
 
 router.put('/:id/join', async (req, res) => {
     try {
-        const { colocation_id } = req.body;
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, { colocation_id }, { new: true });
-        if (!updatedUser) return res.status(404).send('Utilisateur non trouvé');
-        res.json(updatedUser);
+        const { join_code } = req.body;
+        const colocation = await Colocation.findOne({ join_code });
+        if (!colocation) return res.status(404).send('Colocation non trouvée');
+        const user = await User.findByIdAndUpdate(req.params.id, { colocation_id: colocation._id }, { new: true });
+        if (!user) return res.status(404).send('Utilisateur non trouvé');
+        res.json(user);
     } catch (err) {
         console.error(err);
         res.status(500).send('Erreur serveur');
     }
-
 });
 
 module.exports = router;
