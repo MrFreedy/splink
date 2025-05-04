@@ -127,7 +127,7 @@
 
         <div class="mb-4">
             <label class="block text-xl font-bold text-[var(--color-green-secondary)] mb-2">Thème</label>
-            <select [(ngModel)]="user.settings.theme" name="theme" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none">
+            <select [(ngModel)]="settings.theme" name="theme" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none">
             <option value="light">Clair</option>
             <option value="dark">Sombre</option>
             </select>
@@ -136,14 +136,14 @@
         <div class="mb-4 flex items-center">
             <label class="mr-4 text-xl font-bold text-[var(--color-green-secondary)]">Notifications</label>
             <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" [(ngModel)]="user.settings.notifications" class="sr-only peer" />
+            <input type="checkbox" [(ngModel)]="settings.notifications" class="sr-only peer" />
             <div class="relative w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--color-green-secondary)]"></div>
             </label>
         </div>
 
         <div class="mb-4">
             <label class="block text-xl font-bold text-[var(--color-green-secondary)] mb-2">Langue</label>
-            <select [(ngModel)]="user.settings.language" name="language" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none">
+            <select [(ngModel)]="settings.language" name="language" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none">
             <option value="fr">Français</option>
             <option value="en">Anglais</option>
             </select>
@@ -151,7 +151,7 @@
 
         <div class="mb-4">
             <label class="block text-xl font-bold text-[var(--color-green-secondary)] mb-2">Format de date</label>
-            <select [(ngModel)]="user.settings.date_format" name="date_format" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none">
+            <select [(ngModel)]="settings.date_format" name="date_format" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none">
             <option value="DD/MM/YYYY">JJ/MM/AAAA</option>
             <option value="MM/DD/YYYY">MM/JJ/AAAA</option>
             </select>
