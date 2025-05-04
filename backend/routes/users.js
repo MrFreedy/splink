@@ -127,10 +127,14 @@ router.put('/:id/join', async (req, res) => {
         const { join_code, colocation_id } = req.body;
 
         let colocation = null;
+        let role = 'member';
+
         if (join_code) {
             colocation = await Colocation.findOne({ join_code });
+            role = 'member';
         } else if (colocation_id) {
             colocation = await Colocation.findById(colocation_id);
+            role = 'admin';
         }
 
         if (!colocation) return res.status(404).send('Colocation non trouvée');
@@ -142,6 +146,14 @@ router.put('/:id/join', async (req, res) => {
         );
 
         if (!user) return res.status(404).send('Utilisateur non trouvé');
+
+        colocation.members.push({
+            user_id: user._id,
+            username: user.username,
+            role
+        });
+
+        await colocation.save();
 
         res.json(user);
     } catch (err) {
