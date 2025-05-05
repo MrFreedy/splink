@@ -9,16 +9,19 @@
 
     <!-- Mes tâches aujourd'hui -->
     <div class="col-3 row-1">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-full">
-            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Mes tâches</h2>
-            <div class="grid grid-cols-1 gap-4 place-items-center overflow-y-auto max-h-[220px]">
-                <app-task-item></app-task-item>
-                <app-task-item></app-task-item>
-                <app-task-item></app-task-item>
-                <app-task-item></app-task-item>
-                <app-task-item></app-task-item>
-            </div>
-        </div>
+      <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-full">
+        <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Mes tâches</h2>
+        <ng-container *ngIf="myTasks.length > 0; else noTasks">
+          <div class="grid grid-cols-1 gap-4 place-items-center overflow-y-auto max-h-[220px]">
+            <ng-container *ngFor="let task of myTasks">
+              <app-task-item [icon]="getIcon(task.category)" [label]="task.title"></app-task-item>
+            </ng-container>
+          </div>
+        </ng-container>
+        <ng-template #noTasks>
+          <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche pour aujourd’hui 🙌</p>
+        </ng-template>
+      </div>
     </div>
 
     <!-- Gérer tâches -->
