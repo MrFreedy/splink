@@ -1,7 +1,11 @@
 <div class="border rounded-lg p-3 text-center bg-white border-4 border-[var(--color-green-secondary)] text-xl text-[var(--color-green-secondary)] mb-4">
     <span class="text-left block">{{date}}</span>
-    <div class="flex items-center justify-center space-x-2 mt-4">
+    <div class="flex items-center justify-start space-x-2 mt-4">
         <img [src]="icon" class="h-8 w-8">
         <span class="font-bold">{{label}}</span>
+    </div>
+    <div class="flex items-center justify-start space-x-2 mt-4">
+        <img src="icons/user/user-normal.png" class="h-8 w-8">
+        <span class="font-bold">{{assignedTo}}</span>
     </div>
 </div>

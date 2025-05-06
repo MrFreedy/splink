@@ -10,4 +10,5 @@ export class IncomingTaskItemComponent {
   @Input() icon = '';
   @Input() label = '';
   @Input() date = '';
+  @Input() assignedTo = '';
 }

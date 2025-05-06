@@ -42,7 +42,10 @@ export class DashboardComponent {
     description: '',
     category: '',
     dueDate: '',
-    assignedTo: '',
+    assignedTo: {
+      _id: '',
+      username: ''
+    },
     createdBy: '',
   };
 

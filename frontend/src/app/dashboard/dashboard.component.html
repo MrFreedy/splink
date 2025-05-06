@@ -1,23 +1,24 @@
 <p class="text-center font-bold text-white text-3xl">Bonjour {{username}} 👋,</p>
 <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 w-7xl mx-auto items-stretch">
         <!-- Dernières dépenses -->
-    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit">
+    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit flex flex-col justify-between">
         <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Dernières dépenses</h2>
-  
-        <div class="space-y-3">
-            <ng-container *ngIf="depenses.length > 0; else noDepenses">
-                <ng-container *ngFor="let depense of depenses">
-                <app-depense-item
-                    [icon]="getIcon(depense.category)"
-                    [label]="depense.title"
-                    [amount]="formatAmount(depense.amount)">
-                </app-depense-item>
-                </ng-container>
-            </ng-container>
-            
-            <ng-template #noDepenses>
-                <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune dépense pour l'instant.</p>
-            </ng-template>
+        <div class="flex-grow">
+          <div class="space-y-3">
+              <ng-container *ngIf="depenses.length > 0; else noDepenses">
+                  <ng-container *ngFor="let depense of depenses">
+                  <app-depense-item
+                      [icon]="getIcon(depense.category)"
+                      [label]="depense.title"
+                      [amount]="formatAmount(depense.amount)">
+                  </app-depense-item>
+                  </ng-container>
+              </ng-container>
+              
+              <ng-template #noDepenses>
+                  <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune dépense pour l'instant.</p>
+              </ng-template>
+          </div>
         </div>
   
         <div class="flex justify-center mt-4 gap-20">
@@ -116,20 +117,22 @@
       
   
     <!-- Mes tâches du jour -->
-    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit">
+    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit flex flex-col justify-between">
         <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Mes tâches du jour</h2>
-        <div class="overflow-y-auto max-h-96 space-y-3">
-            <ng-container *ngIf="userTasks.length > 0; else noUserTasks">
-                <ng-container *ngFor="let userTask of userTasks">
-                    <app-task-item
-                        [icon]="getIcon(userTask.category)"
-                        [label]="userTask.title">
-                    </app-task-item>
-                </ng-container>
-            </ng-container>
-            <ng-template #noUserTasks>
-                <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche aujourd'hui 🍹</p>
-            </ng-template>
+        <div class="flex-grow">
+          <div class="overflow-y-auto max-h-52 space-y-3">
+              <ng-container *ngIf="userTasks.length > 0; else noUserTasks">
+                  <ng-container *ngFor="let userTask of userTasks">
+                      <app-task-item
+                          [icon]="getIcon(userTask.category)"
+                          [label]="userTask.title">
+                      </app-task-item>
+                  </ng-container>
+              </ng-container>
+              <ng-template #noUserTasks>
+                  <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche aujourd'hui 🍹</p>
+              </ng-template>
+          </div>
         </div>
         <div class="flex justify-center mt-4 gap-20">
             <button (click)="openTodayTasks()" class="btn flex items-center space-x-2 p-5 group">
@@ -201,7 +204,8 @@
                 <app-incoming-task-item
                     [icon]="getIcon(upcomingTask.category)"
                     [label]="upcomingTask.title"
-                    [date]="upcomingTask.dueDate">
+                    [date]="upcomingTask.dueDate"
+                    [assignedTo]="upcomingTask.assigned_to.username">
                 </app-incoming-task-item>
                 </ng-container>
             </ng-container>
