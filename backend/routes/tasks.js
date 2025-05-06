@@ -152,7 +152,12 @@ router.get('/colocation/:colocationId/upcoming', async (req, res) => {
 
       const tasks = await query;
 
-      res.status(200).json(tasks);
+      const formattedTasks = tasks.map(task => ({
+        ...task.toObject(),
+        assigned_to: task.assigned_to[0] // supposé qu'il y a toujours au moins un assigné
+      }));
+
+      res.status(200).json(formattedTasks);
     } catch (err) {
       console.error(err);
       res.status(500).send("Erreur serveur");
