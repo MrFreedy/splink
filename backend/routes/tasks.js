@@ -154,7 +154,7 @@ router.get('/colocation/:colocationId/upcoming', async (req, res) => {
 
       const formattedTasks = tasks.map(task => ({
         ...task.toObject(),
-        assigned_to: task.assigned_to[0] // supposé qu'il y a toujours au moins un assigné
+        assigned_to: task.assigned_to[0]
       }));
 
       res.status(200).json(formattedTasks);
