@@ -164,6 +164,60 @@ router.get('/colocation/:colocationId/upcoming', async (req, res) => {
     }
 });
 
+router.get('/colocation/:colocationId/available', async (req, res) => {
+    try {
+        const { colocationId } = req.params;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 2);
+        tomorrow.setHours(0, 0, 0, 0);
+
+        const tasks = await Task.find({
+            colocation_id: colocationId,
+            due_date: { $gte: today, $lt: tomorrow }
+        })
+        .populate('assigned_to', 'username')
+        .populate('created_by', 'username');
+
+        const formattedTasks = tasks.map(task => ({
+            ...task.toObject(),
+            assigned_to: task.assigned_to[0]
+        }));
+
+        res.status(200).json(formattedTasks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Erreur serveur");
+    }
+});
+
+router.get('/colocation/:colocationId/overdue', async (req, res) => {
+    try {
+        const { colocationId } = req.params;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const tasks = await Task.find({
+            colocation_id: colocationId,
+            due_date: { $lt: today }
+        })
+        .populate('assigned_to', 'username')
+        .populate('created_by', 'username');
+
+        const formattedTasks = tasks.map(task => ({
+            ...task.toObject(),
+            assigned_to: task.assigned_to[0]
+        }));
+        res.status(200).json(formattedTasks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur serveur');
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const newTask = new Task(req.body);
