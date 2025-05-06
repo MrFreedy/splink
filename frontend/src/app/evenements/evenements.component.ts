@@ -5,10 +5,10 @@ import { ApiService } from '../services/api.service';
 import { Helper } from '../utils/helper';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IncomingTaskItemComponent } from '../incoming-task-item/incoming-task-item.component';
+
 @Component({
   selector: 'app-evenements',
-  imports: [CalendarItemComponent, TaskItemComponent, CommonModule, FormsModule, IncomingTaskItemComponent],
+  imports: [CalendarItemComponent, TaskItemComponent, CommonModule, FormsModule],
   templateUrl: './evenements.component.html',
   styleUrl: './evenements.component.css'
 })
