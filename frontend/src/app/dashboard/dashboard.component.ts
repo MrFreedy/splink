@@ -7,10 +7,10 @@ import { IncomingTaskItemComponent } from '../incoming-task-item/incoming-task-i
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Helper } from '../utils/helper';
-
+import { DashboardCardComponent } from '../dashboard-card/dashboard-card.component';
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, DepenseItemComponent, TaskItemComponent, IncomingTaskItemComponent, FormsModule],
+  imports: [CommonModule, DepenseItemComponent, TaskItemComponent, IncomingTaskItemComponent, FormsModule, DashboardCardComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -126,19 +126,20 @@ export class DashboardComponent {
     return this.helper.formatAmount(amount);
   }
 
-  openDepenseModal(){
-    this.isDepenseModalOpen = true;
+
+  openDepenseModal = () => {
+    this.isDepenseModalOpen = !this.isDepenseModalOpen;
   }
 
-  openTodayTasks() {
+  openTodayTasks = () => {
     this.isTodayTasksOpen = !this.isTodayTasksOpen;
   }
 
-  openUpcomingTasks() {
+  openUpcomingTasks = () => {
     this.isUpcomingTasksOpen = !this.isUpcomingTasksOpen;
   }
 
-  closeDepenseModal(){
+  closeDepenseModal = () => {
     this.isDepenseModalOpen = false;
     this.depensesToSubmit = {
       title: '',
@@ -149,7 +150,7 @@ export class DashboardComponent {
     };
   }
 
-  closeTodayTasks() {
+  closeTodayTasks = () => {
     this.isTodayTasksOpen = false;
     this.todayTasksToSubmit = {
       title: '',
@@ -161,7 +162,7 @@ export class DashboardComponent {
     };
   }
 
-  closeUpcomingTasks() {
+  closeUpcomingTasks = () => {
     this.isUpcomingTasksOpen = false;
     this.upcomingTasksToSubmit = {
       title: '',
@@ -281,6 +282,9 @@ export class DashboardComponent {
   capitalizeFirstLetter(str: string): string {
     return this.helper.capitalizeFirstLetter(str);
   }
+
+  goToPageEvenements = () => this.goToPage('evenements');
+  goToPageDepenses = () => this.goToPage('depenses');
 
   goToPage(name: string) {
     switch (name) {

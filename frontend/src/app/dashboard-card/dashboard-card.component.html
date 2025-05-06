@@ -1,0 +1,21 @@
+<div
+  class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit flex flex-col justify-between">
+    <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">{{ title }}</h2>
+
+    <div class="flex-grow">
+    <ng-content></ng-content>
+    </div>
+
+    <div class="flex justify-center mt-4" [ngClass]="gapClass">
+    <button (click)="primaryAction()" class="btn flex items-center space-x-2 p-5 group">
+        <img [src]="primaryIcon" class="h-10 w-10 group-hover:hidden" />
+        <img [src]="primaryHoverIcon" class="h-10 w-10 hidden group-hover:block" />
+        <span>{{ primaryLabel }}</span>
+    </button>
+    <button (click)="secondaryAction()" class="btn flex items-center space-x-2 p-5 group">
+        <img [src]="secondaryIcon" class="h-10 w-10 group-hover:hidden" />
+        <img [src]="secondaryHoverIcon" class="h-10 w-10 hidden group-hover:block" />
+        <span>{{ secondaryLabel }}</span>
+    </button>
+    </div>
+</div>

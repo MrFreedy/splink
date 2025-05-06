@@ -1,44 +1,32 @@
 <p class="text-center font-bold text-white text-3xl">Bonjour {{username}} 👋,</p>
 <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 w-7xl mx-auto items-stretch">
         <!-- Dernières dépenses -->
-    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit flex flex-col justify-between">
-        <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Dernières dépenses</h2>
-        <div class="flex-grow">
-          <div class="space-y-3">
-              <ng-container *ngIf="depenses.length > 0; else noDepenses">
-                  <ng-container *ngFor="let depense of depenses">
-                  <app-depense-item
-                      [icon]="getIcon(depense.category)"
-                      [label]="depense.title"
-                      [amount]="formatAmount(depense.amount)">
-                  </app-depense-item>
-                  </ng-container>
-              </ng-container>
-              
-              <ng-template #noDepenses>
-                  <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune dépense pour l'instant.</p>
-              </ng-template>
-          </div>
+    <app-dashboard-card
+    [title]="'Dernières dépenses'"
+    [primaryAction]="openDepenseModal"
+    [secondaryAction]="goToPageDepenses">
+        <div class="space-y-3">
+            <ng-container *ngIf="depenses.length > 0; else noDepenses">
+                <ng-container *ngFor="let depense of depenses">
+                <app-depense-item
+                    [icon]="getIcon(depense.category)"
+                    [label]="depense.title"
+                    [amount]="formatAmount(depense.amount)">
+                </app-depense-item>
+                </ng-container>
+            </ng-container>
+            
+            <ng-template #noDepenses>
+                <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune dépense pour l'instant.</p>
+            </ng-template>
         </div>
-  
-        <div class="flex justify-center mt-4 gap-20">
-            <button (click)="openDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
-                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
-                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
-                <span>Ajouter</span>
-            </button>
-            <button (click)="goToPage('depenses')" class="btn flex items-center space-x-2 p-5 group">
-                <img src="icons/view/view-normal.png" class="h-10 w-10 group-hover:hidden">
-                <img src="icons/view/view-hover.png" class="h-10 w-10 hidden group-hover:block">
-                <span>Consulter</span>
-            </button>
-        </div>
-    </div>
+    </app-dashboard-card>
+    
 
     <!-- Dépense modale -->
     <div *ngIf="isDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeDepenseModal()">
         <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Ajouter une dépense</h2>
+            <h2 class="text-[var(--color-green-secondary)] text-center text-3xl font-bold mb-6">Ajouter une dépense</h2>
         
             <form (ngSubmit)="submitDepense()" #depenseForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Titre -->
@@ -114,44 +102,30 @@
             </form>
         </div>
     </div>
-      
-  
-    <!-- Mes tâches du jour -->
-    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full h-fit flex flex-col justify-between">
-        <h2 class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-4">Mes tâches du jour</h2>
-        <div class="flex-grow">
-          <div class="overflow-y-auto max-h-52 space-y-3">
-              <ng-container *ngIf="userTasks.length > 0; else noUserTasks">
-                  <ng-container *ngFor="let userTask of userTasks">
-                      <app-task-item
-                          [icon]="getIcon(userTask.category)"
-                          [label]="userTask.title">
-                      </app-task-item>
-                  </ng-container>
-              </ng-container>
-              <ng-template #noUserTasks>
-                  <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche aujourd'hui 🍹</p>
-              </ng-template>
-          </div>
+    
+    <app-dashboard-card
+    [title]="'Me tâches du jour'"
+    [primaryAction]="openTodayTasks"
+    [secondaryAction]="goToPageEvenements">
+        <div class="overflow-y-auto max-h-52 space-y-3">
+            <ng-container *ngIf="userTasks.length > 0; else noUserTasks">
+                <ng-container *ngFor="let userTask of userTasks">
+                    <app-task-item
+                        [icon]="getIcon(userTask.category)"
+                        [label]="userTask.title">
+                    </app-task-item>
+                </ng-container>
+            </ng-container>
+            <ng-template #noUserTasks>
+                <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche aujourd'hui 🍹</p>
+            </ng-template>
         </div>
-        <div class="flex justify-center mt-4 gap-20">
-            <button (click)="openTodayTasks()" class="btn flex items-center space-x-2 p-5 group">
-                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
-                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
-                <span>Ajouter</span>
-            </button>
-            <button (click)="goToPage('evenements')" class="btn flex items-center space-x-2 p-5 group">
-                <img src="icons/view/view-normal.png" class="h-10 w-10 group-hover:hidden">
-                <img src="icons/view/view-hover.png" class="h-10 w-10 hidden group-hover:block">
-                <span>Consulter</span>
-            </button>
-        </div>
-    </div>
+    </app-dashboard-card>
 
     <!-- Today Task modale -->
     <div *ngIf="isTodayTasksOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeTodayTasks()">
         <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Ajouter une tâche pour aujourd'hui</h2>
+            <h2 class="text-[var(--color-green-secondary)] text-center text-3xl font-bold mb-6">Ajouter une tâche pour aujourd'hui</h2>
         
             <form (ngSubmit)="submitTodayTask()" #todayTaskForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Titre -->
@@ -194,10 +168,11 @@
             </form>
         </div>
     </div>
-  
-    <!-- Tâches à venir -->
-    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow w-full lg:col-span-2 h-fit">
-        <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] mb-4 text-center">Tâches à venir</h2>
+    
+    <app-dashboard-card ngClass="col-span-2"
+    [title]="'Tâches à venir'"
+    [primaryAction]="openUpcomingTasks"
+    [secondaryAction]="goToPageEvenements">
         <div class="flex flex-wrap justify-center gap-4">
             <ng-container *ngIf="upcomingTasks.length > 0; else noUpcomingTasks">
                 <ng-container *ngFor="let upcomingTask of upcomingTasks">
@@ -213,25 +188,12 @@
                 <p class="text-center text-[var(--color-green-secondary)] font-bold text-xl mt-4">Aucune tâche à venir 🍹</p>
             </ng-template>
         </div>
-
-        <div class="flex justify-center mt-4 gap-8">
-            <button (click)="openUpcomingTasks()" class="btn flex items-center space-x-2 p-5 group">
-                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
-                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
-                <span>Ajouter</span>
-            </button>
-            <button (click)="goToPage('evenements')" class="btn flex items-center space-x-2 p-5 group">
-                <img src="icons/more/more-normal.png" class="h-10 w-10 group-hover:hidden">
-                <img src="icons/more/more-hover.png" class="h-10 w-10 hidden group-hover:block">
-                <span>Voir plus</span>
-            </button>
-        </div>
-    </div>
+    </app-dashboard-card>
 
     <!-- Upcoming Task modale -->
-    <div *ngIf="isUpcomingTasksOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeUpcomingTasks()">
+    <div *ngIf="isUpcomingTasksOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center" style="z-index: 999" (click)="closeUpcomingTasks()">
         <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Ajouter une tâche</h2>
+            <h2 class="text-[var(--color-green-secondary)] text-center text-3xl font-bold mb-6">Ajouter une tâche</h2>
         
             <form (ngSubmit)="submitUpcomingTask()" #upcomingTaskForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Titre -->
