@@ -133,17 +133,25 @@ router.get('/assigned/today/:userId', async (req, res) => {
 router.get('/colocation/:colocationId/upcoming', async (req, res) => {
     try {
       const { colocationId } = req.params;
-  
+      const limit = req.body?.limit; 
+
       const today = new Date();
       today.setHours(23, 59, 59, 999);
-  
-      const tasks = await Task.find({
-        colocation_id: colocationId,
-        due_date: { $gt: today }
+
+      const query = Task.find({
+          colocation_id: colocationId,
+          due_date: { $gt: today }
       })
       .sort({ due_date: 1 })
-      .limit(3);
-  
+      .populate('assigned_to', 'username')
+      .populate('created_by', 'username');
+
+      if (limit) {
+          query.limit(parseInt(limit));
+      }
+
+      const tasks = await query;
+
       res.status(200).json(tasks);
     } catch (err) {
       console.error(err);
