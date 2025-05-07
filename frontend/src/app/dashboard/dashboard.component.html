@@ -1,6 +1,6 @@
 <p class="text-center font-bold text-white text-3xl">Bonjour {{username}} 👋,</p>
 <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 w-7xl mx-auto items-stretch">
-        <!-- Dernières dépenses -->
+    <!-- Dernières dépenses -->
     <app-dashboard-card
     [title]="'Dernières dépenses'"
     [primaryAction]="openDepenseModal"
@@ -22,87 +22,6 @@
         </div>
     </app-dashboard-card>
     
-
-    <!-- Dépense modale -->
-    <div *ngIf="isDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeDepenseModal()">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-3xl font-bold mb-6">Ajouter une dépense</h2>
-        
-            <form (ngSubmit)="submitDepense()" #depenseForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Titre -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
-                    <input name="title" [(ngModel)]="depensesToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-                  
-            
-                <!-- Montant -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Montant en €</label>
-                    <input type="number" name="amount" [(ngModel)]="depensesToSubmit.amount" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-            
-                <!-- Catégorie -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
-                    <select name="category" [(ngModel)]="depensesToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option value="food">Alimentation</option>
-                        <option value="transport">Transport</option>
-                        <option value="entertainment">Loisirs</option>
-                        <option value="bills">Factures</option>
-                    </select>
-                </div>                  
-            
-                <!-- Date de paiement-->
-                <div>
-                    <label for="paymentDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date de paiement</label>
-                    <input type="date" id="paymentDate" name="paymentDate" [(ngModel)]="depensesToSubmit.paymentDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-                
-                <!-- Payer par -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Payer par</label>
-                    <select name="payer" [(ngModel)]="depensesToSubmit.payer" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
-                    </select>
-                </div>                  
-    
-                <!-- Répartition -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Répartir avec</label>
-                    <div class="space-y-2">
-                      <div *ngFor="let name of participantNames" class="flex items-center space-x-4">
-                        <label class="flex items-center space-x-3 cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            [(ngModel)]="participants[name]" 
-                            [name]="name" 
-                            class="hidden peer"
-                          />
-                          <div class="w-7 h-7 rounded-lg border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
-                          <span class="text-lg text-[var(--color-green-secondary)] capitalize">{{ name }}</span>
-                        </label>
-                      </div>
-                    </div>
-                </div> 
-                <div class="flex mt-6 gap-4 justify-start">
-                    <button type="button" (click)="closeDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Annuler</span>
-                    </button>
-                </div>      
-                <div class="flex mt-6 gap-4 justify-end">
-                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Ajouter</span>
-                    </button>
-                </div>        
-            </form>
-        </div>
-    </div>
-    
     <app-dashboard-card
     [title]="'Me tâches du jour'"
     [primaryAction]="openTodayTasks"
@@ -121,53 +40,7 @@
             </ng-template>
         </div>
     </app-dashboard-card>
-
-    <!-- Today Task modale -->
-    <div *ngIf="isTodayTasksOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeTodayTasks()">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-3xl font-bold mb-6">Ajouter une tâche pour aujourd'hui</h2>
-        
-            <form (ngSubmit)="submitTodayTask()" #todayTaskForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Titre -->
-                <div class="row-1">
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
-                    <input name="title" [(ngModel)]="todayTasksToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-                
-                <!-- Description -->
-                <div class="row-2 col-span-2">
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
-                    <textarea name="description" [(ngModel)]="todayTasksToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
-                </div>
-            
-                <!-- Catégorie -->
-                <div class="row-1">
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
-                    <select name="category" [(ngModel)]="todayTasksToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option value="courses">Alimentation</option>
-                        <option value="transport">Transport</option>
-                        <option value="entertainment">Loisirs</option>
-                        <option value="bills">Factures</option>
-                    </select>
-                </div>                  
-                
-                <div class="flex mt-6 gap-4 justify-start row-3">
-                    <button type="button" (click)="closeTodayTasks()" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Annuler</span>
-                    </button>
-                </div>      
-                <div class="flex mt-6 gap-4 justify-end row-3">
-                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Ajouter</span>
-                    </button>
-                </div>        
-            </form>
-        </div>
-    </div>
+    
     
     <app-dashboard-card ngClass="col-span-2"
     [title]="'Tâches à venir'"
@@ -189,65 +62,194 @@
             </ng-template>
         </div>
     </app-dashboard-card>
-
-    <!-- Upcoming Task modale -->
-    <div *ngIf="isUpcomingTasksOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center" style="z-index: 999" (click)="closeUpcomingTasks()">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-3xl font-bold mb-6">Ajouter une tâche</h2>
-        
-            <form (ngSubmit)="submitUpcomingTask()" #upcomingTaskForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Titre -->
-                <div class="row-1">
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
-                    <input name="title" [(ngModel)]="upcomingTasksToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-
-                <!-- Catégorie -->
-                <div class="row-1">
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
-                    <select name="category" [(ngModel)]="upcomingTasksToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option value="courses">Alimentation</option>
-                        <option value="transport">Transport</option>
-                        <option value="entertainment">Loisirs</option>
-                        <option value="bills">Factures</option>
-                    </select>
-                </div>    
-                
-                <!-- Description -->
-                <div class="row-2 col-span-2">
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
-                    <textarea name="description" [(ngModel)]="upcomingTasksToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
-                </div>
-
-                <!-- Assigner à -->
-                <div class="row-3">
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Assigner à</label>
-                    <select name="category" [(ngModel)]="upcomingTasksToSubmit.assignedTo" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
-                    </select>
-                </div>
-                
-                <!-- Date -->
-                <div class="row-3">
-                    <label for="dueDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date</label>
-                    <input type="date" id="dueDate" name="dueDate" [(ngModel)]="upcomingTasksToSubmit.dueDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-                
-                <div class="flex mt-6 gap-4 justify-start row-4">
-                    <button type="button" (click)="closeUpcomingTasks()" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Annuler</span>
-                    </button>
-                </div>      
-                <div class="flex mt-6 gap-4 justify-end row-4">
-                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Ajouter</span>
-                    </button>
-                </div>        
-            </form>
-        </div>
-    </div>
 </div>
+
+<!-- Modale des dépenses -->
+<app-modal
+[show]="isDepenseModalOpen"
+(onClose)="closeDepenseModal()"
+[title]="'Ajouter une dépense'"
+>
+
+    <form (ngSubmit)="submitDepense()" #depenseForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Titre -->
+        <div>
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+            <input name="title" [(ngModel)]="depensesToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+        </div>
+        
+    
+        <!-- Montant -->
+        <div>
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Montant en €</label>
+            <input type="number" name="amount" [(ngModel)]="depensesToSubmit.amount" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+        </div>
+    
+        <!-- Catégorie -->
+        <div>
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+            <select name="category" [(ngModel)]="depensesToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                <option value="food">Alimentation</option>
+                <option value="transport">Transport</option>
+                <option value="entertainment">Loisirs</option>
+                <option value="bills">Factures</option>
+            </select>
+        </div>                  
+    
+        <!-- Date de paiement-->
+        <div>
+            <label for="paymentDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date de paiement</label>
+            <input type="date" id="paymentDate" name="paymentDate" [(ngModel)]="depensesToSubmit.paymentDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+        </div>
+        
+        <!-- Payer par -->
+        <div>
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Payer par</label>
+            <select name="payer" [(ngModel)]="depensesToSubmit.payer" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
+            </select>
+        </div>                  
+
+        <!-- Répartition -->
+        <div>
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Répartir avec</label>
+            <div class="space-y-2">
+            <div *ngFor="let name of participantNames" class="flex items-center space-x-4">
+                <label class="flex items-center space-x-3 cursor-pointer">
+                <input 
+                    type="checkbox" 
+                    [(ngModel)]="participants[name]" 
+                    [name]="name" 
+                    class="hidden peer"
+                />
+                <div class="w-7 h-7 rounded-lg border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
+                <span class="text-lg text-[var(--color-green-secondary)] capitalize">{{ name }}</span>
+                </label>
+            </div>
+            </div>
+        </div> 
+        <div class="flex mt-6 gap-4 justify-start">
+            <button type="button" (click)="closeDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Annuler</span>
+            </button>
+        </div>      
+        <div class="flex mt-6 gap-4 justify-end">
+            <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Ajouter</span>
+            </button>
+        </div>        
+    </form>
+
+</app-modal>
+    
+<!-- Modale des tâches du jour -->
+<app-modal
+[show]="isTodayTasksOpen"
+(onClose)="closeTodayTasks()"
+[title]="'Ajouter une tâche pour aujourd\'hui'"
+>
+    <form (ngSubmit)="submitTodayTask()" #todayTaskForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Titre -->
+        <div class="row-1">
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+            <input name="title" [(ngModel)]="todayTasksToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+        </div>
+        
+        <!-- Description -->
+        <div class="row-2 col-span-2">
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
+            <textarea name="description" [(ngModel)]="todayTasksToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
+        </div>
+    
+        <!-- Catégorie -->
+        <div class="row-1">
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+            <select name="category" [(ngModel)]="todayTasksToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                <option value="courses">Alimentation</option>
+                <option value="transport">Transport</option>
+                <option value="entertainment">Loisirs</option>
+                <option value="bills">Factures</option>
+            </select>
+        </div>                  
+        
+        <div class="flex mt-6 gap-4 justify-start row-3">
+            <button type="button" (click)="closeTodayTasks()" class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Annuler</span>
+            </button>
+        </div>      
+        <div class="flex mt-6 gap-4 justify-end row-3">
+            <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Ajouter</span>
+            </button>
+        </div>        
+    </form>
+</app-modal>
+
+<!-- Modale des tâches à venir -->
+<app-modal
+[show]="isUpcomingTasksOpen"
+(onClose)="closeUpcomingTasks()"
+[title]="'Ajouter une tâche'"
+>
+    <form (ngSubmit)="submitUpcomingTask()" #upcomingTaskForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Titre -->
+        <div class="row-1">
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+            <input name="title" [(ngModel)]="upcomingTasksToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+        </div>
+
+        <!-- Catégorie -->
+        <div class="row-1">
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+            <select name="category" [(ngModel)]="upcomingTasksToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                <option value="courses">Alimentation</option>
+                <option value="transport">Transport</option>
+                <option value="entertainment">Loisirs</option>
+                <option value="bills">Factures</option>
+            </select>
+        </div>    
+        
+        <!-- Description -->
+        <div class="row-2 col-span-2">
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
+            <textarea name="description" [(ngModel)]="upcomingTasksToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
+        </div>
+
+        <!-- Assigner à -->
+        <div class="row-3">
+            <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Assigner à</label>
+            <select name="category" [(ngModel)]="upcomingTasksToSubmit.assignedTo" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
+            </select>
+        </div>
+        
+        <!-- Date -->
+        <div class="row-3">
+            <label for="dueDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date</label>
+            <input type="date" id="dueDate" name="dueDate" [(ngModel)]="upcomingTasksToSubmit.dueDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+        </div>
+        
+        <div class="flex mt-6 gap-4 justify-start row-4">
+            <button type="button" (click)="closeUpcomingTasks()" class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Annuler</span>
+            </button>
+        </div>      
+        <div class="flex mt-6 gap-4 justify-end row-4">
+            <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <span>Ajouter</span>
+            </button>
+        </div>        
+    </form>
+</app-modal>

@@ -1,0 +1,6 @@
+<div *ngIf="show" class="fixed inset-0 bg-black/50 flex items-center justify-center z-[999]" (click)="close()">
+    <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
+        <h2 class="text-[var(--color-green-secondary)] text-center text-3xl font-bold mb-6">{{ title }}</h2>
+        <ng-content></ng-content>
+    </div>
+</div>

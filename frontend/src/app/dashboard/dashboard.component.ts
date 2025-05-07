@@ -8,9 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Helper } from '../utils/helper';
 import { DashboardCardComponent } from '../dashboard-card/dashboard-card.component';
+import { ModalComponent } from '../modal/modal.component';
+
+
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, DepenseItemComponent, TaskItemComponent, IncomingTaskItemComponent, FormsModule, DashboardCardComponent],
+  imports: [CommonModule, DepenseItemComponent, TaskItemComponent, IncomingTaskItemComponent, FormsModule, DashboardCardComponent, ModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
