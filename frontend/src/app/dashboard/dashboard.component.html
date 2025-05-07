@@ -226,7 +226,7 @@
         <!-- Assigner à -->
         <div class="row-3">
             <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Assigner à</label>
-            <select name="category" [(ngModel)]="upcomingTasksToSubmit.assignedTo" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+            <select name="assignedTo" [(ngModel)]="upcomingTasksToSubmit.assignedTo" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
                 <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
             </select>
         </div>
