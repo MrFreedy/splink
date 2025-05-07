@@ -72,247 +72,248 @@
     </div>
 
     <!-- Add dépense modale -->
-    <div *ngIf="isDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeDepenseModal()">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Ajouter une dépense</h2>
+    <app-modal
+    [show]="isDepenseModalOpen"
+    (onClose)="closeDepenseModal()"
+    [title]="'Ajouter une dépense'"
+    >
+        <form (ngSubmit)="submitDepense()" #depenseForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Titre -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+                <input name="title" [(ngModel)]="depensesToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+            
         
-            <form (ngSubmit)="submitDepense()" #depenseForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Titre -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
-                    <input name="title" [(ngModel)]="depensesToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-                  
+            <!-- Montant -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Montant en €</label>
+                <input type="number" name="amount" [(ngModel)]="depensesToSubmit.amount" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+        
+            <!-- Catégorie -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+                <select name="category" [(ngModel)]="depensesToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                    <option value="food">Alimentation</option>
+                    <option value="transport">Transport</option>
+                    <option value="entertainment">Loisirs</option>
+                    <option value="bills">Factures</option>
+                </select>
+            </div>                  
+        
+            <!-- Date de paiement-->
+            <div>
+                <label for="paymentDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date de paiement</label>
+                <input type="date" id="paymentDate" name="paymentDate" [(ngModel)]="depensesToSubmit.paymentDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
             
-                <!-- Montant -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Montant en €</label>
-                    <input type="number" name="amount" [(ngModel)]="depensesToSubmit.amount" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-            
-                <!-- Catégorie -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
-                    <select name="category" [(ngModel)]="depensesToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option value="food">Alimentation</option>
-                        <option value="transport">Transport</option>
-                        <option value="entertainment">Loisirs</option>
-                        <option value="bills">Factures</option>
-                    </select>
-                </div>                  
-            
-                <!-- Date de paiement-->
-                <div>
-                    <label for="paymentDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date de paiement</label>
-                    <input type="date" id="paymentDate" name="paymentDate" [(ngModel)]="depensesToSubmit.paymentDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-                
-                <!-- Payer par -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Payer par</label>
-                    <select name="payer" [(ngModel)]="depensesToSubmit.payer" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
-                    </select>
-                </div>                  
-    
-                <!-- Répartition -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Répartir avec</label>
-                    <div class="space-y-2">
-                      <div *ngFor="let name of participantNames" class="flex items-center space-x-4">
-                        <label class="flex items-center space-x-3 cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            [(ngModel)]="participants[name]" 
-                            [name]="name" 
-                            class="hidden peer"
-                          />
-                          <div class="w-7 h-7 rounded-lg border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
-                          <span class="text-lg text-[var(--color-green-secondary)] capitalize">{{ name }}</span>
-                        </label>
-                      </div>
-                    </div>
-                </div> 
-                <div class="flex mt-6 gap-4 justify-start">
-                    <button type="button" (click)="closeDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Annuler</span>
-                    </button>
-                </div>      
-                <div class="flex mt-6 gap-4 justify-end">
-                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Ajouter</span>
-                    </button>
-                </div>        
-            </form>
-        </div>
-    </div>
+            <!-- Payer par -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Payer par</label>
+                <select name="payer" [(ngModel)]="depensesToSubmit.payer" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                    <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
+                </select>
+            </div>                  
 
+            <!-- Répartition -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Répartir avec</label>
+                <div class="space-y-2">
+                <div *ngFor="let name of participantNames" class="flex items-center space-x-4">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                    <input 
+                        type="checkbox" 
+                        [(ngModel)]="participants[name]" 
+                        [name]="name" 
+                        class="hidden peer"
+                    />
+                    <div class="w-7 h-7 rounded-lg border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
+                    <span class="text-lg text-[var(--color-green-secondary)] capitalize">{{ name }}</span>
+                    </label>
+                </div>
+                </div>
+            </div> 
+            <div class="flex mt-6 gap-4 justify-start">
+                <button type="button" (click)="closeDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
+                    <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Annuler</span>
+                </button>
+            </div>      
+            <div class="flex mt-6 gap-4 justify-end">
+                <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                    <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Ajouter</span>
+                </button>
+            </div>        
+        </form>
+    </app-modal>
+    
     <!-- Select delete dépense modale -->
-    <div *ngIf="isSelectDeleteDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeSelectDeleteDepenseModal()">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Sélectionner une dépense à supprimer</h2>
-        
-            <ng-container *ngIf="depenses.length > 0; else noDepensesToDelete">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
-                    <ng-container *ngFor="let depense of depenses">
-                        <ng-container *ngIf="depense.status === 'à payer'">
-                            <div (click)="submitDeleteDepense(depense)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
-                                <h3 class="text-2xl font-bold">{{ depense.title }}</h3>
-                                <p>Montant: {{ depense.amount | number:'1.2-2' }} €</p>
-                                <p>Payer par: {{ depense.paid_by }}</p>
-                                <p>Date: {{ depense.paymentDate }}</p>
-                                <p>Catégorie: {{ depense.category }}</p>
-                                <p>Répartition: {{ getSharedUsernames(depense) }}</p>
-                            </div>
-                        </ng-container>
-                    </ng-container>
-                </div>
-            </ng-container>
-            <ng-template #noDepensesToDelete>
-                <p class="text-center text-[var(--color-green-secondary)] text-xl mt-4">
-                  Aucune dépense à supprimer.
-                </p>
-            </ng-template>
-        </div>
-    </div>
-
-    <!-- Select edit dépense modale -->
-    <div *ngIf="isSelectEditDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeSelectEditDepenseModal()">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Sélectionner une dépense à éditer</h2>
-        
-            <ng-container *ngIf="depenses.length > 0; else noDepensesToEdit">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
-                    <ng-container *ngFor="let depense of depenses">
-                        <ng-container *ngIf="depense.status === 'à payer'">
-                            <div (click)="selectEditDepense(depense)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
-                                <h3 class="text-2xl font-bold">{{ depense.title }}</h3>
-                                <p>Montant: {{ depense.amount | number:'1.2-2' }} €</p>
-                                <p>Payer par: {{ depense.paid_by }}</p>
-                                <p>Date: {{ depense.paymentDate }}</p>
-                                <p>Catégorie: {{ depense.category }}</p>
-                                <p>Répartition: {{ getSharedUsernames(depense) }}</p>
-                            </div>
-                        </ng-container>
-                    </ng-container>
-                </div>
-            </ng-container>
-            <ng-template #noDepensesToEdit>
-                <p class="text-center text-[var(--color-green-secondary)] text-xl mt-4">
-                  Aucune dépense à éditer.
-                </p>
-            </ng-template>
-        </div>
-    </div>
-
-    <!-- Edit dépense modale -->
-    <div *ngIf="isEditDepenseModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeEditDepenseModal()">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Ajouter une dépense</h2>
-        
-            <form (ngSubmit)="submitEditDepense()" #depenseForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Titre -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
-                    <input name="title" [(ngModel)]="depensesToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-                  
-            
-                <!-- Montant -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Montant en €</label>
-                    <input type="number" name="amount" [(ngModel)]="depensesToSubmit.amount" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-            
-                <!-- Catégorie -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
-                    <select name="category" [(ngModel)]="depensesToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option value="Alimentation">Alimentation</option>
-                        <option value="transport">Transport</option>
-                        <option value="entertainment">Loisirs</option>
-                        <option value="bills">Factures</option>
-                    </select>
-                </div>                  
-            
-                <!-- Date de paiement-->
-                <div>
-                    <label for="paymentDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date de paiement</label>
-                    <input type="date" id="paymentDate" name="paymentDate" [(ngModel)]="depensesToSubmit.paymentDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
-                </div>
-                
-                <!-- Payer par -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Payer par</label>
-                    <select name="payer" [(ngModel)]="depensesToSubmit.payer" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required>
-                        <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
-                    </select>
-                </div>                  
-    
-                <!-- Répartition -->
-                <div>
-                    <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Répartir avec</label>
-                    <div class="space-y-2">
-                      <div *ngFor="let name of participantNames" class="flex items-center space-x-4">
-                        <label class="flex items-center space-x-3 cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            [(ngModel)]="participants[name]" 
-                            [name]="name" 
-                            class="hidden peer"
-                          />
-                          <div class="w-7 h-7 rounded-lg border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
-                          <span class="text-lg text-[var(--color-green-secondary)] capitalize">{{ name }}</span>
-                        </label>
-                      </div>
-                    </div>
-                </div> 
-                <div class="flex mt-6 gap-4 justify-start">
-                    <button type="button" (click)="closeEditDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Annuler</span>
-                    </button>
-                </div>      
-                <div class="flex mt-6 gap-4 justify-end">
-                    <button type="submit" class="btn flex items-center space-x-2 p-5 group">
-                        <img src="icons/confirm/confirm-normal.png" class="h-10 w-10 group-hover:hidden">
-                        <img src="icons/confirm/confirm-hover.png" class="h-10 w-10 hidden group-hover:block">
-                        <span>Confirmer</span>
-                    </button>
-                </div>        
-            </form>
-        </div>
-    </div>
-
-    <div *ngIf="isSelectPayerModalOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeSelectPayerModal()">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg relative w-full max-w-4xl" (click)="$event.stopPropagation()">
-            <h2 class="text-[var(--color-green-secondary)] text-center text-2xl font-bold mb-6">Sélectionner une dépense à rembourser</h2>
-        
-            <ng-container *ngIf="dettes.length > 0; else noDettesToPay">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
-                    <ng-container *ngFor="let dette of dettes">
-                        <div (click)="submitPayer(dette)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
-                            <h3 class="text-2xl font-bold">{{ dette.title }}</h3>
-                            <p>Montant: {{ dette.dueAmount | number:'1.2-2' }} €</p>
-                            <p>Payer par: {{ dette.paidBy.username }}</p>
-                            <p>Date: {{ dette.date | date:'dd/MM/yyyy' }}</p>
-                            <p>Catégorie: {{ dette.category }}</p>
+    <app-modal
+    [show]="isSelectDeleteDepenseModalOpen"
+    (onClose)="closeSelectDeleteDepenseModal()"
+    [title]="'Sélectionner une dépense à supprimer'"
+    >
+        <ng-container *ngIf="depenses.length > 0; else noDepensesToDelete">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
+                <ng-container *ngFor="let depense of depenses">
+                    <ng-container *ngIf="depense.status === 'à payer'">
+                        <div (click)="submitDeleteDepense(depense)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
+                            <h3 class="text-2xl font-bold">{{ depense.title }}</h3>
+                            <p>Montant: {{ depense.amount | number:'1.2-2' }} €</p>
+                            <p>Payer par: {{ depense.paid_by }}</p>
+                            <p>Date: {{ depense.paymentDate }}</p>
+                            <p>Catégorie: {{ depense.category }}</p>
+                            <p>Répartition: {{ getSharedUsernames(depense) }}</p>
                         </div>
                     </ng-container>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-template #noDepensesToDelete>
+            <p class="text-center text-[var(--color-green-secondary)] text-xl mt-4">
+            Aucune dépense à supprimer.
+            </p>
+        </ng-template>
+    </app-modal>    
+
+    <!-- Select edit dépense modale -->
+    <app-modal
+    [show]="isSelectEditDepenseModalOpen"
+    (onClose)="closeSelectEditDepenseModal()"
+    [title]="'Sélectionner une dépense à éditer'"
+    >
+        <ng-container *ngIf="depenses.length > 0; else noDepensesToEdit">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
+                <ng-container *ngFor="let depense of depenses">
+                    <ng-container *ngIf="depense.status === 'à payer'">
+                        <div (click)="selectEditDepense(depense)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
+                            <h3 class="text-2xl font-bold">{{ depense.title }}</h3>
+                            <p>Montant: {{ depense.amount | number:'1.2-2' }} €</p>
+                            <p>Payer par: {{ depense.paid_by }}</p>
+                            <p>Date: {{ depense.paymentDate }}</p>
+                            <p>Catégorie: {{ depense.category }}</p>
+                            <p>Répartition: {{ getSharedUsernames(depense) }}</p>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-template #noDepensesToEdit>
+            <p class="text-center text-[var(--color-green-secondary)] text-xl mt-4">
+            Aucune dépense à éditer.
+            </p>
+        </ng-template>
+    </app-modal>
+
+    <!-- Edit dépense modale -->
+    <app-modal
+    [show]="isEditDepenseModalOpen"
+    (onClose)="closeEditDepenseModal()"
+    [title]="'Editer la dépense'"
+    >
+        <form (ngSubmit)="submitEditDepense()" #depenseForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Titre -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+                <input name="title" [(ngModel)]="depensesToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+            
+        
+            <!-- Montant -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Montant en €</label>
+                <input type="number" name="amount" [(ngModel)]="depensesToSubmit.amount" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+        
+            <!-- Catégorie -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+                <select name="category" [(ngModel)]="depensesToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                    <option value="Alimentation">Alimentation</option>
+                    <option value="transport">Transport</option>
+                    <option value="entertainment">Loisirs</option>
+                    <option value="bills">Factures</option>
+                </select>
+            </div>                  
+        
+            <!-- Date de paiement-->
+            <div>
+                <label for="paymentDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date de paiement</label>
+                <input type="date" id="paymentDate" name="paymentDate" [(ngModel)]="depensesToSubmit.paymentDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+            
+            <!-- Payer par -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Payer par</label>
+                <select name="payer" [(ngModel)]="depensesToSubmit.payer" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                    <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
+                </select>
+            </div>                  
+
+            <!-- Répartition -->
+            <div>
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Répartir avec</label>
+                <div class="space-y-2">
+                <div *ngFor="let name of participantNames" class="flex items-center space-x-4">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                    <input 
+                        type="checkbox" 
+                        [(ngModel)]="participants[name]" 
+                        [name]="name" 
+                        class="hidden peer"
+                    />
+                    <div class="w-7 h-7 rounded-lg border-4 border-[var(--color-green-secondary)] peer-checked:bg-[var(--color-green-primary)] transition"></div>
+                    <span class="text-lg text-[var(--color-green-secondary)] capitalize">{{ name }}</span>
+                    </label>
                 </div>
-            </ng-container>
-            <ng-template #noDettesToPay>
-                <p class="text-center text-[var(--color-green-secondary)] text-xl mt-4">
-                  Aucune dette à payer.
-                </p>
-            </ng-template>
-        </div>
-    </div>
+                </div>
+            </div> 
+            <div class="flex mt-6 gap-4 justify-start">
+                <button type="button" (click)="closeEditDepenseModal()" class="btn flex items-center space-x-2 p-5 group">
+                    <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Annuler</span>
+                </button>
+            </div>      
+            <div class="flex mt-6 gap-4 justify-end">
+                <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                    <img src="icons/confirm/confirm-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/confirm/confirm-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Confirmer</span>
+                </button>
+            </div>        
+        </form>
+    </app-modal>
+
+    <!-- Select payer dépense modale -->
+    <app-modal
+    [show]="isSelectPayerModalOpen"
+    (onClose)="closeSelectPayerModal()"
+    [title]="'Sélectionner une dépense à rembourser'"
+    >
+        <ng-container *ngIf="dettes.length > 0; else noDettesToPay">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
+                <ng-container *ngFor="let dette of dettes">
+                    <div (click)="submitPayer(dette)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
+                        <h3 class="text-2xl font-bold">{{ dette.title }}</h3>
+                        <p>Montant: {{ dette.dueAmount | number:'1.2-2' }} €</p>
+                        <p>Payer par: {{ dette.paidBy.username }}</p>
+                        <p>Date: {{ dette.date | date:'dd/MM/yyyy' }}</p>
+                        <p>Catégorie: {{ dette.category }}</p>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-template #noDettesToPay>
+            <p class="text-center text-[var(--color-green-secondary)] text-xl mt-4">
+            Aucune dette à payer.
+            </p>
+        </ng-template>
+    </app-modal>    
 
     <!-- Historique des dépenses -->
     <div class="bg-[var(--color-card)] rounded-xl p-6 shadow flex flex-col col-span-2">

@@ -6,10 +6,10 @@ import { DettesItemComponent } from '../dettes-item/dettes-item.component';
 import { AvoirsItemComponent } from '../avoirs-item/avoirs-item.component';
 import { FormsModule } from '@angular/forms';
 import { ViewChild } from '@angular/core';
-
+import { ModalComponent } from '../modal/modal.component';
 @Component({
   selector: 'app-depenses',
-  imports: [CommonModule, ChartItemComponent, DettesItemComponent, AvoirsItemComponent, FormsModule],
+  imports: [CommonModule, ChartItemComponent, DettesItemComponent, AvoirsItemComponent, FormsModule, ModalComponent],
   templateUrl: './depenses.component.html',
   styleUrl: './depenses.component.css'
 })
