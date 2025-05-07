@@ -51,76 +51,77 @@
         </div>
     </div>
 
-    <div *ngIf="isDetailsColocOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeDetailsColocModal()">
-        <div class="bg-[var(--color-card)] rounded-lg p-6 w-1/3" (click)="$event.stopPropagation()">
-            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Modifier les infos de la colocation</h2>
-            <form (ngSubmit)="saveColocationDetails()" class="grid grid-cols-2 gap-4">
-                <div class="mb-4 col-span-2">
-                    <label class="block text-2xl font-bold text-[var(--color-green-secondary)] mb-2">Nom de la colocation</label>
-                    <input type="text" [(ngModel)]="tempColoc.name" name="colocationName" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none" required />
+    <app-modal
+    [show]="isDetailsColocOpen"
+    (onClose)="closeDetailsColocModal()"
+    [title]="'Modifier les infos de la colocation'"
+    >
+        <form (ngSubmit)="saveColocationDetails()" class="grid grid-cols-2 gap-4">
+            <div class="mb-4 col-span-2">
+                <label class="block text-2xl font-bold text-[var(--color-green-secondary)] mb-2">Nom de la colocation</label>
+                <input type="text" [(ngModel)]="tempColoc.name" name="colocationName" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none" required />
+            </div>
+            <div class="mb-4 col-span-2">
+                <label class="block text-2xl font-bold text-[var(--color-green-secondary)] mb-2">Adresse</label>
+                <input type="text" [(ngModel)]="tempColoc.address.street" name="street" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none" placeholder="Rue" required />
+                <input type="text" [(ngModel)]="tempColoc.address.postal_code" name="postalCode" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none mt-2" placeholder="Code postal" required />
+                <input type="text" [(ngModel)]="tempColoc.address.city" name="city" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none mt-2" placeholder="Ville" required />
+                <input type="text" [(ngModel)]="tempColoc.address.country" name="country" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none mt-2" placeholder="Pays" required />
+            </div>
+            
+            <button type="button" (click)="closeDetailsColocModal()" class="btn flex items-center space-x-2 p-5 group justify-center col-1">
+                <img src="icons/cancel/cancel-normal.png" class="h-8 w-8 group-hover:hidden">
+                <img src="icons/cancel/cancel-hover.png" class="h-8 w-8 hidden group-hover:block">
+                <span>Annuler</span>
+            </button>
+
+            <button type="submit" class="btn flex items-center space-x-2 p-5 group justify-center col-2">
+                <img src="icons/save/save-normal.png" class="h-8 w-8 group-hover:hidden">
+                <img src="icons/save/save-hover.png" class="h-8 w-8 hidden group-hover:block">
+                <span>Sauvegarder</span>
+            </button>
+        </form>
+    </app-modal>
+
+    <app-modal
+    [show]="isMembersColocOpen"
+    (onClose)="closeMembersColocModal()"
+    [title]="'Modifier les membres de la colocation'"
+    >
+        <form (ngSubmit)="saveColocationDetails()" class="grid grid-cols-2 gap-4">
+            <div class="col-span-2 space-y-4">
+                <div *ngFor="let member of editedMembers" class="grid grid-cols-12 items-center gap-4 rounded-lg p-3">
+                    <span class="col-span-4 text-xl text-[var(--color-green-secondary)] font-bold">{{ member.username }}</span>
+                    <select [(ngModel)]="member.role" name="role_{{member.username}}" class="col-span-4 p-2 rounded border border-gray-300 disabled:bg-gray-300" [disabled]="member.user_id === user._id">
+                        <option value="admin">Administrateur</option>
+                        <option value="member">Membre</option>
+                    </select>
+
+                    <button 
+                        type="button" 
+                        class="btn col-span-4 font-bold w-fit px-4 py-3 flex items-center gap-2 group"
+                        (click)="removeMember(member)"
+                        [hidden]="member.user_id === user._id">
+                        <div class="relative w-8 h-8">
+                            <img src="icons/delete/delete-normal.png" class="absolute inset-0 w-8 h-8 group-hover:hidden" />
+                            <img src="icons/delete/delete-hover.png" class="absolute inset-0 w-8 h-8 hidden group-hover:block" />
+                        </div>
+                        <span>Supprimer</span>
+                    </button>
                 </div>
-                <div class="mb-4 col-span-2">
-                    <label class="block text-2xl font-bold text-[var(--color-green-secondary)] mb-2">Adresse</label>
-                    <input type="text" [(ngModel)]="tempColoc.address.street" name="street" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none" placeholder="Rue" required />
-                    <input type="text" [(ngModel)]="tempColoc.address.postal_code" name="postalCode" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none mt-2" placeholder="Code postal" required />
-                    <input type="text" [(ngModel)]="tempColoc.address.city" name="city" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none mt-2" placeholder="Ville" required />
-                    <input type="text" [(ngModel)]="tempColoc.address.country" name="country" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none mt-2" placeholder="Pays" required />
-                </div>
-                
-                <button type="button" (click)="closeDetailsColocModal()" class="btn flex items-center space-x-2 p-5 group justify-center col-1">
-                    <img src="icons/cancel/cancel-normal.png" class="h-8 w-8 group-hover:hidden">
-                    <img src="icons/cancel/cancel-hover.png" class="h-8 w-8 hidden group-hover:block">
-                    <span>Annuler</span>
-                </button>
-
-                <button type="submit" class="btn flex items-center space-x-2 p-5 group justify-center col-2">
-                    <img src="icons/save/save-normal.png" class="h-8 w-8 group-hover:hidden">
-                    <img src="icons/save/save-hover.png" class="h-8 w-8 hidden group-hover:block">
-                    <span>Sauvegarder</span>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div *ngIf="isMembersColocOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="closeMembersColocModal()">
-        <div class="bg-[var(--color-card)] rounded-lg p-6 w-1/3" (click)="$event.stopPropagation()">
-            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Modifier les membres de la colocation</h2>
-            <form (ngSubmit)="saveColocationDetails()" class="grid grid-cols-2 gap-4">
-                <div class="col-span-2 space-y-4">
-                    <div *ngFor="let member of editedMembers" class="grid grid-cols-12 items-center gap-4 rounded-lg p-3">
-                        <span class="col-span-4 text-xl text-[var(--color-green-secondary)] font-bold">{{ member.username }}</span>
-                        <select [(ngModel)]="member.role" name="role_{{member.username}}" class="col-span-4 p-2 rounded border border-gray-300 disabled:bg-gray-300" [disabled]="member.user_id === user._id">
-                            <option value="admin">Administrateur</option>
-                            <option value="member">Membre</option>
-                        </select>
-
-                        <button 
-                            type="button" 
-                            class="btn col-span-4 font-bold w-fit px-4 py-3 flex items-center gap-2 group"
-                            (click)="removeMember(member)"
-                            [hidden]="member.user_id === user._id">
-                            <div class="relative w-8 h-8">
-                                <img src="icons/delete/delete-normal.png" class="absolute inset-0 w-8 h-8 group-hover:hidden" />
-                                <img src="icons/delete/delete-hover.png" class="absolute inset-0 w-8 h-8 hidden group-hover:block" />
-                            </div>
-                            <span>Supprimer</span>
-                        </button>
-                    </div>
-                </div>
-                <button type="button" (click)="closeMembersColocModal()" class="btn flex items-center space-x-2 p-5 group justify-center col-1">
-                    <img src="icons/cancel/cancel-normal.png" class="h-8 w-8 group-hover:hidden">
-                    <img src="icons/cancel/cancel-hover.png" class="h-8 w-8 hidden group-hover:block">
-                    <span>Annuler</span>
-                </button>
-                <button type="submit" class="btn flex items-center space-x-2 p-5 group justify-center col-2">
-                    <img src="icons/save/save-normal.png" class="h-8 w-8 group-hover:hidden">
-                    <img src="icons/save/save-hover.png" class="h-8 w-8 hidden group-hover:block">
-                    <span>Sauvegarder</span>
-                </button>
-            </form>
-        </div>
-    </div>
-
+            </div>
+            <button type="button" (click)="closeMembersColocModal()" class="btn flex items-center space-x-2 p-5 group justify-center col-1">
+                <img src="icons/cancel/cancel-normal.png" class="h-8 w-8 group-hover:hidden">
+                <img src="icons/cancel/cancel-hover.png" class="h-8 w-8 hidden group-hover:block">
+                <span>Annuler</span>
+            </button>
+            <button type="submit" class="btn flex items-center space-x-2 p-5 group justify-center col-2">
+                <img src="icons/save/save-normal.png" class="h-8 w-8 group-hover:hidden">
+                <img src="icons/save/save-hover.png" class="h-8 w-8 hidden group-hover:block">
+                <span>Sauvegarder</span>
+            </button>
+        </form>
+    </app-modal>
 
     <div class="col-span-1 col-3 row-1 bg-[var(--color-card)] p-6 rounded-lg mt-4">
         <p class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-6">Mes paramètres</p>

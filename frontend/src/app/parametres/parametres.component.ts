@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../services/api.service';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-parametres',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ModalComponent],
   templateUrl: './parametres.component.html',
   styleUrl: './parametres.component.css'
 })
