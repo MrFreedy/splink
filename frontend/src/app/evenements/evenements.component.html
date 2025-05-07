@@ -29,17 +29,17 @@
         <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-fit">
             <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Gérer les événements</h2>
             <div class="grid grid-cols-1 gap-4 place-items-center">
-                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full row-1">
+                <button (click)="openAddEventModal()" class="btn flex items-center justify-center space-x-2 p-8 group w-full row-1">
                     <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
                     <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
                     <span>Ajouter</span>
                 </button>
-                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full row-2">
+                <button (click)="openSelectEditEventModal()" class="btn flex items-center justify-center space-x-2 p-8 group w-full row-2">
                     <img src="icons/edit/edit-normal.png" class="h-10 w-10 group-hover:hidden">
                     <img src="icons/edit/edit-hover.png" class="h-10 w-10 hidden group-hover:block">
                     <span>Modifier</span>
                 </button>
-                <button class="btn flex items-center justify-center space-x-2 p-8 group w-full row-3">
+                <button (click)="openSelectDeleteEventModal()" class="btn flex items-center justify-center space-x-2 p-8 group w-full row-3">
                     <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
                     <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
                     <span>Supprimer</span>
@@ -47,6 +47,178 @@
             </div>
         </div>
     </div>
+
+    <app-modal
+    [show]="isAddEventModalOpen"
+    (onClose)="closeAddEventModal()"
+    [title]="'Ajouter un événement'"
+    >
+        <form (ngSubmit)="submitEvent()" #eventForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Titre -->
+            <div class="row-1">
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+                <input name="title" [(ngModel)]="eventToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+
+            <!-- Catégorie -->
+            <div class="row-1">
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+                <select name="category" [(ngModel)]="eventToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                    <option value="courses">Alimentation</option>
+                    <option value="transport">Transport</option>
+                    <option value="entertainment">Loisirs</option>
+                    <option value="bills">Factures</option>
+                </select>
+            </div>    
+            
+            <!-- Description -->
+            <div class="row-2 col-span-2">
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
+                <textarea name="description" [(ngModel)]="eventToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
+            </div>
+
+            <!-- Assigner à -->
+            <div class="row-3">
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Assigner à</label>
+                <select name="assignedTo" [(ngModel)]="eventToSubmit.assignedTo" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                    <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
+                </select>
+            </div>
+            
+            <!-- Date -->
+            <div class="row-3">
+                <label for="dueDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date</label>
+                <input type="date" id="dueDate" name="dueDate" [(ngModel)]="eventToSubmit.dueDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+            
+            <div class="flex mt-6 gap-4 justify-start row-4">
+                <button type="button" (click)="closeAddEventModal()" class="btn flex items-center space-x-2 p-5 group">
+                    <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Annuler</span>
+                </button>
+            </div>      
+            <div class="flex mt-6 gap-4 justify-end row-4">
+                <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                    <img src="icons/add/add-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Ajouter</span>
+                </button>
+            </div>        
+        </form>
+    </app-modal>
+
+    <app-modal
+    [show]="isSelectEditEventModalOpen"
+    (onClose)="closeSelectEditEventModal()"
+    [title]="'Sélectionner un événement à éditer'"
+    >
+        <ng-container *ngIf="availableTasks.length > 0; else noTaskToEdit">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
+                <ng-container *ngFor="let task of availableTasks">
+                    <div (click)="selectEditTask(task)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
+                        <h3 class="text-2xl font-bold">{{ task.title }}</h3>
+                        <p>Description: {{ task.description }}</p>
+                        <p>Créer par: {{ task.created_by.username }}</p>
+                        <p>Assigné à: {{ task.assigned_to.username }}</p>
+                        <p>Pour le: {{ task.due_date | date:'dd/MM/yyyy' }}</p>
+                        <p>Catégorie: {{ task.category }}</p>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-template #noTaskToEdit>
+            <p class="text-center text-[var(--color-green-secondary)] text-xl mt-4">
+            Aucune tâche à éditer.
+            </p>
+        </ng-template>
+    </app-modal>
+
+    <app-modal
+    [show]="isEditEventModalOpen"
+    (onClose)="closeEditEventModal()"
+    [title]="'Editer l\'événement'"
+    >
+        <form (ngSubmit)="submitEditEvent()" #eventForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Titre -->
+            <div class="row-1">
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Titre</label>
+                <input name="title" [(ngModel)]="eventToSubmit.title" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+
+            <!-- Catégorie -->
+            <div class="row-1">
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Catégorie</label>
+                <select name="category" [(ngModel)]="eventToSubmit.category" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                    <option value="courses">Alimentation</option>
+                    <option value="transport">Transport</option>
+                    <option value="entertainment">Loisirs</option>
+                    <option value="bills">Factures</option>
+                </select>
+            </div>    
+            
+            <!-- Description -->
+            <div class="row-2 col-span-2">
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Description</label>
+                <textarea name="description" [(ngModel)]="eventToSubmit.description" class="w-full p-2 rounded-xl border-3 border-[var(--color-green-secondary)] h-fit focus:border-none" rows="6" required></textarea>
+            </div>
+
+            <!-- Assigner à -->
+            <div class="row-3">
+                <label class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Assigner à</label>
+                <select name="assignedTo" [(ngModel)]="eventToSubmit.assignedTo" class="w-full p-2 rounded-xl bg-white border-3 border-[var(--color-green-secondary)] focus:border-none" required>
+                    <option *ngFor="let name of participantNames" [value]="name">{{ name }}</option>
+                </select>
+            </div>
+            
+            <!-- Date -->
+            <div class="row-3">
+                <label for="dueDate" class="block text-xl font-bold mb-2 text-[var(--color-green-secondary)]">Date</label>
+                <input type="date" id="dueDate" name="dueDate" [(ngModel)]="eventToSubmit.dueDate" class="w-full p-2 rounded-xl bg-white text-black border-3 border-[var(--color-green-secondary)] focus:border-none" required />
+            </div>
+            
+            <div class="flex mt-6 gap-4 justify-start row-4">
+                <button type="button" (click)="closeEditEventModal()" class="btn flex items-center space-x-2 p-5 group">
+                    <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Annuler</span>
+                </button>
+            </div>      
+            <div class="flex mt-6 gap-4 justify-end row-4">
+                <button type="submit" class="btn flex items-center space-x-2 p-5 group">
+                    <img src="icons/confirm/confirm-normal.png" class="h-10 w-10 group-hover:hidden">
+                    <img src="icons/confirm/confirm-hover.png" class="h-10 w-10 hidden group-hover:block">
+                    <span>Confirmer</span>
+                </button>
+            </div>        
+        </form>
+    </app-modal>
+
+    <app-modal
+    [show]="isSelectDeleteEventModalOpen"
+    (onClose)="closeSelectDeleteEventModal()"
+    [title]="'Sélectionner un événement à supprimer'"
+    >
+        <ng-container *ngIf="availableTasks.length > 0; else noDepensesToDelete">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
+                <ng-container *ngFor="let task of availableTasks">
+                    <div (click)="submitDeleteEvent(task)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
+                        <h3 class="text-2xl font-bold">{{ task.title }}</h3>
+                        <p>Description: {{ task.description }}</p>
+                        <p>Créer par: {{ task.created_by.username }}</p>
+                        <p>Assigné à: {{ task.assigned_to.username }}</p>
+                        <p>Pour le: {{ task.due_date | date:'dd/MM/yyyy' }}</p>
+                        <p>Catégorie: {{ task.category }}</p>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-template #noDepensesToDelete>
+            <p class="text-center text-[var(--color-green-secondary)] text-xl mt-4">
+            Aucune dépense à supprimer.
+            </p>
+        </ng-template>
+    </app-modal>
 
     <!-- Liste des événements -->
     <div class="col-span-3 row-3">
@@ -82,7 +254,7 @@
                             </ng-container>
                         </ng-container>
                         <ng-template #noTasks>
-                            <td colspan="4" class="text-center p-4">Aucune dépense enregistrée</td>
+                            <td colspan="4" class="text-center p-4">Aucune événement enregistré</td>
                         </ng-template>
                     </tbody>
                 </table>
@@ -124,7 +296,7 @@
                             </ng-container>
                         </ng-container>
                         <ng-template #noTasks>
-                            <td colspan="4" class="text-center p-4">Aucune dépense enregistrée</td>
+                            <td colspan="4" class="text-center p-4">Aucune événement enregistré</td>
                         </ng-template>
                     </tbody>
                 </table>

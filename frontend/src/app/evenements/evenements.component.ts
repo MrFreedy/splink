@@ -5,16 +5,22 @@ import { ApiService } from '../services/api.service';
 import { Helper } from '../utils/helper';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-evenements',
-  imports: [CalendarItemComponent, TaskItemComponent, CommonModule, FormsModule],
+  imports: [CalendarItemComponent, TaskItemComponent, CommonModule, FormsModule, ModalComponent],
   templateUrl: './evenements.component.html',
   styleUrl: './evenements.component.css'
 })
 export class EvenementsComponent {
+  isAddEventModalOpen = false;
+  isSelectEditEventModalOpen = false;
+  isEditEventModalOpen = false;
+  isSelectDeleteEventModalOpen = false;
 
   user = JSON.parse(localStorage.getItem('user') || '{}');
+  colocation = JSON.parse(localStorage.getItem('colocation') || '{}');
 
   availableFilterTitle: string = '';
   availableFilterPerson: string = '';
@@ -24,10 +30,24 @@ export class EvenementsComponent {
   overdueFilterPerson: string = '';
   overdueFilterDate: string = '';
 
+  members: any[] = localStorage.getItem('colocation') ? JSON.parse(localStorage.getItem('colocation') || '{}').members : [];
+  participants: { [key: string]: boolean } = {};
+  participantNames: string[] = localStorage.getItem('colocation') ? JSON.parse(localStorage.getItem('colocation') || '{}').members.map((m: any) => m.username) : [];
+  
+
   myTasks: any[] = [];
   allTasks: any[] = [];
   availableTasks: any[] = [];
   overdueTasks: any[] = [];
+
+  eventToSubmit: any = {
+    title:'',
+    description: '',
+    category: '',
+    dueDate: '',
+    assignedTo: '',
+    createdBy: '',
+  };
 
   constructor(private apiService: ApiService, private helper: Helper) {}
 
@@ -36,6 +56,11 @@ export class EvenementsComponent {
     this.getAllTasks();
     this.getAvailableTasks();
     this.getOverdueTasks();
+
+    this.participants = this.participantNames.reduce((acc: { [key: string]: boolean }, name: string) => {
+      acc[name] = false;
+      return acc;
+    }, {});
   }
 
   getIcon(category: string): string {
@@ -46,7 +71,6 @@ export class EvenementsComponent {
     this.apiService.get(`/tasks/assigned/today/${this.user._id}`).subscribe(
       (response: any) => {
         this.myTasks = response;
-        console.log('My Tasks fetched successfully:', this.myTasks);
       },
       (error: any) => {
         console.error('Error fetching tasks:', error);
@@ -58,7 +82,6 @@ export class EvenementsComponent {
     this.apiService.get(`/tasks/colocation/${this.user.colocation_id}`).subscribe(
       (response: any) => {
         this.allTasks = response;
-        console.log('All Tasks fetched successfully:', this.allTasks);
       },
       (error: any) => {
         console.error('Error fetching tasks:', error);
@@ -70,7 +93,6 @@ export class EvenementsComponent {
     this.apiService.get(`/tasks/colocation/${this.user.colocation_id}/available`).subscribe(
       (response: any) => {
         this.availableTasks = response;
-        console.log('Available Tasks fetched successfully:', this.availableTasks);
       },
       (error: any) => {
         console.error('Error fetching tasks:', error);
@@ -82,7 +104,6 @@ export class EvenementsComponent {
     this.apiService.get(`/tasks/colocation/${this.user.colocation_id}/overdue`).subscribe(
       (response: any) => {
         this.overdueTasks = response;
-        console.log('Overdue Tasks fetched successfully:', this.overdueTasks);
       },
       (error: any) => {
         console.error('Error fetching tasks:', error);
@@ -148,4 +169,187 @@ export class EvenementsComponent {
         return dateB - dateA;
       });
   }
+
+  submitEvent() {
+    const colocation = JSON.parse(localStorage.getItem('colocation') || '{}');
+    const memberMap = colocation.members.reduce((acc: any, member: any) => {
+      acc[member.username] = member.user_id;
+      return acc;
+    }, {});
+
+    const newEvent = {
+      title: this.eventToSubmit.title,
+      description: this.eventToSubmit.description,
+      category: this.eventToSubmit.category,
+      assigned_to: memberMap[this.eventToSubmit.assignedTo],
+      created_by: this.user._id,
+      colocation_id: this.colocation._id,
+      due_date: this.eventToSubmit.dueDate
+    };
+
+    this.apiService.post('/tasks', newEvent).subscribe(
+      (response: any) => {
+        alert('Événement ajouté avec succès !');
+        this.closeAddEventModal();
+        this.eventToSubmit = {
+          title:'',
+          description: '',
+          category: '',
+          dueDate: '',
+          assignedTo: '',
+          createdBy: '',
+        };
+        this.ngOnInit();
+      },
+      (error: any) => {
+        console.error('Erreur ajout événement', error);
+        alert('Erreur lors de l\'ajout de l\'événement.');
+      }
+    );
+  }
+
+  selectEditTask(task: any) {  
+
+    const formattedDate = new Date(task.due_date).toISOString().slice(0, 10);
+
+    this.eventToSubmit = {
+      _id: task._id,
+      title: task.title,
+      description: task.description,
+      category: task.category,
+      dueDate: formattedDate,
+      assignedTo: task.assigned_to.username,
+      createdBy: task.created_by.username,
+    };
+
+    this.openEditEventModal();
+  }
+
+  submitEditEvent() {
+    const colocation = JSON.parse(localStorage.getItem('colocation') || '{}');
+    const memberMap = colocation.members.reduce((acc: any, member: any) => {
+      acc[member.username] = member.user_id;
+      return acc;
+    }, {});
+    const updatedEvent = {
+      title: this.eventToSubmit.title,
+      description: this.eventToSubmit.description,
+      category: this.eventToSubmit.category,
+      assigned_to: memberMap[this.eventToSubmit.assignedTo],
+      created_by: this.user._id,
+      colocation_id: this.colocation._id,
+      due_date: this.eventToSubmit.dueDate
+    };
+    this.apiService.put(`/tasks/${this.eventToSubmit._id}`, updatedEvent).subscribe(
+      (response: any) => {
+        alert('Événement modifié avec succès !');
+        this.closeEditEventModal();
+        this.eventToSubmit = {
+          title:'',
+          description: '',
+          category: '',
+          dueDate: '',
+          assignedTo: '',
+          createdBy: '',
+        };
+        this.closeSelectEditEventModal();
+        this.ngOnInit();
+      },
+      (error: any) => {
+        console.error('Erreur modification événement', error);
+        alert('Erreur lors de la modification de l\'événement.');
+      }
+    );
+  }
+
+  selectDeleteTask(task: any) {  
+
+    const formattedDate = new Date(task.due_date).toISOString().slice(0, 10);
+
+    this.eventToSubmit = {
+      _id: task._id,
+      title: task.title,
+      description: task.description,
+      category: task.category,
+      dueDate: formattedDate,
+      assignedTo: task.assigned_to.username,
+      createdBy: task.created_by.username,
+    };
+  }
+
+  submitDeleteEvent(task: any) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+      this.apiService.delete(`/tasks/${task._id}`).subscribe(
+        (response: any) => {
+          alert('Événement supprimé avec succès !');
+          this.closeSelectDeleteEventModal();
+          this.ngOnInit();
+        },
+        (error: any) => {
+          console.error('Erreur suppression événement', error);
+          alert('Erreur lors de la suppression de l\'événement.');
+        }
+      );
+    }
+  }
+
+  openAddEventModal() {
+    this.isAddEventModalOpen = true;
+  }
+
+  closeAddEventModal() {
+    this.isAddEventModalOpen = false;
+    this.eventToSubmit = {
+      title:'',
+      description: '',
+      category: '',
+      dueDate: '',
+      assignedTo: '',
+      createdBy: '',
+    };
+  }
+
+  openEditEventModal() {
+    this.isEditEventModalOpen = true;
+    this.isSelectEditEventModalOpen = false;
+  }
+
+  openSelectEditEventModal() {
+    this.isSelectEditEventModalOpen = true;
+  }
+
+  closeEditEventModal() {
+    this.isEditEventModalOpen = false;
+
+    this.eventToSubmit = {
+      title:'',
+      description: '',
+      category: '',
+      dueDate: '',
+      assignedTo: '',
+      createdBy: '',
+    };
+  }
+
+  closeSelectEditEventModal() {
+    this.isSelectEditEventModalOpen = false;
+  }
+
+  openSelectDeleteEventModal() {
+    this.isSelectDeleteEventModalOpen = true;
+  }
+
+  closeSelectDeleteEventModal() {
+    this.isSelectDeleteEventModalOpen = false;
+
+    this.eventToSubmit = {
+      title:'',
+      description: '',
+      category: '',
+      dueDate: '',
+      assignedTo: '',
+      createdBy: '',
+    };
+  }
+
 }
