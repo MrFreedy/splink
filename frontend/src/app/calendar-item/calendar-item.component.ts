@@ -28,7 +28,8 @@ export class CalendarItemComponent implements OnChanges {
         ...this.calendarOptions,
         events: this.tasks.map(task => ({
           title: task.title.length > 15 ? task.title.slice(0, 15) + '…' : task.title,
-          date: task.due_date,
+          allDay: true,
+          start: task.due_date,
           extendedProps: {
             fullTitle: task.title
           }
