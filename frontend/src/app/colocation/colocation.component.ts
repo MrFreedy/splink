@@ -34,15 +34,12 @@ export class ColocationComponent {
       address: this.address
     }
 
-    console.log('Colocation:', coloc);
-
     this.apiService.post('/colocations', coloc).subscribe({
       next: (response: any) => {
         alert('Colocation créée avec succès !');
 
         this.apiService.put(`/users/${this.user._id}/join`, { colocation_id: response._id }).subscribe({
           next: (response: any) => {
-            console.log('Utilisateur mis à jour :', response);
             localStorage.setItem('user', JSON.stringify(response));
 
             this.apiService.get(`/colocations/${response.colocation_id}`).subscribe({

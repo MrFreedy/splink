@@ -91,7 +91,7 @@ export class ChartItemComponent {
   getMonthlyCategoryRepartition() {
     this.apiService.get(`/depenses/colocation/${this.colocationId}/repartition-par-categorie-mensuelle`).subscribe((data => {
       const repartitionData = data as any[];
-      console.log(repartitionData);
+      
       this.chartOptions.series = repartitionData.map(item => item.pourcentage);
       this.chartOptions.labels = repartitionData.map(item => item.category);
     }));

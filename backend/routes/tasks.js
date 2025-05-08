@@ -112,9 +112,6 @@ router.get('/assigned/today/:userId', async (req, res) => {
         const startUtc = new Date(startLocal.getTime() - tzOffset);
         const endUtc = new Date(endLocal.getTime() - tzOffset);
 
-        console.log("Start UTC:", startUtc.toISOString());
-        console.log("End UTC:", endUtc.toISOString());
-
         const tasks = await Task.find({
             assigned_to: userId,
             due_date: {
