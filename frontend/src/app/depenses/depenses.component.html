@@ -197,7 +197,7 @@
         <ng-container *ngIf="depenses.length > 0; else noDepensesToEdit">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto max-h-[400px]">
                 <ng-container *ngFor="let depense of depenses">
-                    <ng-container *ngIf="depense.status === 'à payer'">
+                    <ng-container *ngIf="depense.paid_by === this.user.username || isAdmin">
                         <div (click)="selectEditDepense(depense)" class="text-white text-lg bg-[var(--color-green-secondary)] p-4 rounded-xl shadow-lg cursor-pointer hover:text-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)] transition">
                             <h3 class="text-2xl font-bold">{{ depense.title }}</h3>
                             <p>Montant: {{ depense.amount | number:'1.2-2' }} €</p>

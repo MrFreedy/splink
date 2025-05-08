@@ -82,13 +82,15 @@ A partir de ce moment-là, deux scénarios peuvent s'offrir à vous:
 * Affichage des événements à venir (liste)
 * Historique des événements passés
 
-> ⚠️ Il n'est possible de modifier ou supprimer des événéments qui sont **caduques**.
+> ⚠️ Il n'est pas possible de modifier ou supprimer des événéments qui sont **caduques**.
 
 ### Page des dépenses
 
 * Affichage de la répartition des dépenses via `app-chart-item` utilisant `apexcharts`.
 * **Ajout, modification, suppression et validation de paiement** d’une dépense via modale.
 * Historique des dépenses avec filtres similaires à la page événements.
+
+> ⚠️ Il n'est pas possible modifier des dépenses où **l'utilisateur n'est pas le payeur**.
 
 ### Page des paramètres
 
