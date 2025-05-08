@@ -168,13 +168,9 @@ router.get('/colocation/:colocationId/available', async (req, res) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 2);
-        tomorrow.setHours(0, 0, 0, 0);
-
         const tasks = await Task.find({
             colocation_id: colocationId,
-            due_date: { $gte: today, $lt: tomorrow }
+            due_date: { $gte: today }
         })
         .populate('assigned_to', 'username')
         .populate('created_by', 'username');
