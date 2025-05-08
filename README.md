@@ -42,6 +42,28 @@ npm run start
 
 ## Fonctionnalités et Pages
 
+### Page de création d'un compte
+
+Il est possible de vous créer un compte, pour cela, il vous faudra cliquez sur ***Vous n'avez pas encore de compte ?***.
+
+Une fois sur la page de création, il vous faudra renseigner vos informations et cliquer sur **Créer**
+
+Une fois votre compte créer, connectez-vous.
+
+### Page de connexion
+
+Vous pourrez vous connecter avec vos informations de connexion et cliquer sur **Se connecter**
+
+A partir de ce moment-là, deux scénarios peuvent s'offrir à vous:
+
+- Soit vous êtes déjà dans une colocation et alors vous arrivez directement sur le dashboard.
+
+- Soit vous n'avez pas de colocation et à ce moment là, vous aurez le choix de créer une colocation ou d'en rejoindre une via un code d'invitation.
+
+    - Pour la création, vous renseignez les informations de votre colocation et vous cliquez sur **Créer**. Vous accèderez à votre dashboard automatiquement et vous serez alors administrateur de votre colocation.<br>
+
+    - Pour rejoindre une colocation existante, il vous faudra demander le code d'invitation à un administrateur de la colocation que vous souhaitez rejoindre. Et le saisir avant de cliquer sur **Rejoindre**.
+
 ### Page d’accueil (Dashboard)
 
 * Vue d’ensemble des tâches du jour, à venir, et des dernières dépenses.
@@ -81,6 +103,7 @@ npm run start
   * Modifier les informations de la colocation
   * Supprimer des membres
   * Définir les rôles (administrateur ou membre)
+  * Code d'invitation visible
 
 ---
 
