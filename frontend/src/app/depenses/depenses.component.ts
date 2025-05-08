@@ -114,6 +114,13 @@ export class DepensesComponent {
 
   closeDepenseModal() {
     this.isDepenseModalOpen = false;
+    this.depensesToSubmit = {
+      title: '',
+      amount: null,
+      category: '',
+      paymentDate: '',
+      payer: ''
+    };
   }
 
   closeSelectEditDepenseModal() {
