@@ -15,7 +15,6 @@ export class Helper {
       case 'gaz': return 'icons/gas/gas-hover.png';
       case 'internet': return 'icons/internet/internet-hover.png';
       case 'loyer': return 'icons/loan/loan-hover.png';
-      case 'loyer': return 'icons/loan/loan-hover.png';
       case 'nettoyage': return 'icons/cleaning/cleaning-hover.png';
       case 'poubelles': return 'icons/trash/trash-hover.png';
       case 'reparation': return 'icons/reparation/reparation-hover.png';
