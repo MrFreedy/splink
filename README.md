@@ -90,7 +90,8 @@ A partir de ce moment-là, deux scénarios peuvent s'offrir à vous:
 * **Ajout, modification, suppression et validation de paiement** d’une dépense via modale.
 * Historique des dépenses avec filtres similaires à la page événements.
 
-> ⚠️ Il n'est pas possible modifier des dépenses où **l'utilisateur n'est pas le payeur**.
+> ⚠️ Il n'est pas possible modifier des dépenses où **l'utilisateur n'est pas le payeur** SAUF si on est **administrateur**.
+> ⚠️ Il n'est pas possible supprimer des dépenses si on est pas **administrateur** .
 
 ### Page des paramètres
 
