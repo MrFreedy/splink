@@ -15,10 +15,15 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class DepensesComponent {
   @ViewChild('chartItem') chartItem!: ChartItemComponent;  
-  user = JSON.parse(localStorage.getItem('user') || '{}');
-  colocationId = this.user.colocation_id;
-  userId = this.user._id;
 
+  user = JSON.parse(localStorage.getItem('user') || '{}');
+  colocation = JSON.parse(localStorage.getItem('colocation') || '{}');
+
+  userId = this.user._id;
+  colocationId = this.colocation._id;
+  
+  isAdmin = this.colocation.members?.some((member: any) => member.user_id === this.userId && member.role === 'admin') || false;
+  
   members: any[] = localStorage.getItem('colocation') ? JSON.parse(localStorage.getItem('colocation') || '{}').members : [];
   participants: { [key: string]: boolean } = {};
   participantNames: string[] = localStorage.getItem('colocation') ? JSON.parse(localStorage.getItem('colocation') || '{}').members.map((m: any) => m.username) : [];

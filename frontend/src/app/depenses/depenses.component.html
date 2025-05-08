@@ -47,7 +47,7 @@
                     <img src="icons/add/add-hover.png" class="h-10 w-10 hidden group-hover:block">
                     <span>Ajouter</span>
                 </button>
-                <button (click)="openSelectDeleteDepenseModal()" class="btn flex items-center justify-center space-x-2 p-8 group w-full">
+                <button *ngIf="isAdmin" (click)="openSelectDeleteDepenseModal()" class="btn flex items-center justify-center space-x-2 p-8 group w-full">
                     <img src="icons/cancel/cancel-normal.png" class="h-10 w-10 group-hover:hidden">
                     <img src="icons/cancel/cancel-hover.png" class="h-10 w-10 hidden group-hover:block">
                     <span>Supprimer</span>
@@ -57,14 +57,14 @@
                     <img src="icons/edit/edit-hover.png" class="h-10 w-10 hidden group-hover:block">
                     <span>Modifier</span>
                 </button>
-                <button (click)="openSelectPayerModal()" class="btn flex items-center justify-center space-x-2 p-8 col-1 col-span-2 group w-full">
-                    <img src="icons/pay/pay-normal.png" class="h-10 w-10 group-hover:hidden">
-                    <img src="icons/pay/pay-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <button (click)="openSelectPayerModal()" class="btn flex items-center justify-center space-x-2 p-8 group w-full" [ngClass]="isAdmin ? 'col-span-2' : 'col-span-3 col-start-1'">
+                    <img src="icons/pay/pay-normal.png" class="h-10 w-10 group-hover:hidden" />
+                    <img src="icons/pay/pay-hover.png" class="h-10 w-10 hidden group-hover:block" />
                     <span>Payer</span>
                 </button>
-                <button (click)="relancer()" class="btn flex items-center justify-center space-x-2 p-8 col-3 group w-full">
-                    <img src="icons/restart/restart-normal.png" class="h-10 w-10 group-hover:hidden">
-                    <img src="icons/restart/restart-hover.png" class="h-10 w-10 hidden group-hover:block">
+                <button (click)="relancer()" class="btn flex items-center justify-center space-x-2 p-8 group w-full" [ngClass]="isAdmin ? 'col-3' : 'col-3 row-1'">
+                    <img src="icons/restart/restart-normal.png" class="h-10 w-10 group-hover:hidden" />
+                    <img src="icons/restart/restart-hover.png" class="h-10 w-10 hidden group-hover:block" />
                     <span>Relancer</span>
                 </button>
             </div>
