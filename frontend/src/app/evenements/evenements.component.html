@@ -220,87 +220,26 @@
         </ng-template>
     </app-modal>
 
-    <!-- Liste des événements -->
-    <div class="col-span-3 row-3">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-fit">
-        <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Liste des événements</h2>
-            <div class="flex flex-wrap gap-4 mb-4 justify-end">
-                <select [(ngModel)]="availableFilterPerson" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-52">
-                    <option value="">Toutes les personnes</option>
-                    <option *ngFor="let availablePerson of uniqueAvaibleTasksAssignedByNames" [value]="availablePerson">{{ availablePerson }}</option>
-                </select>
-                <input type="date" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" [(ngModel)]="availableFilterDate" />
-                <input type="text" placeholder="Filtrer par titre" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" [(ngModel)]="availableFilterTitle" />
-            </div>
-            <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
-                <table class="min-w-full text-left table-auto">
-                    <thead class="sticky top-0 text-white bg-[var(--color-green-secondary)] z-10">
-                        <tr>
-                            <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Titre</th>
-                            <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Description</th>
-                            <th class="p-2 font-bold border-r-2">Assigné à</th>
-                            <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="font-bold text-[var(--color-green-secondary)]">
-                        <ng-container *ngIf="availableTasks.length > 0; else noTasks">
-                            <ng-container *ngFor="let task of availableFilteredTasks">
-                                <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                                    <td class="p-2">{{task.title}}</td>
-                                    <td class="p-2">{{task.description}}</td>
-                                    <td class="p-2">{{task.assigned_to.username}}</td>
-                                    <td class="p-2">{{task.due_date | date:'dd/MM/yyyy'}}</td>
-                                </tr>
-                            </ng-container>
-                        </ng-container>
-                        <ng-template #noTasks>
-                            <td colspan="4" class="text-center p-4">Aucune événement enregistré</td>
-                        </ng-template>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <app-table-item
+    class="col-span-3 row-3"
+    [title]="'Liste des événements'"
+    [(filterPerson)]="availableFilterPerson"
+    [(filterDate)]="availableFilterDate"
+    [(filterTitle)]="availableFilterTitle"
+    [filteredItems]="availableFilteredTasks"
+    [uniquePeople]="uniqueAvaibleTasksAssignedByNames"
+    [noItemMessage]="'Aucune événement enregistré'">
+    </app-table-item>
 
-    <!-- Historique -->
-    <div class="col-span-3 row-4">
-        <div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-fit">
-            <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">Historique des événements</h2>
-            <div class="flex flex-wrap gap-4 mb-4 justify-end">
-                <select [(ngModel)]="overdueFilterPerson" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-52">
-                    <option value="">Toutes les personnes</option>
-                    <option *ngFor="let OverduePerson of uniqueOverdueTasksAssignedByNames" [value]="OverduePerson">{{ OverduePerson }}</option>
-                </select>
-                <input type="date" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" [(ngModel)]="overdueFilterDate" />
-                <input type="text" placeholder="Filtrer par titre" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" [(ngModel)]="overdueFilterTitle" />
-            </div>
-            <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
-                <table class="min-w-full text-left table-auto">
-                    <thead class="sticky top-0 text-white bg-[var(--color-green-secondary)] z-10">
-                        <tr>
-                            <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Titre</th>
-                            <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Description</th>
-                            <th class="p-2 font-bold border-r-2">Assigné à</th>
-                            <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="font-bold text-[var(--color-green-secondary)]">
-                        <ng-container *ngIf="overdueTasks.length > 0; else noTasks">
-                            <ng-container *ngFor="let task of overdueFilteredTasks">
-                                <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
-                                    <td class="p-2">{{task.title}}</td>
-                                    <td class="p-2">{{task.description}}</td>
-                                    <td class="p-2">{{task.assigned_to.username}}</td>
-                                    <td class="p-2">{{task.due_date | date:'dd/MM/yyyy'}}</td>
-                                </tr>
-                            </ng-container>
-                        </ng-container>
-                        <ng-template #noTasks>
-                            <td colspan="4" class="text-center p-4">Aucune événement enregistré</td>
-                        </ng-template>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <app-table-item
+    class="col-span-3 row-4"
+    [title]="'Historique des événements'"
+    [(filterPerson)]="overdueFilterPerson"
+    [(filterDate)]="overdueFilterDate"
+    [(filterTitle)]="overdueFilterTitle"
+    [filteredItems]="overdueFilteredTasks"
+    [uniquePeople]="uniqueOverdueTasksAssignedByNames"
+    [noItemMessage]="'Aucune événement enregistré'">
+    </app-table-item>
+
 </div>

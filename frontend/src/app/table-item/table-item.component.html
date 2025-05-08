@@ -1,0 +1,40 @@
+<div class="bg-[var(--color-card)] p-6 rounded-xl shadow-lg flex flex-col gap-4 h-fit w-full">
+  <h2 class="text-3xl font-bold text-[var(--color-green-secondary)] text-center mb-4">{{ title }}</h2>
+
+  <div class="flex flex-wrap gap-4 mb-4 justify-end">
+    <select [(ngModel)]="filterPerson" (ngModelChange)="filterPersonChange.emit($event)" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-52">
+      <option value="">Toutes les personnes</option>
+      <option *ngFor="let person of uniquePeople" [value]="person">{{ person }}</option>
+    </select>
+    <input type="date" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" [(ngModel)]="filterDate" (ngModelChange)="filterDateChange.emit($event)"/>
+    <input type="text" placeholder="Filtrer par titre" class="p-2 rounded-xl border-3 border-[var(--color-green-secondary)] focus:border-none w-48" [(ngModel)]="filterTitle" (ngModelChange)="filterTitleChange.emit($event)"/>
+  </div>
+
+  <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
+    <table class="min-w-full text-left table-auto">
+      <thead class="sticky top-0 text-white bg-[var(--color-green-secondary)] z-10">
+        <tr>
+          <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Titre</th>
+          <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Description</th>
+          <th class="p-2 font-bold border-r-2">Assigné à</th>
+          <th class="p-2 font-bold border-r-2 border-[var(--color-card)]">Date</th>
+        </tr>
+      </thead>
+      <tbody class="font-bold text-[var(--color-green-secondary)]">
+        <ng-container *ngIf="filteredItems.length > 0; else noTasks">
+          <tr *ngFor="let task of filteredItems" class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
+            <td class="p-2">{{task.title}}</td>
+            <td class="p-2">{{task.description}}</td>
+            <td class="p-2">{{task.assigned_to?.username}}</td>
+            <td class="p-2">{{task.due_date | date:'dd/MM/yyyy'}}</td>
+          </tr>
+        </ng-container>
+        <ng-template #noTasks>
+          <tr>
+            <td colspan="4" class="text-center p-4">{{ noItemMessage }}</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+</div>

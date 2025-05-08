@@ -6,10 +6,11 @@ import { Helper } from '../utils/helper';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../modal/modal.component';
+import { TableItemComponent } from "../table-item/table-item.component";
 
 @Component({
   selector: 'app-evenements',
-  imports: [CalendarItemComponent, TaskItemComponent, CommonModule, FormsModule, ModalComponent],
+  imports: [CalendarItemComponent, TaskItemComponent, CommonModule, FormsModule, ModalComponent, TableItemComponent],
   templateUrl: './evenements.component.html',
   styleUrl: './evenements.component.css'
 })
