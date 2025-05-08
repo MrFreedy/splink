@@ -82,6 +82,8 @@ A partir de ce moment-là, deux scénarios peuvent s'offrir à vous:
 * Affichage des événements à venir (liste)
 * Historique des événements passés
 
+> ⚠️ Il n'est possible de modifier ou supprimer des événéments qui sont **caduques**.
+
 ### Page des dépenses
 
 * Affichage de la répartition des dépenses via `app-chart-item` utilisant `apexcharts`.
