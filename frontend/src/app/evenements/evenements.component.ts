@@ -133,7 +133,7 @@ export class EvenementsComponent {
           ? task.title.toLowerCase().includes(this.availableFilterTitle.toLowerCase())
           : true;
         const matchPerson = this.availableFilterPerson
-          ? task.assigned_to?.toLowerCase().includes(this.availableFilterPerson.toLowerCase())
+          ? task.assigned_to?.username.toLowerCase().includes(this.availableFilterPerson.toLowerCase())
           : true;
         const matchDate = this.availableFilterDate
           ? task.due_date?.slice(0, 10) === this.availableFilterDate
@@ -154,8 +154,8 @@ export class EvenementsComponent {
         const matchTitle = this.overdueFilterTitle
           ? task.title.toLowerCase().includes(this.overdueFilterTitle.toLowerCase())
           : true;
-        const matchPerson = this.overdueFilterPerson
-          ? task.assigned_to?.toLowerCase().includes(this.overdueFilterPerson.toLowerCase())
+          const matchPerson = this.overdueFilterPerson
+          ? task.assigned_to?.username.toLowerCase().includes(this.overdueFilterPerson.toLowerCase())
           : true;
         const matchDate = this.overdueFilterDate
           ? task.due_date?.slice(0, 10) === this.overdueFilterDate

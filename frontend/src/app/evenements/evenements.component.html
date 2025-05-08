@@ -244,7 +244,7 @@
                     </thead>
                     <tbody class="font-bold text-[var(--color-green-secondary)]">
                         <ng-container *ngIf="availableTasks.length > 0; else noTasks">
-                            <ng-container *ngFor="let task of availableTasks">
+                            <ng-container *ngFor="let task of availableFilteredTasks">
                                 <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
                                     <td class="p-2">{{task.title}}</td>
                                     <td class="p-2">{{task.description}}</td>
@@ -286,7 +286,7 @@
                     </thead>
                     <tbody class="font-bold text-[var(--color-green-secondary)]">
                         <ng-container *ngIf="overdueTasks.length > 0; else noTasks">
-                            <ng-container *ngFor="let task of overdueTasks">
+                            <ng-container *ngFor="let task of overdueFilteredTasks">
                                 <tr class="border-b-2 border-[var(--color-green-secondary)] hover:bg-[var(--color-green-highlight)]">
                                     <td class="p-2">{{task.title}}</td>
                                     <td class="p-2">{{task.description}}</td>
