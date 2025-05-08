@@ -57,6 +57,7 @@ export class EvenementsComponent {
     this.getAvailableTasks();
     this.getOverdueTasks();
 
+    console.log('All tasks:', this.allTasks);
     this.participants = this.participantNames.reduce((acc: { [key: string]: boolean }, name: string) => {
       acc[name] = false;
       return acc;

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/core'; // pour typer tes options
-import dayGridPlugin from '@fullcalendar/daygrid'; // plugin de vue "mois"
-import interactionPlugin from '@fullcalendar/interaction'; // pour rendre le calendrier interactif
-import frLocale from '@fullcalendar/core/locales/fr'; // pour la localisation en français
-import { FullCalendarModule } from '@fullcalendar/angular'; // le module Angular
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { CalendarOptions } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import frLocale from '@fullcalendar/core/locales/fr';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @Component({
   selector: 'app-calendar-item',
@@ -12,14 +12,34 @@ import { FullCalendarModule } from '@fullcalendar/angular'; // le module Angular
   templateUrl: './calendar-item.component.html',
   styleUrl: './calendar-item.component.css'
 })
-export class CalendarItemComponent {
+export class CalendarItemComponent implements OnChanges {
+  @Input() tasks: any[] = [];
+
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     locale: frLocale,
     plugins: [dayGridPlugin, interactionPlugin],
-    events: [
-      { title: 'Événement A', date: '2025-05-01' },
-      { title: 'Événement B', date: '2025-05-15' }
-    ]
+    events: []
   };
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['tasks'] && this.tasks) {
+      this.calendarOptions = {
+        ...this.calendarOptions,
+        events: this.tasks.map(task => ({
+          title: task.title.length > 15 ? task.title.slice(0, 15) + '…' : task.title,
+          date: task.due_date,
+          extendedProps: {
+            fullTitle: task.title
+          }
+        })),
+        eventDidMount: (info) => {
+          const fullTitle = info.event.extendedProps['fullTitle'];
+          if (fullTitle) {
+            info.el.setAttribute('title', fullTitle);
+          }
+        }
+      };
+    }
+  }
 }
