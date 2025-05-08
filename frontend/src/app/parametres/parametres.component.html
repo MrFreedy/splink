@@ -128,7 +128,6 @@
 
     <div class="col-span-1 col-3 row-1 bg-[var(--color-card)] p-6 rounded-lg mt-4">
         <p class="text-center text-3xl font-bold text-[var(--color-green-secondary)] mb-6">Mes paramètres</p>
-
         <div class="mb-4">
             <label class="block text-xl font-bold text-[var(--color-green-secondary)] mb-2">Thème</label>
             <select [(ngModel)]="settings.theme" name="theme" class="w-full p-2 rounded-xl border border-gray-300 focus:outline-none">
@@ -160,6 +159,8 @@
             <option value="MM/DD/YYYY">MM/JJ/AAAA</option>
             </select>
         </div>
+
+        <p class="text-center text-sm font-bold mb-4">Paramètres factices, aucun impact sur le front mais quand même sauvegardés en BDD</p>
 
         <div class="flex justify-end">
             <button (click)="saveSettings()" class="btn flex justify-center items-center space-x-2 p-5 group">
