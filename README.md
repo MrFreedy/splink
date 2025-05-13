@@ -2,6 +2,7 @@
 
 **Splink** est une application web pensée pour faciliter la vie en colocation. Elle permet de répartir les tâches ménagères, de suivre les dépenses communes, de consulter les événements à venir sur un calendrier partagé, et d’organiser efficacement la vie collective.
 
+https://splink.3il-rodez-projets.site/
 ---
 
 ## Lancer l'application
@@ -18,7 +19,13 @@ docker-compose up --build -d
 
 Cela construira automatiquement le front-end et le back-end, puis lancera les conteneurs associés.
 
-> ⚠️ Assurez-vous que Docker est bien installé sur votre machine.
+> ⚠️ Assurez-vous que Docker est bien installé sur votre machine.<br>
+> ⚠️ Il vous faudra impérativement créer un .env à la racine /backend et renseigner les informations suivantes à partir des informations fournie dans le mail:<br>
+> - DB_HOST= (adresse IP du serveur)
+> - DB_PORT= (port fourni dans le mail)
+> - DB_NAME= (nom de la db écrit dans le docker-compose.yaml)
+> - DB_USER= (user écrit dans le docker-compose.yaml)
+> - DB_PASSWORD= (password écrit dans le docker-compose.yaml)
 
 ---
 
@@ -36,7 +43,7 @@ cd frontend
 npm run start
 ```
 
-> ⚠️ Le back-end n’a pas besoin d’être lancé manuellement : le front-end communique directement avec l’API via l’adresse publique **217.65.146.195:3000**.
+> ⚠️ Le back-end n’a pas besoin d’être lancé manuellement : le front-end communique directement avec l’API via l’adresse publique **217.65.146.195:3000** ou **https://splink.3il-rodez-projets.site/api**
 
 ---
 
@@ -130,3 +137,15 @@ A partir de ce moment-là, deux scénarios peuvent s'offrir à vous:
 
 * **Frontend** : Angular 19 + TailwindCSS
 * **Backend** : Node.js, Express, MongoDB
+
+## Comptes pour démo:
+Pour tester le site, vous aurez deux possibilités:
+- Utiliser des comptes déjà existants afin de rejoindre une colocation ayant déjà des données 
+  - ### Utilisateur Laura:
+    user: laura@gmail.com<br>
+    password: test<br>
+    
+  - ### Utilisateur Léa:
+    user: léa@gmail.com<br>
+    password: test<br>
+- Ou créer votre compte.
