@@ -2,7 +2,7 @@ services:
   web:
     container_name: splink-web
     image: 168.231.87.179:1112/splink/splink-web:latest
-    build: ./frontend
+    # build: ./frontend
     ports:
       - "4200:4200"
     volumes:
@@ -13,7 +13,7 @@ services:
   api:
     container_name: splink-api
     image: 168.231.87.179:1112/splink/splink-api:latest
-    build: ./backend
+    # build: ./backend
     ports:
       - "3000:3000"
     depends_on:
