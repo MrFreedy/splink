@@ -1,0 +1,7 @@
+﻿module.exports = {
+  "/api": {
+    target: "http://api:3000",
+    secure: false,
+    changeOrigin: true
+  }
+};

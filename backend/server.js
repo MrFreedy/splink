@@ -12,10 +12,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-app.use('/users', userRouter);
-app.use('/depenses', depenseRouter);
-app.use('/colocations', colocationRouter);
-app.use('/tasks', taskRouter);
+app.use('/api/users', userRouter);
+app.use('/api/depenses', depenseRouter);
+app.use('/api/colocations', colocationRouter);
+app.use('/api/tasks', taskRouter);
 
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);
