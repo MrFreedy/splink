@@ -8,6 +8,7 @@ services:
     # volumes:
     #  - ./frontend:/usr/src/app
     #  - /usr/src/app/node_modules
+    command: sh -c "chmod +x ./node_modules/.bin/ng && npm start"
     restart: unless-stopped
 
   api:
