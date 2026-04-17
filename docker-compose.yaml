@@ -1,7 +1,7 @@
 services:
   web:
     container_name: splink-web
-    image: splink-web:latest
+    image: 168.231.87.179:1112/splink/splink-web:latest
     build: ./frontend
     ports:
       - "4200:4200"
@@ -12,7 +12,7 @@ services:
 
   api:
     container_name: splink-api
-    image: splink-api:latest
+    image: 168.231.87.179:1112/splink/splink-api:latest
     build: ./backend
     ports:
       - "3000:3000"
