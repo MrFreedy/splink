@@ -2,7 +2,7 @@
 
 **Splink** est une application web pensée pour faciliter la vie en colocation. Elle permet de répartir les tâches ménagères, de suivre les dépenses communes, de consulter les événements à venir sur un calendrier partagé, et d’organiser efficacement la vie collective.
 
-https://splink.3il-rodez-projets.site/
+http://168.231.87.179:4200/
 ---
 
 ## Lancer l'application
